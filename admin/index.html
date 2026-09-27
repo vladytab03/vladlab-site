@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -264,19 +265,29 @@
 
   </section>
 
+
   <section class="grid">
+
+
+    <!-- DESCĂRCĂRI -->
 
     <a class="card" href="/admin/downloads/">
 
       <div>
-        <div class="icon">📥</div>
 
-        <h2>Descărcări</h2>
+        <div class="icon">
+          📥
+        </div>
+
+        <h2>
+          Descărcări
+        </h2>
 
         <p>
           Adaugă, modifică și șterge fișierele
           disponibile pe pagina Descărcări.
         </p>
+
       </div>
 
       <div class="card-arrow">
@@ -285,17 +296,26 @@
 
     </a>
 
-    <a class="card" href="/admin/scoala/">
+
+    <!-- ȘCOALĂ -->
+
+    <a class="card" href="/admin/school/">
 
       <div>
-        <div class="icon">🎓</div>
 
-        <h2>Școală</h2>
+        <div class="icon">
+          🎓
+        </div>
+
+        <h2>
+          Școală
+        </h2>
 
         <p>
           Gestionează materialele, proiectele
           și conținutul secțiunii Școală.
         </p>
+
       </div>
 
       <div class="card-arrow">
@@ -304,17 +324,26 @@
 
     </a>
 
-    <a class="card" href="/admin/proiecte/">
+
+    <!-- PROIECTE -->
+
+    <a class="card" href="/admin/projects/">
 
       <div>
-        <div class="icon">💻</div>
 
-        <h2>Proiecte</h2>
+        <div class="icon">
+          💻
+        </div>
+
+        <h2>
+          Proiecte
+        </h2>
 
         <p>
           Creează și modifică proiectele
           afișate pe VladLab.
         </p>
+
       </div>
 
       <div class="card-arrow">
@@ -323,36 +352,26 @@
 
     </a>
 
-    <a class="card" href="/admin/uploads/">
 
-      <div>
-        <div class="icon">📤</div>
-
-        <h2>Fișiere primite</h2>
-
-        <p>
-          Vezi fișierele și mesajele
-          trimise prin pagina de Upload.
-        </p>
-      </div>
-
-      <div class="card-arrow">
-        Vezi fișierele →
-      </div>
-
-    </a>
+    <!-- SITE -->
 
     <a class="card" href="/admin/site/">
 
       <div>
-        <div class="icon">⚙️</div>
 
-        <h2>Site</h2>
+        <div class="icon">
+          ⚙️
+        </div>
+
+        <h2>
+          Site
+        </h2>
 
         <p>
           Setări și conținut general
           pentru VladLab.
         </p>
+
       </div>
 
       <div class="card-arrow">
@@ -361,16 +380,25 @@
 
     </a>
 
+
+    <!-- SITE PUBLIC -->
+
     <a class="card" href="/">
 
       <div>
-        <div class="icon">🌐</div>
 
-        <h2>Vezi site-ul</h2>
+        <div class="icon">
+          🌐
+        </div>
+
+        <h2>
+          Vezi site-ul
+        </h2>
 
         <p>
           Deschide pagina publică VladLab.
         </p>
+
       </div>
 
       <div class="card-arrow">
@@ -379,15 +407,18 @@
 
     </a>
 
+
   </section>
 
 </main>
+
 
 <script type="module">
 
   import {
     initializeApp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
 
   import {
     getAuth,
@@ -397,13 +428,28 @@
 
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-    authDomain: "vladlab-11887.firebaseapp.com",
-    projectId: "vladlab-11887",
-    storageBucket: "vladlab-11887.firebasestorage.app",
-    messagingSenderId: "741561223788",
-    appId: "1:741561223788:web:88ad3e62db87e32551a649",
-    measurementId: "G-9XN16BVYRN"
+
+    apiKey:
+      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+
+    authDomain:
+      "vladlab-11887.firebaseapp.com",
+
+    projectId:
+      "vladlab-11887",
+
+    storageBucket:
+      "vladlab-11887.firebasestorage.app",
+
+    messagingSenderId:
+      "741561223788",
+
+    appId:
+      "1:741561223788:web:88ad3e62db87e32551a649",
+
+    measurementId:
+      "G-9XN16BVYRN"
+
   };
 
 
@@ -414,44 +460,77 @@
   const app =
     initializeApp(firebaseConfig);
 
+
   const auth =
     getAuth(app);
+
 
   const loading =
     document.getElementById("loading");
 
 
-  onAuthStateChanged(auth, async (user) => {
+  /* =========================
+     VERIFICARE ADMIN
+  ========================= */
 
-    if (!user) {
-      window.location.replace("/login/");
-      return;
+  onAuthStateChanged(
+    auth,
+
+    async (user) => {
+
+      if (!user) {
+
+        window.location.replace(
+          "/login/"
+        );
+
+        return;
+
+      }
+
+
+      if (user.uid !== ADMIN_UID) {
+
+        await signOut(auth);
+
+        window.location.replace(
+          "/login/"
+        );
+
+        return;
+
+      }
+
+
+      loading.style.display =
+        "none";
+
     }
+  );
 
-    if (user.uid !== ADMIN_UID) {
 
-      await signOut(auth);
-
-      window.location.replace("/login/");
-      return;
-    }
-
-    loading.style.display = "none";
-
-  });
-
+  /* =========================
+     LOGOUT
+  ========================= */
 
   document
     .getElementById("logoutButton")
-    .addEventListener("click", async () => {
+    .addEventListener(
+      "click",
 
-      await signOut(auth);
+      async () => {
 
-      window.location.replace("/login/");
+        await signOut(auth);
 
-    });
+        window.location.replace(
+          "/login/"
+        );
+
+      }
+    );
 
 </script>
 
 </body>
+
 </html>
