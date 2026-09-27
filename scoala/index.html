@@ -11,677 +11,519 @@
 
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #080b12;
-      color: white;
       min-height: 100vh;
+      background: #080b12;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
     }
-
-    /* NAVBAR */
 
     nav {
       height: 72px;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.94);
+      backdrop-filter: blur(15px);
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 8%;
-      border-bottom: 1px solid #1d2330;
-      background: rgba(8, 11, 18, 0.92);
+
+      padding: 0 6%;
+
       position: sticky;
       top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
+      z-index: 100;
     }
 
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
-      text-decoration: none;
+      gap: 12px;
+
       color: white;
+      text-decoration: none;
+
+      font-size: 20px;
+      font-weight: 700;
     }
 
-    .logo img {
+    .brand img {
       width: 44px;
       height: 44px;
       border-radius: 11px;
       object-fit: cover;
     }
 
-    .logo-text {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
-
-    .logo-text span {
-      color: #5b8cff;
-    }
-
-    .nav-links {
+    .account {
       display: flex;
-      gap: 25px;
+      align-items: center;
+      gap: 10px;
     }
 
-    .nav-links a {
-      color: #aeb7c7;
-      text-decoration: none;
+    #loggedOut,
+    #loggedIn {
+      display: none;
+    }
+
+    .login-button,
+    .user-button,
+    .logout-button {
+      border-radius: 10px;
+      padding: 9px 15px;
+
       font-size: 14px;
-      transition: 0.2s;
+      text-decoration: none;
+
+      cursor: pointer;
+      transition: .2s;
     }
 
-    .nav-links a:hover,
-    .nav-links .active {
+    .login-button {
+      background: #5b8cff;
       color: white;
+      border: 1px solid #5b8cff;
+      font-weight: 700;
     }
 
-    /* MAIN */
+    .login-button:hover {
+      background: #6c98ff;
+    }
+
+    .user-button {
+      background: transparent;
+      color: #cbd4e4;
+      border: 1px solid #293142;
+    }
+
+    .user-button:hover {
+      color: white;
+      border-color: #5b8cff;
+    }
+
+    .logout-button {
+      background: #161c27;
+      color: white;
+      border: 1px solid #293142;
+    }
+
+    .logout-button:hover {
+      border-color: #5b8cff;
+      background: #1a2230;
+    }
 
     main {
-      width: min(1250px, 92%);
+      max-width: 1250px;
       margin: auto;
-      padding: 70px 0 100px;
+      padding: 60px 25px 80px;
     }
 
-    .back {
-      color: #71809a;
-      text-decoration: none;
-      font-size: 14px;
-    }
+    .badge {
+      display: inline-block;
 
-    .back:hover {
-      color: white;
+      background: rgba(91, 140, 255, .12);
+      color: #7ca2ff;
+
+      border: 1px solid rgba(91, 140, 255, .25);
+      border-radius: 100px;
+
+      padding: 7px 12px;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      margin-bottom: 18px;
     }
 
     h1 {
-      font-size: clamp(48px, 7vw, 72px);
-      letter-spacing: -3px;
-      margin-top: 25px;
-    }
-
-    h1 span {
-      color: #5b8cff;
+      font-size: clamp(38px, 6vw, 60px);
+      margin-bottom: 10px;
     }
 
     .subtitle {
-      margin-top: 10px;
-      color: #7f899a;
-      font-size: 15px;
+      color: #8995a9;
+      margin-bottom: 45px;
     }
 
-    /* SECTION */
-
-    .section {
-      margin-top: 55px;
-    }
-
-    .section-title {
+    h2 {
       font-size: 24px;
       margin-bottom: 18px;
     }
 
-    /* ORAR */
+    .schedule-container {
+      width: 100%;
+      overflow-x: auto;
 
-    .schedule-card {
       background: #0e131d;
       border: 1px solid #202735;
-      border-radius: 20px;
-      padding: 22px;
-      overflow: hidden;
-    }
+      border-radius: 18px;
 
-    .schedule-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      gap: 15px;
-    }
-
-    .schedule-header h2 {
-      font-size: 20px;
-    }
-
-    .class-badge {
-      background: #17233c;
-      color: #7da3ff;
-      border: 1px solid #2a426d;
-      padding: 7px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .table-wrapper {
-      overflow-x: auto;
-      border-radius: 13px;
+      margin-bottom: 50px;
     }
 
     table {
       width: 100%;
-      min-width: 1050px;
-      border-collapse: separate;
-      border-spacing: 0;
-      overflow: hidden;
+      min-width: 1000px;
+      border-collapse: collapse;
     }
 
     th,
     td {
-      border-right: 1px solid #252e3d;
-      border-bottom: 1px solid #252e3d;
-      padding: 15px 12px;
+      padding: 15px 13px;
       text-align: center;
-    }
-
-    th:first-child,
-    td:first-child {
-      border-left: 1px solid #252e3d;
-    }
-
-    thead th {
-      border-top: 1px solid #252e3d;
-      background: #111824;
-      color: #8d9aaf;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    thead th:first-child {
-      border-top-left-radius: 10px;
-    }
-
-    thead th:last-child {
-      border-top-right-radius: 10px;
-    }
-
-    .day {
-      background: #111824;
-      color: #8eb0ff;
+      border-bottom: 1px solid #202735;
+      border-right: 1px solid #202735;
       font-size: 13px;
+    }
+
+    th {
+      background: #111722;
+      color: #dce4f2;
       font-weight: 700;
-      text-align: left;
-      min-width: 100px;
     }
 
-    .subject {
-      background: #0b1018;
-      min-width: 125px;
-      height: 82px;
-      transition: 0.2s;
+    td {
+      color: #aeb8ca;
     }
 
-    .subject:hover {
-      background: #121a28;
+    th:last-child,
+    td:last-child {
+      border-right: none;
     }
 
-    .subject-name {
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.3;
+    tr:last-child td {
+      border-bottom: none;
     }
 
-    .empty-cell {
-      background: #090d14;
-      color: #343d4d;
+    .hour {
+      color: #ffffff;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     .time {
       display: block;
-      color: #657188;
-      font-size: 10px;
+      color: #68758a;
+      font-size: 11px;
+      font-weight: 400;
       margin-top: 4px;
-      font-weight: normal;
     }
-
-    .mobile-tip {
-      display: none;
-      color: #657188;
-      font-size: 12px;
-      margin-top: 14px;
-      text-align: center;
-    }
-
-    /* MATERIALE */
 
     .materials {
-      border: 1px dashed #293243;
+      background: #0e131d;
+      border: 1px solid #202735;
       border-radius: 18px;
-      min-height: 190px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 30px;
-    }
 
-    .materials-icon {
-      font-size: 36px;
-      margin-bottom: 15px;
-    }
-
-    .materials h3 {
-      font-size: 18px;
-      margin-bottom: 7px;
+      padding: 28px;
     }
 
     .materials p {
-      color: #657188;
-      font-size: 13px;
+      color: #7f8a9e;
+      font-size: 14px;
+      line-height: 1.6;
     }
-
-    /* FOOTER */
 
     footer {
-      border-top: 1px solid #1d2330;
-      padding: 30px 8%;
-      color: #626d7f;
+      max-width: 1250px;
+      margin: auto;
+
+      padding: 30px 25px 45px;
+
+      border-top: 1px solid #171d28;
+
+      color: #596477;
       font-size: 13px;
-      display: flex;
-      justify-content: space-between;
     }
 
-    /* MOBILE */
-
-    @media (max-width: 750px) {
-
+    @media (max-width: 700px) {
       nav {
-        padding: 0 5%;
-      }
-
-      .nav-links {
-        display: none;
+        padding: 0 18px;
       }
 
       main {
-        padding-top: 50px;
+        padding-top: 40px;
       }
 
-      .schedule-card {
-        padding: 16px;
-      }
-
-      .mobile-tip {
-        display: block;
-      }
-
-      footer {
-        flex-direction: column;
-        gap: 10px;
+      .login-button,
+      .user-button,
+      .logout-button {
+        padding: 8px 11px;
       }
     }
   </style>
 </head>
 
-
 <body>
-
-<!-- NAVBAR -->
 
 <nav>
 
-  <a href="/" class="logo">
-
+  <a href="/" class="brand">
     <img src="/logo.png" alt="VladLab">
-
-    <div class="logo-text">
-      Vlad<span>Lab</span>
-    </div>
-
+    VladLab
   </a>
 
+  <div class="account">
 
-  <div class="nav-links">
+    <div id="loggedOut">
+      <a href="/login/" class="login-button">
+        Login
+      </a>
+    </div>
 
-    <a href="/scoala/" class="active">
-      Școală
-    </a>
+    <div id="loggedIn" class="account">
 
-    <a href="http://novasmp.space/">
-      Minecraft
-    </a>
+      <a href="/admin/" class="user-button">
+        Vlad
+      </a>
 
-    <a href="/proiecte/">
-      Proiecte
-    </a>
+      <button
+        id="logoutButton"
+        class="logout-button"
+        type="button"
+      >
+        Logout
+      </button>
 
-    <a href="/upload/">
-      Upload
-    </a>
-
-    <a href="/download/">
-      Descărcări
-    </a>
+    </div>
 
   </div>
 
 </nav>
 
-
 <main>
 
-  <a href="/" class="back">
-    ← Înapoi la VladLab
-  </a>
-
+  <div class="badge">
+    CLASA 7D
+  </div>
 
   <h1>
-    🎓 <span>Școală</span>
+    🎓 Școală
   </h1>
 
   <p class="subtitle">
-    Orar, materiale și proiecte școlare.
+    Orar, materiale și proiecte.
   </p>
 
 
-  <!-- ORAR -->
+  <h2>
+    Orar
+  </h2>
+
+  <div class="schedule-container">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Ora</th>
+          <th>Luni</th>
+          <th>Marți</th>
+          <th>Miercuri</th>
+          <th>Joi</th>
+          <th>Vineri</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr>
+          <td class="hour">
+            Ora 0
+            <span class="time">12:00–12:50</span>
+          </td>
+
+          <td>Istorie</td>
+          <td>Limba franceză</td>
+          <td>Limba română</td>
+          <td>—</td>
+          <td>Biologie</td>
+        </tr>
+
+        <tr>
+          <td class="hour">
+            Ora 1
+            <span class="time">13:00–13:50</span>
+          </td>
+
+          <td>Limba engleză</td>
+          <td>Geografie</td>
+          <td>Matematică</td>
+          <td>Matematică</td>
+          <td>Matematică</td>
+        </tr>
+
+        <tr>
+          <td class="hour">
+            Ora 2
+            <span class="time">14:00–14:50</span>
+          </td>
+
+          <td>Chimie</td>
+          <td>Informatică și TIC</td>
+          <td>Educație pentru cetățenie democratică</td>
+          <td>CDS Ed. tehnologică</td>
+          <td>Limba română</td>
+        </tr>
+
+        <tr>
+          <td class="hour">
+            Ora 3
+            <span class="time">15:00–15:50</span>
+          </td>
+
+          <td>Matematică</td>
+          <td>Educație tehnologică</td>
+          <td>Limba franceză</td>
+          <td>Limba română</td>
+          <td>Fizică</td>
+        </tr>
+
+        <tr>
+          <td class="hour">
+            Ora 4
+            <span class="time">16:00–16:50</span>
+          </td>
+
+          <td>Limba română</td>
+          <td>Biologie</td>
+          <td>Educație fizică și sport</td>
+          <td>Chimie</td>
+          <td>Educație plastică</td>
+        </tr>
+
+        <tr>
+          <td class="hour">
+            Ora 5
+            <span class="time">17:00–17:50</span>
+          </td>
+
+          <td>Consiliere și orientare</td>
+          <td>Educație fizică și sport</td>
+          <td>Fizică</td>
+          <td>Limba engleză</td>
+          <td>Limba latină</td>
+        </tr>
+
+        <tr>
+          <td class="hour">
+            Ora 6
+            <span class="time">18:00–18:50</span>
+          </td>
 
-  <section class="section">
+          <td>—</td>
+          <td>Educație muzicală</td>
+          <td>—</td>
+          <td>Religie</td>
+          <td>—</td>
+        </tr>
 
-    <div class="schedule-card">
+      </tbody>
 
-      <div class="schedule-header">
+    </table>
 
-        <h2>📅 Orar</h2>
+  </div>
 
-        <div class="class-badge">
-          CLASA 7D
-        </div>
 
-      </div>
+  <h2>
+    📚 Materiale și proiecte
+  </h2>
 
+  <div class="materials">
 
-      <div class="table-wrapper">
+    <p>
+      Momentan nu există materiale publicate.
+    </p>
 
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>ZI</th>
-
-              <th>
-                Ora 0
-                <span class="time">12:00 – 12:50</span>
-              </th>
-
-              <th>
-                Ora 1
-                <span class="time">13:00 – 13:50</span>
-              </th>
-
-              <th>
-                Ora 2
-                <span class="time">14:00 – 14:50</span>
-              </th>
-
-              <th>
-                Ora 3
-                <span class="time">15:00 – 15:50</span>
-              </th>
-
-              <th>
-                Ora 4
-                <span class="time">16:00 – 16:50</span>
-              </th>
-
-              <th>
-                Ora 5
-                <span class="time">17:00 – 17:50</span>
-              </th>
-
-              <th>
-                Ora 6
-                <span class="time">18:00 – 18:50</span>
-              </th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody>
-
-            <!-- LUNI -->
-
-            <tr>
-
-              <td class="day">LUNI</td>
-
-              <td class="subject">
-                <div class="subject-name">Istorie</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Limba engleză</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Chimie</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Matematică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Limba română</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Consiliere și orientare</div>
-              </td>
-
-              <td class="empty-cell">—</td>
-
-            </tr>
-
-
-            <!-- MARTI -->
-
-            <tr>
-
-              <td class="day">MARȚI</td>
-
-              <td class="subject">
-                <div class="subject-name">Limba franceză</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Geografie</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Informatică și TIC</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Educație tehnologică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Biologie</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Educație fizică și sport</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Educație muzicală</div>
-              </td>
-
-            </tr>
-
-
-            <!-- MIERCURI -->
-
-            <tr>
-
-              <td class="day">MIERCURI</td>
-
-              <td class="subject">
-                <div class="subject-name">Limba română</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Matematică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Educație pentru cetățenie democratică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Limba franceză</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Educație fizică și sport</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Fizică</div>
-              </td>
-
-              <td class="empty-cell">—</td>
-
-            </tr>
-
-
-            <!-- JOI -->
-
-            <tr>
-
-              <td class="day">JOI</td>
-
-              <td class="empty-cell">—</td>
-
-              <td class="subject">
-                <div class="subject-name">Matematică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">CDS Ed. tehnologică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Limba română</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Chimie</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Limba engleză</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Religie</div>
-              </td>
-
-            </tr>
-
-
-            <!-- VINERI -->
-
-            <tr>
-
-              <td class="day">VINERI</td>
-
-              <td class="subject">
-                <div class="subject-name">Biologie</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Matematică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Limba română</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Fizică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Educație plastică</div>
-              </td>
-
-              <td class="subject">
-                <div class="subject-name">Limba latină</div>
-              </td>
-
-              <td class="empty-cell">—</td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-
-      <div class="mobile-tip">
-        ← Glisează tabelul pentru a vedea tot orarul →
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- MATERIALE -->
-
-  <section class="section">
-
-    <h2 class="section-title">
-      📚 Materiale și proiecte
-    </h2>
-
-
-    <div class="materials">
-
-      <div class="materials-icon">
-        📂
-      </div>
-
-      <h3>
-        Momentan nu există materiale.
-      </h3>
-
-      <p>
-        Proiectele și materialele pentru școală vor apărea aici.
-      </p>
-
-    </div>
-
-  </section>
+  </div>
 
 </main>
 
 
 <footer>
-
-  <div>
-    © 2026 VladLab
-  </div>
-
-  <div>
-    Școală • 7D
-  </div>
-
+  © 2026 VladLab • Școală • 7D
 </footer>
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
+  };
+
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+
+  const loggedOut =
+    document.getElementById("loggedOut");
+
+  const loggedIn =
+    document.getElementById("loggedIn");
+
+  const logoutButton =
+    document.getElementById("logoutButton");
+
+
+  onAuthStateChanged(auth, (user) => {
+
+    if (user && user.uid === ADMIN_UID) {
+
+      loggedOut.style.display = "none";
+      loggedIn.style.display = "flex";
+
+    } else {
+
+      loggedIn.style.display = "none";
+      loggedOut.style.display = "block";
+
+    }
+
+  });
+
+
+  logoutButton.addEventListener(
+    "click",
+
+    async () => {
+
+      await signOut(auth);
+
+      window.location.reload();
+
+    }
+
+  );
+
+</script>
 
 </body>
 </html>
