@@ -11,156 +11,196 @@
 
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #080b12;
-      color: white;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background: #080b12;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     nav {
       height: 72px;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.94);
+      backdrop-filter: blur(15px);
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 8%;
-      border-bottom: 1px solid #1d2330;
-      background: rgba(8, 11, 18, 0.92);
+
+      padding: 0 6%;
+
       position: sticky;
       top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
+      z-index: 100;
     }
 
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
-      text-decoration: none;
+      gap: 12px;
+
       color: white;
+      text-decoration: none;
+
+      font-size: 20px;
+      font-weight: 700;
     }
 
-    .logo img {
+    .brand img {
       width: 44px;
       height: 44px;
       border-radius: 11px;
       object-fit: cover;
     }
 
-    .logo-text {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
-
-    .logo-text span {
-      color: #5b8cff;
-    }
-
-    .nav-links {
+    .account {
       display: flex;
-      gap: 25px;
+      align-items: center;
+      gap: 10px;
     }
 
-    .nav-links a {
-      color: #aeb7c7;
-      text-decoration: none;
+    #loggedOut,
+    #loggedIn {
+      display: none;
+    }
+
+    .login-button,
+    .user-button,
+    .logout-button {
+      border-radius: 10px;
+      padding: 9px 15px;
+
       font-size: 14px;
+      text-decoration: none;
+
+      cursor: pointer;
       transition: 0.2s;
     }
 
-    .nav-links a:hover,
-    .nav-links .active {
+    .login-button {
+      background: #5b8cff;
       color: white;
+      border: 1px solid #5b8cff;
+      font-weight: 700;
+    }
+
+    .login-button:hover {
+      background: #6c98ff;
+    }
+
+    .user-button {
+      background: transparent;
+      color: #cbd4e4;
+      border: 1px solid #293142;
+    }
+
+    .user-button:hover {
+      color: white;
+      border-color: #5b8cff;
+    }
+
+    .logout-button {
+      background: #161c27;
+      color: white;
+      border: 1px solid #293142;
+    }
+
+    .logout-button:hover {
+      border-color: #5b8cff;
+      background: #1a2230;
     }
 
     main {
-      flex: 1;
-      width: min(1100px, 90%);
+      max-width: 1150px;
       margin: auto;
-      padding: 80px 0;
+      padding: 70px 25px 90px;
+      min-height: calc(100vh - 150px);
     }
 
-    .back {
-      color: #71809a;
-      text-decoration: none;
-      font-size: 14px;
-    }
+    .badge {
+      display: inline-block;
 
-    .back:hover {
-      color: white;
+      background: rgba(91, 140, 255, 0.12);
+      color: #7ca2ff;
+
+      border: 1px solid rgba(91, 140, 255, 0.25);
+      border-radius: 100px;
+
+      padding: 7px 12px;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      margin-bottom: 18px;
     }
 
     h1 {
-      font-size: clamp(48px, 7vw, 72px);
-      letter-spacing: -3px;
-      margin-top: 25px;
+      font-size: clamp(38px, 6vw, 60px);
+      margin-bottom: 10px;
     }
 
-    h1 span {
-      color: #5b8cff;
+    .subtitle {
+      color: #8995a9;
+      line-height: 1.6;
+      margin-bottom: 45px;
     }
 
     .empty {
-      margin-top: 45px;
-      min-height: 250px;
-      border: 1px dashed #293243;
+      background: #0e131d;
+      border: 1px solid #202735;
       border-radius: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+
+      padding: 45px 30px;
+
       text-align: center;
-      padding: 30px;
     }
 
     .empty-icon {
-      font-size: 38px;
+      font-size: 42px;
       margin-bottom: 18px;
     }
 
     .empty h2 {
-      font-size: 19px;
-      margin-bottom: 8px;
+      font-size: 20px;
+      margin-bottom: 9px;
     }
 
     .empty p {
-      color: #657188;
+      color: #7f8a9e;
       font-size: 14px;
     }
 
     footer {
-      border-top: 1px solid #1d2330;
-      padding: 30px 8%;
-      color: #626d7f;
+      max-width: 1150px;
+      margin: auto;
+
+      padding: 30px 25px 45px;
+
+      border-top: 1px solid #171d28;
+
+      color: #596477;
       font-size: 13px;
-      display: flex;
-      justify-content: space-between;
     }
 
-    @media (max-width: 750px) {
+    @media (max-width: 700px) {
       nav {
-        padding: 0 5%;
-      }
-
-      .nav-links {
-        display: none;
+        padding: 0 18px;
       }
 
       main {
-        padding-top: 55px;
+        padding-top: 45px;
       }
 
-      footer {
-        flex-direction: column;
-        gap: 10px;
+      .login-button,
+      .user-button,
+      .logout-button {
+        padding: 8px 11px;
       }
     }
   </style>
@@ -170,46 +210,157 @@
 
 <nav>
 
-  <a href="/" class="logo">
+  <a href="/" class="brand">
     <img src="/logo.png" alt="VladLab">
-
-    <div class="logo-text">
-      Vlad<span>Lab</span>
-    </div>
+    VladLab
   </a>
 
-  <div class="nav-links">
-    <a href="/scoala/">Școală</a>
-    <a href="http://novasmp.space/">Minecraft</a>
-    <a href="/proiecte/" class="active">Proiecte</a>
-    <a href="/upload/">Upload</a>
-    <a href="/download/">Descărcări</a>
+  <div class="account">
+
+    <div id="loggedOut">
+
+      <a href="/login/" class="login-button">
+        Login
+      </a>
+
+    </div>
+
+    <div id="loggedIn" class="account">
+
+      <a href="/admin/" class="user-button">
+        Vlad
+      </a>
+
+      <button
+        id="logoutButton"
+        class="logout-button"
+        type="button"
+      >
+        Logout
+      </button>
+
+    </div>
+
   </div>
 
 </nav>
 
+
 <main>
 
-  <a href="/" class="back">← Înapoi la VladLab</a>
+  <div class="badge">
+    VLADLAB
+  </div>
 
-  <h1>💻 <span>Proiecte</span></h1>
+  <h1>
+    💻 Proiecte
+  </h1>
+
+  <p class="subtitle">
+    Proiecte și lucruri create în VladLab.
+  </p>
+
 
   <div class="empty">
 
-    <div class="empty-icon">🛠️</div>
+    <div class="empty-icon">
+      💻
+    </div>
 
-    <h2>Momentan nu există proiecte.</h2>
+    <h2>
+      Momentan nu există proiecte
+    </h2>
 
-    <p>Proiectele vor apărea aici.</p>
+    <p>
+      Proiectele publicate vor apărea aici.
+    </p>
 
   </div>
 
 </main>
 
+
 <footer>
-  <div>© 2026 VladLab</div>
-  <div>Proiecte</div>
+  © 2026 VladLab • Proiecte
 </footer>
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
+  };
+
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+
+  const loggedOut =
+    document.getElementById("loggedOut");
+
+  const loggedIn =
+    document.getElementById("loggedIn");
+
+  const logoutButton =
+    document.getElementById("logoutButton");
+
+
+  onAuthStateChanged(auth, (user) => {
+
+    if (user && user.uid === ADMIN_UID) {
+
+      loggedOut.style.display = "none";
+      loggedIn.style.display = "flex";
+
+    } else {
+
+      loggedIn.style.display = "none";
+      loggedOut.style.display = "block";
+
+    }
+
+  });
+
+
+  logoutButton.addEventListener(
+    "click",
+
+    async () => {
+
+      await signOut(auth);
+
+      window.location.reload();
+
+    }
+
+  );
+
+</script>
 
 </body>
 </html>
