@@ -187,9 +187,93 @@
       color: #5b8cff;
     }
 
-    .empty {
+
+    /* PROJECTS */
+
+    #projectsList {
       margin-top: 45px;
 
+      display: grid;
+
+      gap: 16px;
+    }
+
+    .project-card {
+      background: #0e131d;
+
+      border: 1px solid #202735;
+
+      border-radius: 18px;
+
+      padding: 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+
+      transition: 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: #303b50;
+
+      transform: translateY(-2px);
+    }
+
+    .project-info {
+      min-width: 0;
+    }
+
+    .project-title {
+      font-size: 18px;
+
+      font-weight: 700;
+
+      margin-bottom: 7px;
+    }
+
+    .project-description {
+      color: #7f899a;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+    .project-button {
+      flex-shrink: 0;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #5b8cff;
+
+      color: white;
+
+      text-decoration: none;
+
+      border-radius: 10px;
+
+      padding: 11px 17px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      transition: 0.2s;
+    }
+
+    .project-button:hover {
+      background: #6c98ff;
+    }
+
+
+    /* EMPTY */
+
+    .empty {
       min-height: 250px;
 
       border: 1px dashed #293243;
@@ -269,6 +353,16 @@
         padding: 8px 11px;
       }
 
+      .project-card {
+        flex-direction: column;
+
+        align-items: stretch;
+      }
+
+      .project-button {
+        width: 100%;
+      }
+
     }
 
   </style>
@@ -335,19 +429,23 @@
   </h1>
 
 
-  <div class="empty">
+  <div id="projectsList">
 
-    <div class="empty-icon">
-      🛠️
+    <div class="empty">
+
+      <div class="empty-icon">
+        ⏳
+      </div>
+
+      <h2>
+        Se încarcă...
+      </h2>
+
+      <p>
+        Se verifică proiectele disponibile.
+      </p>
+
     </div>
-
-    <h2>
-      Momentan nu există proiecte.
-    </h2>
-
-    <p>
-      Proiectele vor apărea aici.
-    </p>
 
   </div>
 
@@ -373,11 +471,21 @@
     initializeApp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
+
   import {
     getAuth,
     onAuthStateChanged,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    collection,
+    onSnapshot,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
   const firebaseConfig = {
@@ -413,8 +521,13 @@
   const app =
     initializeApp(firebaseConfig);
 
+
   const auth =
     getAuth(app);
+
+
+  const db =
+    getFirestore(app);
 
 
   const loggedOut =
@@ -426,20 +539,34 @@
   const logoutButton =
     document.getElementById("logoutButton");
 
+  const projectsList =
+    document.getElementById("projectsList");
+
+
+  /* =========================
+     LOGIN / LOGOUT
+  ========================= */
 
   onAuthStateChanged(auth, (user) => {
 
-    if (user && user.uid === ADMIN_UID) {
+    if (
+      user &&
+      user.uid === ADMIN_UID
+    ) {
 
-      loggedOut.style.display = "none";
+      loggedOut.style.display =
+        "none";
 
-      loggedIn.style.display = "flex";
+      loggedIn.style.display =
+        "flex";
 
     } else {
 
-      loggedIn.style.display = "none";
+      loggedIn.style.display =
+        "none";
 
-      loggedOut.style.display = "block";
+      loggedOut.style.display =
+        "block";
 
     }
 
@@ -454,6 +581,192 @@
       await signOut(auth);
 
       window.location.reload();
+
+    }
+
+  );
+
+
+  /* =========================
+     PROIECTE DIN FIRESTORE
+  ========================= */
+
+  const projectsQuery =
+    query(
+      collection(db, "projects"),
+      orderBy("createdAt", "desc")
+    );
+
+
+  onSnapshot(
+
+    projectsQuery,
+
+    (snapshot) => {
+
+      projectsList.innerHTML = "";
+
+
+      /* NICIUN PROIECT */
+
+      if (snapshot.empty) {
+
+        projectsList.innerHTML = `
+          <div class="empty">
+
+            <div class="empty-icon">
+              🛠️
+            </div>
+
+            <h2>
+              Momentan nu există proiecte.
+            </h2>
+
+            <p>
+              Proiectele vor apărea aici.
+            </p>
+
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      /* AFIȘARE PROIECTE */
+
+      snapshot.forEach((documentSnapshot) => {
+
+        const data =
+          documentSnapshot.data();
+
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "project-card";
+
+
+        const info =
+          document.createElement("div");
+
+        info.className =
+          "project-info";
+
+
+        const title =
+          document.createElement("div");
+
+        title.className =
+          "project-title";
+
+        title.textContent =
+          data.title || "Proiect";
+
+
+        info.appendChild(title);
+
+
+        if (data.description) {
+
+          const description =
+            document.createElement("div");
+
+          description.className =
+            "project-description";
+
+          description.textContent =
+            data.description;
+
+          info.appendChild(description);
+
+        }
+
+
+        const button =
+          document.createElement("a");
+
+        button.className =
+          "project-button";
+
+        button.textContent =
+          "Deschide";
+
+
+        /* VERIFICARE LINK */
+
+        try {
+
+          const projectUrl =
+            new URL(data.url);
+
+          if (
+            projectUrl.protocol === "https:" ||
+            projectUrl.protocol === "http:"
+          ) {
+
+            button.href =
+              projectUrl.href;
+
+            button.target =
+              "_blank";
+
+            button.rel =
+              "noopener noreferrer";
+
+          } else {
+
+            button.removeAttribute("href");
+
+            button.textContent =
+              "Link indisponibil";
+
+          }
+
+        } catch {
+
+          button.removeAttribute("href");
+
+          button.textContent =
+            "Link indisponibil";
+
+        }
+
+
+        card.appendChild(info);
+
+        card.appendChild(button);
+
+        projectsList.appendChild(card);
+
+      });
+
+    },
+
+
+    (error) => {
+
+      console.error(error);
+
+      projectsList.innerHTML = `
+        <div class="empty">
+
+          <div class="empty-icon">
+            ⚠️
+          </div>
+
+          <h2>
+            Nu am putut încărca proiectele.
+          </h2>
+
+          <p>
+            Încearcă din nou mai târziu.
+          </p>
+
+        </div>
+      `;
 
     }
 
