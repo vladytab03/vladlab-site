@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Site | VladLab Admin</title>
+  <link rel="icon" href="/logo.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #080b12;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    nav {
+      height: 72px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, .94);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+    }
+
+    .logo-text {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
+      color: #5b8cff;
+    }
+
+    .admin {
+      padding: 6px 10px;
+      border: 1px solid #293142;
+      border-radius: 8px;
+      color: #8d9ab0;
+      font-size: 12px;
+    }
+
+    main {
+      width: min(900px, 90%);
+      margin: auto;
+      padding: 55px 0 80px;
+    }
+
+    .back {
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+      margin-top: 25px;
+      font-size: 42px;
+      letter-spacing: -2px;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #7f899a;
+      line-height: 1.5;
+    }
+
+    .panel {
+      margin-top: 35px;
+      padding: 26px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 18px;
+    }
+
+    .panel h2 {
+      font-size: 20px;
+      margin-bottom: 22px;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #b9c2d1;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 13px 14px;
+      background: #090d15;
+      border: 1px solid #293243;
+      border-radius: 10px;
+      color: white;
+      font: inherit;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #5b8cff;
+      box-shadow: 0 0 0 3px rgba(91,140,255,.1);
+    }
+
+    .toggle-box {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      background: #090d15;
+      border: 1px solid #293243;
+      border-radius: 11px;
+    }
+
+    .toggle-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .toggle-description {
+      margin-top: 5px;
+      color: #71809a;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .switch {
+      position: relative;
+      width: 48px;
+      height: 27px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #293243;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 21px;
+      height: 21px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: .2s;
+    }
+
+    .switch input:checked + .slider {
+      background: #5b8cff;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(21px);
+    }
+
+    .save {
+      width: 100%;
+      margin-top: 8px;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: #5b8cff;
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .save:hover {
+      background: #6c98ff;
+    }
+
+    .save:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    #status {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    #status.success {
+      display: block;
+      color: #75e4a4;
+      background: rgba(67,211,126,.08);
+      border: 1px solid rgba(67,211,126,.2);
+    }
+
+    #status.error {
+      display: block;
+      color: #ff9292;
+      background: rgba(255,80,80,.08);
+      border: 1px solid rgba(255,80,80,.2);
+    }
+
+    .info {
+      margin-top: 25px;
+      padding: 18px;
+      background: rgba(91,140,255,.06);
+      border: 1px solid rgba(91,140,255,.18);
+      border-radius: 13px;
+      color: #91a7d0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 28px;
+      border-top: 1px solid #1d2330;
+      color: #626d7f;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      h1 {
+        font-size: 34px;
+      }
+
+      nav {
+        padding: 0 5%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+
+  <a href="/admin/" class="logo">
+    <img src="/logo.png" alt="VladLab">
+    <div class="logo-text">
+      Vlad<span>Lab</span>
+    </div>
+  </a>
+
+  <div class="admin">
+    ADMIN
+  </div>
+
+</nav>
+
+
+<main>
+
+  <a href="/admin/" class="back">
+    ← Înapoi la Admin Panel
+  </a>
+
+  <h1>⚙️ Site</h1>
+
+  <p class="subtitle">
+    Setări generale pentru VladLab.
+  </p>
+
+
+  <div class="panel">
+
+    <h2>Setări site</h2>
+
+    <form id="settingsForm">
+
+      <div class="field">
+
+        <label for="siteName">
+          Nume site
+        </label>
+
+        <input
+          id="siteName"
+          type="text"
+          value="VladLab"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="heroTitle">
+          Titlu pagina principală
+        </label>
+
+        <input
+          id="heroTitle"
+          type="text"
+          value="Totul într-un singur loc."
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <div class="toggle-box">
+
+          <div>
+            <div class="toggle-title">
+              Mod mentenanță
+            </div>
+
+            <div class="toggle-description">
+              Salvează dacă site-ul trebuie marcat ca fiind în mentenanță.
+            </div>
+          </div>
+
+          <label class="switch">
+            <input
+              type="checkbox"
+              id="maintenance"
+            >
+            <span class="slider"></span>
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="saveButton"
+        class="save"
+        type="submit"
+      >
+        Salvează setările
+      </button>
+
+    </form>
+
+
+    <div id="status"></div>
+
+  </div>
+
+
+  <div class="info">
+    Aceste setări sunt salvate în Firestore. Nu modificăm încă automat
+    pagina principală, ca să nu schimbăm designul actual până nu terminăm
+    conectarea tuturor paginilor.
+  </div>
+
+</main>
+
+
+<footer>
+  © 2026 VladLab · Admin Panel
+</footer>
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
+  };
+
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+  const db =
+    getFirestore(app);
+
+
+  const form =
+    document.getElementById("settingsForm");
+
+  const siteName =
+    document.getElementById("siteName");
+
+  const heroTitle =
+    document.getElementById("heroTitle");
+
+  const maintenance =
+    document.getElementById("maintenance");
+
+  const saveButton =
+    document.getElementById("saveButton");
+
+  const status =
+    document.getElementById("status");
+
+
+  const settingsRef =
+    doc(db, "settings", "site");
+
+
+  let ready = false;
+
+
+  /* =========================
+     VERIFICARE ADMIN
+  ========================= */
+
+  onAuthStateChanged(
+    auth,
+    async user => {
+
+      if (!user) {
+
+        location.href = "/login/";
+        return;
+
+      }
+
+
+      if (user.uid !== ADMIN_UID) {
+
+        location.href = "/";
+        return;
+
+      }
+
+
+      ready = true;
+
+      await loadSettings();
+
+    }
+  );
+
+
+  /* =========================
+     ÎNCARCĂ SETĂRILE
+  ========================= */
+
+  async function loadSettings() {
+
+    try {
+
+      const snapshot =
+        await getDoc(settingsRef);
+
+
+      if (!snapshot.exists()) {
+        return;
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      if (data.siteName) {
+        siteName.value =
+          data.siteName;
+      }
+
+
+      if (data.heroTitle) {
+        heroTitle.value =
+          data.heroTitle;
+      }
+
+
+      maintenance.checked =
+        data.maintenance === true;
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "Nu am putut încărca setările.",
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /* =========================
+     SALVEAZĂ
+  ========================= */
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      if (!ready) {
+        return;
+      }
+
+
+      saveButton.disabled =
+        true;
+
+      saveButton.textContent =
+        "Se salvează...";
+
+
+      try {
+
+        await setDoc(
+          settingsRef,
+          {
+            siteName:
+              siteName.value.trim(),
+
+            heroTitle:
+              heroTitle.value.trim(),
+
+            maintenance:
+              maintenance.checked,
+
+            updatedAt:
+              serverTimestamp()
+          },
+          {
+            merge: true
+          }
+        );
+
+
+        showStatus(
+          "Setările au fost salvate.",
+          "success"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        showStatus(
+          "Nu am putut salva setările.",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        saveButton.disabled =
+          false;
+
+        saveButton.textContent =
+          "Salvează setările";
+
+      }
+
+    }
+  );
+
+
+  function showStatus(text, type) {
+
+    status.className = type;
+
+    status.textContent = text;
+
+
+    setTimeout(() => {
+
+      status.className = "";
+
+      status.textContent = "";
+
+    }, 4000);
+
+  }
+
+</script>
+
+</body>
+</html>
