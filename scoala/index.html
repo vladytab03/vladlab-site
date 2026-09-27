@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,53 +12,62 @@
 
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      min-height: 100vh;
-      background: #080b12;
-      color: #ffffff;
       font-family: Arial, Helvetica, sans-serif;
+      background: #080b12;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
+
+    /* NAVBAR */
 
     nav {
       height: 72px;
-      border-bottom: 1px solid #1d2330;
-      background: rgba(8, 11, 18, 0.94);
-      backdrop-filter: blur(15px);
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      padding: 0 6%;
-
+      padding: 0 8%;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.92);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 10;
+      backdrop-filter: blur(12px);
     }
 
-    .brand {
+    .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
-
-      color: white;
+      gap: 11px;
       text-decoration: none;
-
-      font-size: 20px;
-      font-weight: 700;
+      color: white;
     }
 
-    .brand img {
+    .logo img {
       width: 44px;
       height: 44px;
       border-radius: 11px;
       object-fit: cover;
     }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
+      color: #5b8cff;
+    }
+
+    /* LOGIN / USER */
 
     .account {
       display: flex;
@@ -75,12 +85,10 @@
     .logout-button {
       border-radius: 10px;
       padding: 9px 15px;
-
       font-size: 14px;
       text-decoration: none;
-
       cursor: pointer;
-      transition: .2s;
+      transition: 0.2s;
     }
 
     .login-button {
@@ -116,136 +124,236 @@
       background: #1a2230;
     }
 
+    /* MAIN */
+
     main {
-      max-width: 1250px;
+      flex: 1;
+      width: min(1250px, 92%);
       margin: auto;
-      padding: 60px 25px 80px;
+      padding: 70px 0 100px;
     }
 
-    .badge {
-      display: inline-block;
+    .back {
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-      background: rgba(91, 140, 255, .12);
-      color: #7ca2ff;
-
-      border: 1px solid rgba(91, 140, 255, .25);
-      border-radius: 100px;
-
-      padding: 7px 12px;
-
-      font-size: 12px;
-      font-weight: 700;
-
-      margin-bottom: 18px;
+    .back:hover {
+      color: white;
     }
 
     h1 {
-      font-size: clamp(38px, 6vw, 60px);
-      margin-bottom: 10px;
+      font-size: clamp(48px, 7vw, 72px);
+      letter-spacing: -3px;
+      margin-top: 25px;
+    }
+
+    h1 span {
+      color: #5b8cff;
     }
 
     .subtitle {
-      color: #8995a9;
-      margin-bottom: 45px;
+      margin-top: 10px;
+      color: #7f899a;
+      font-size: 15px;
     }
 
-    h2 {
+    /* SECTION */
+
+    .section {
+      margin-top: 55px;
+    }
+
+    .section-title {
       font-size: 24px;
       margin-bottom: 18px;
     }
 
-    .schedule-container {
-      width: 100%;
-      overflow-x: auto;
+    /* ORAR */
 
+    .schedule-card {
       background: #0e131d;
       border: 1px solid #202735;
-      border-radius: 18px;
+      border-radius: 20px;
+      padding: 22px;
+      overflow: hidden;
+    }
 
-      margin-bottom: 50px;
+    .schedule-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 15px;
+    }
+
+    .schedule-header h2 {
+      font-size: 20px;
+    }
+
+    .class-badge {
+      background: #17233c;
+      color: #7da3ff;
+      border: 1px solid #2a426d;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 13px;
     }
 
     table {
       width: 100%;
-      min-width: 1000px;
-      border-collapse: collapse;
+      min-width: 1050px;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
     }
 
     th,
     td {
-      padding: 15px 13px;
+      border-right: 1px solid #252e3d;
+      border-bottom: 1px solid #252e3d;
+      padding: 15px 12px;
       text-align: center;
-      border-bottom: 1px solid #202735;
-      border-right: 1px solid #202735;
+    }
+
+    th:first-child,
+    td:first-child {
+      border-left: 1px solid #252e3d;
+    }
+
+    thead th {
+      border-top: 1px solid #252e3d;
+      background: #111824;
+      color: #8d9aaf;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    thead th:first-child {
+      border-top-left-radius: 10px;
+    }
+
+    thead th:last-child {
+      border-top-right-radius: 10px;
+    }
+
+    .day {
+      background: #111824;
+      color: #8eb0ff;
       font-size: 13px;
-    }
-
-    th {
-      background: #111722;
-      color: #dce4f2;
       font-weight: 700;
+      text-align: left;
+      min-width: 100px;
     }
 
-    td {
-      color: #aeb8ca;
+    .subject {
+      background: #0b1018;
+      min-width: 125px;
+      height: 82px;
+      transition: 0.2s;
     }
 
-    th:last-child,
-    td:last-child {
-      border-right: none;
+    .subject:hover {
+      background: #121a28;
     }
 
-    tr:last-child td {
-      border-bottom: none;
+    .subject-name {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
     }
 
-    .hour {
-      color: #ffffff;
-      font-weight: 700;
-      white-space: nowrap;
+    .empty-cell {
+      background: #090d14;
+      color: #343d4d;
     }
 
     .time {
       display: block;
-      color: #68758a;
-      font-size: 11px;
-      font-weight: 400;
+      color: #657188;
+      font-size: 10px;
       margin-top: 4px;
+      font-weight: normal;
     }
 
-    .materials {
-      background: #0e131d;
-      border: 1px solid #202735;
-      border-radius: 18px;
+    .mobile-tip {
+      display: none;
+      color: #657188;
+      font-size: 12px;
+      margin-top: 14px;
+      text-align: center;
+    }
 
-      padding: 28px;
+    /* MATERIALE */
+
+    .materials {
+      border: 1px dashed #293243;
+      border-radius: 18px;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #657188;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .materials-icon {
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+
+    .materials h3 {
+      font-size: 18px;
+      margin-bottom: 7px;
     }
 
     .materials p {
-      color: #7f8a9e;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    footer {
-      max-width: 1250px;
-      margin: auto;
-
-      padding: 30px 25px 45px;
-
-      border-top: 1px solid #171d28;
-
-      color: #596477;
+      color: #657188;
       font-size: 13px;
     }
 
-    @media (max-width: 700px) {
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid #1d2330;
+      padding: 30px 8%;
+      color: #626d7f;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 750px) {
       nav {
-        padding: 0 18px;
+        padding: 0 5%;
       }
 
       main {
-        padding-top: 40px;
+        padding-top: 50px;
+      }
+
+      .schedule-card {
+        padding: 16px;
+      }
+
+      .mobile-tip {
+        display: block;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
       }
 
       .login-button,
@@ -259,20 +367,31 @@
 
 <body>
 
+<!-- NAVBAR -->
+
 <nav>
 
-  <a href="/" class="brand">
+  <a href="/" class="logo">
+
     <img src="/logo.png" alt="VladLab">
-    VladLab
+
+    <div class="logo-text">
+      Vlad<span>Lab</span>
+    </div>
+
   </a>
+
 
   <div class="account">
 
     <div id="loggedOut">
+
       <a href="/login/" class="login-button">
         Login
       </a>
+
     </div>
+
 
     <div id="loggedIn" class="account">
 
@@ -294,157 +413,251 @@
 
 </nav>
 
+
 <main>
 
-  <div class="badge">
-    CLASA 7D
-  </div>
+  <a href="/" class="back">
+    ← Înapoi la VladLab
+  </a>
 
   <h1>
-    🎓 Școală
+    🎓 <span>Școală</span>
   </h1>
 
   <p class="subtitle">
-    Orar, materiale și proiecte.
+    Orar, materiale și proiecte școlare.
   </p>
 
 
-  <h2>
-    Orar
-  </h2>
+  <!-- ORAR -->
 
-  <div class="schedule-container">
+  <section class="section">
 
-    <table>
+    <div class="schedule-card">
 
-      <thead>
-        <tr>
-          <th>Ora</th>
-          <th>Luni</th>
-          <th>Marți</th>
-          <th>Miercuri</th>
-          <th>Joi</th>
-          <th>Vineri</th>
-        </tr>
-      </thead>
+      <div class="schedule-header">
 
-      <tbody>
+        <h2>📅 Orar</h2>
 
-        <tr>
-          <td class="hour">
-            Ora 0
-            <span class="time">12:00–12:50</span>
-          </td>
+        <div class="class-badge">
+          CLASA 7D
+        </div>
 
-          <td>Istorie</td>
-          <td>Limba franceză</td>
-          <td>Limba română</td>
-          <td>—</td>
-          <td>Biologie</td>
-        </tr>
-
-        <tr>
-          <td class="hour">
-            Ora 1
-            <span class="time">13:00–13:50</span>
-          </td>
-
-          <td>Limba engleză</td>
-          <td>Geografie</td>
-          <td>Matematică</td>
-          <td>Matematică</td>
-          <td>Matematică</td>
-        </tr>
-
-        <tr>
-          <td class="hour">
-            Ora 2
-            <span class="time">14:00–14:50</span>
-          </td>
-
-          <td>Chimie</td>
-          <td>Informatică și TIC</td>
-          <td>Educație pentru cetățenie democratică</td>
-          <td>CDS Ed. tehnologică</td>
-          <td>Limba română</td>
-        </tr>
-
-        <tr>
-          <td class="hour">
-            Ora 3
-            <span class="time">15:00–15:50</span>
-          </td>
-
-          <td>Matematică</td>
-          <td>Educație tehnologică</td>
-          <td>Limba franceză</td>
-          <td>Limba română</td>
-          <td>Fizică</td>
-        </tr>
-
-        <tr>
-          <td class="hour">
-            Ora 4
-            <span class="time">16:00–16:50</span>
-          </td>
-
-          <td>Limba română</td>
-          <td>Biologie</td>
-          <td>Educație fizică și sport</td>
-          <td>Chimie</td>
-          <td>Educație plastică</td>
-        </tr>
-
-        <tr>
-          <td class="hour">
-            Ora 5
-            <span class="time">17:00–17:50</span>
-          </td>
-
-          <td>Consiliere și orientare</td>
-          <td>Educație fizică și sport</td>
-          <td>Fizică</td>
-          <td>Limba engleză</td>
-          <td>Limba latină</td>
-        </tr>
-
-        <tr>
-          <td class="hour">
-            Ora 6
-            <span class="time">18:00–18:50</span>
-          </td>
-
-          <td>—</td>
-          <td>Educație muzicală</td>
-          <td>—</td>
-          <td>Religie</td>
-          <td>—</td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
+      </div>
 
 
-  <h2>
-    📚 Materiale și proiecte
-  </h2>
+      <div class="table-wrapper">
 
-  <div class="materials">
+        <table>
 
-    <p>
-      Momentan nu există materiale publicate.
-    </p>
+          <thead>
 
-  </div>
+            <tr>
+
+              <th>ZI</th>
+
+              <th>
+                Ora 0
+                <span class="time">12:00 – 12:50</span>
+              </th>
+
+              <th>
+                Ora 1
+                <span class="time">13:00 – 13:50</span>
+              </th>
+
+              <th>
+                Ora 2
+                <span class="time">14:00 – 14:50</span>
+              </th>
+
+              <th>
+                Ora 3
+                <span class="time">15:00 – 15:50</span>
+              </th>
+
+              <th>
+                Ora 4
+                <span class="time">16:00 – 16:50</span>
+              </th>
+
+              <th>
+                Ora 5
+                <span class="time">17:00 – 17:50</span>
+              </th>
+
+              <th>
+                Ora 6
+                <span class="time">18:00 – 18:50</span>
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr>
+
+              <td class="day">LUNI</td>
+
+              <td class="subject"><div class="subject-name">Istorie</div></td>
+
+              <td class="subject"><div class="subject-name">Limba engleză</div></td>
+
+              <td class="subject"><div class="subject-name">Chimie</div></td>
+
+              <td class="subject"><div class="subject-name">Matematică</div></td>
+
+              <td class="subject"><div class="subject-name">Limba română</div></td>
+
+              <td class="subject"><div class="subject-name">Consiliere și orientare</div></td>
+
+              <td class="empty-cell">—</td>
+
+            </tr>
+
+
+            <tr>
+
+              <td class="day">MARȚI</td>
+
+              <td class="subject"><div class="subject-name">Limba franceză</div></td>
+
+              <td class="subject"><div class="subject-name">Geografie</div></td>
+
+              <td class="subject"><div class="subject-name">Informatică și TIC</div></td>
+
+              <td class="subject"><div class="subject-name">Educație tehnologică</div></td>
+
+              <td class="subject"><div class="subject-name">Biologie</div></td>
+
+              <td class="subject"><div class="subject-name">Educație fizică și sport</div></td>
+
+              <td class="subject"><div class="subject-name">Educație muzicală</div></td>
+
+            </tr>
+
+
+            <tr>
+
+              <td class="day">MIERCURI</td>
+
+              <td class="subject"><div class="subject-name">Limba română</div></td>
+
+              <td class="subject"><div class="subject-name">Matematică</div></td>
+
+              <td class="subject"><div class="subject-name">Educație pentru cetățenie democratică</div></td>
+
+              <td class="subject"><div class="subject-name">Limba franceză</div></td>
+
+              <td class="subject"><div class="subject-name">Educație fizică și sport</div></td>
+
+              <td class="subject"><div class="subject-name">Fizică</div></td>
+
+              <td class="empty-cell">—</td>
+
+            </tr>
+
+
+            <tr>
+
+              <td class="day">JOI</td>
+
+              <td class="empty-cell">—</td>
+
+              <td class="subject"><div class="subject-name">Matematică</div></td>
+
+              <td class="subject"><div class="subject-name">CDS Ed. tehnologică</div></td>
+
+              <td class="subject"><div class="subject-name">Limba română</div></td>
+
+              <td class="subject"><div class="subject-name">Chimie</div></td>
+
+              <td class="subject"><div class="subject-name">Limba engleză</div></td>
+
+              <td class="subject"><div class="subject-name">Religie</div></td>
+
+            </tr>
+
+
+            <tr>
+
+              <td class="day">VINERI</td>
+
+              <td class="subject"><div class="subject-name">Biologie</div></td>
+
+              <td class="subject"><div class="subject-name">Matematică</div></td>
+
+              <td class="subject"><div class="subject-name">Limba română</div></td>
+
+              <td class="subject"><div class="subject-name">Fizică</div></td>
+
+              <td class="subject"><div class="subject-name">Educație plastică</div></td>
+
+              <td class="subject"><div class="subject-name">Limba latină</div></td>
+
+              <td class="empty-cell">—</td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="mobile-tip">
+        ← Glisează tabelul pentru a vedea tot orarul →
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- MATERIALE -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      📚 Materiale și proiecte
+    </h2>
+
+
+    <div class="materials">
+
+      <div class="materials-icon">
+        📂
+      </div>
+
+      <h3>
+        Momentan nu există materiale.
+      </h3>
+
+      <p>
+        Proiectele și materialele pentru școală vor apărea aici.
+      </p>
+
+    </div>
+
+  </section>
 
 </main>
 
 
 <footer>
-  © 2026 VladLab • Școală • 7D
+
+  <div>
+    © 2026 VladLab
+  </div>
+
+  <div>
+    Școală • 7D
+  </div>
+
 </footer>
 
 
