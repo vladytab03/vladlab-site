@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Panel | VladLab</title>
+
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #080b12;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    nav {
+      height: 72px;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.94);
+      backdrop-filter: blur(15px);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 6%;
+
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: white;
+      text-decoration: none;
+
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .brand img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      object-fit: cover;
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-name {
+      color: #aeb8ca;
+      font-size: 14px;
+    }
+
+    .logout {
+      background: #161c27;
+      color: white;
+
+      border: 1px solid #293142;
+      border-radius: 10px;
+
+      padding: 9px 14px;
+
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .logout:hover {
+      border-color: #5b8cff;
+      background: #1a2230;
+    }
+
+    #loading {
+      position: fixed;
+      inset: 0;
+
+      background: #080b12;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 9999;
+
+      color: #9aa6ba;
+      font-size: 15px;
+    }
+
+    main {
+      max-width: 1150px;
+      margin: auto;
+      padding: 60px 25px 80px;
+    }
+
+    .top {
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-block;
+
+      background: rgba(91, 140, 255, .12);
+      color: #7ca2ff;
+
+      border: 1px solid rgba(91, 140, 255, .25);
+      border-radius: 100px;
+
+      padding: 7px 12px;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      margin-bottom: 17px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      margin-bottom: 10px;
+    }
+
+    .description {
+      color: #8995a9;
+      line-height: 1.6;
+      max-width: 650px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 18px;
+
+      padding: 25px;
+
+      text-decoration: none;
+      color: white;
+
+      transition: .2s;
+
+      min-height: 150px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: #34415a;
+      background: #111722;
+    }
+
+    .icon {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 7px;
+    }
+
+    .card p {
+      color: #7f8a9e;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .card-arrow {
+      margin-top: 18px;
+      color: #5b8cff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .info {
+      margin-top: 35px;
+
+      background: #0b1018;
+      border: 1px solid #1b2230;
+      border-radius: 15px;
+
+      padding: 18px 20px;
+
+      color: #7f8a9e;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 0 18px;
+      }
+
+      .admin-name {
+        display: none;
+      }
+
+      main {
+        padding-top: 40px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="loading">
+  Se verifică autentificarea...
+</div>
+
+<nav>
+
+  <a href="/" class="brand">
+    <img src="/logo.png" alt="VladLab">
+    VladLab
+  </a>
+
+  <div class="account">
+
+    <span class="admin-name">
+      👑 Vlad
+    </span>
+
+    <button
+      class="logout"
+      id="logoutButton"
+    >
+      Logout
+    </button>
+
+  </div>
+
+</nav>
+
+<main>
+
+  <section class="top">
+
+    <div class="badge">
+      ADMINISTRATOR
+    </div>
+
+    <h1>
+      Admin Panel
+    </h1>
+
+    <p class="description">
+      Administrează conținutul VladLab direct din site.
+    </p>
+
+  </section>
+
+
+  <section class="grid">
+
+    <a class="card" href="/admin/downloads/">
+
+      <div>
+
+        <div class="icon">
+          📥
+        </div>
+
+        <h2>
+          Descărcări
+        </h2>
+
+        <p>
+          Adaugă, modifică și șterge fișierele
+          disponibile pe pagina Descărcări.
+        </p>
+
+      </div>
+
+      <div class="card-arrow">
+        Gestionează →
+      </div>
+
+    </a>
+
+
+    <a class="card" href="/admin/scoala/">
+
+      <div>
+
+        <div class="icon">
+          🎓
+        </div>
+
+        <h2>
+          Școală
+        </h2>
+
+        <p>
+          Gestionează materialele, proiectele
+          și conținutul secțiunii Școală.
+        </p>
+
+      </div>
+
+      <div class="card-arrow">
+        Gestionează →
+      </div>
+
+    </a>
+
+
+    <a class="card" href="/admin/proiecte/">
+
+      <div>
+
+        <div class="icon">
+          💻
+        </div>
+
+        <h2>
+          Proiecte
+        </h2>
+
+        <p>
+          Creează și modifică proiectele
+          afișate pe VladLab.
+        </p>
+
+      </div>
+
+      <div class="card-arrow">
+        Gestionează →
+      </div>
+
+    </a>
+
+
+    <a class="card" href="/admin/uploads/">
+
+      <div>
+
+        <div class="icon">
+          📤
+        </div>
+
+        <h2>
+          Fișiere primite
+        </h2>
+
+        <p>
+          Vezi fișierele și mesajele
+          trimise prin pagina de Upload.
+        </p>
+
+      </div>
+
+      <div class="card-arrow">
+        Vezi fișierele →
+      </div>
+
+    </a>
+
+
+    <a class="card" href="/admin/site/">
+
+      <div>
+
+        <div class="icon">
+          ⚙️
+        </div>
+
+        <h2>
+          Site
+        </h2>
+
+        <p>
+          Setări și conținut general
+          pentru VladLab.
+        </p>
+
+      </div>
+
+      <div class="card-arrow">
+        Setări →
+      </div>
+
+    </a>
+
+
+    <a class="card" href="/">
+
+      <div>
+
+        <div class="icon">
+          🌐
+        </div>
+
+        <h2>
+          Vezi site-ul
+        </h2>
+
+        <p>
+          Deschide pagina publică VladLab.
+        </p>
+
+      </div>
+
+      <div class="card-arrow">
+        Deschide →
+      </div>
+
+    </a>
+
+  </section>
+
+
+  <div class="info">
+
+    🔐 Această pagină verifică autentificarea
+    Firebase și UID-ul contului de administrator.
+
+  </div>
+
+</main>
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from
+  "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from
+  "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+
+    apiKey:
+      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+
+    authDomain:
+      "vladlab-11887.firebaseapp.com",
+
+    projectId:
+      "vladlab-11887",
+
+    storageBucket:
+      "vladlab-11887.firebasestorage.app",
+
+    messagingSenderId:
+      "741561223788",
+
+    appId:
+      "1:741561223788:web:88ad3e62db87e32551a649",
+
+    measurementId:
+      "G-9XN16BVYRN"
+
+  };
+
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+
+  const auth =
+    getAuth(app);
+
+
+  const loading =
+    document.getElementById("loading");
+
+
+  onAuthStateChanged(
+    auth,
+
+    (user) => {
+
+      if (!user) {
+
+        window.location.replace(
+          "/login/"
+        );
+
+        return;
+
+      }
+
+
+      if (user.uid !== ADMIN_UID) {
+
+        signOut(auth).then(() => {
+
+          window.location.replace(
+            "/login/"
+          );
+
+        });
+
+        return;
+
+      }
+
+
+      loading.style.display =
+        "none";
+
+    }
+
+  );
+
+
+  document
+    .getElementById("logoutButton")
+    .addEventListener(
+      "click",
+
+      async () => {
+
+        await signOut(auth);
+
+        window.location.replace(
+          "/login/"
+        );
+
+      }
+
+    );
+
+</script>
+
+</body>
+</html>
