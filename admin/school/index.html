@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Școală | VladLab Admin</title>
+
+  <link rel="icon" href="/logo.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #080b12;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    nav {
+      height: 72px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, .94);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+    }
+
+    .logo-text {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
+      color: #5b8cff;
+    }
+
+    .admin {
+      padding: 6px 10px;
+      border: 1px solid #293142;
+      border-radius: 8px;
+      color: #8d9ab0;
+      font-size: 12px;
+    }
+
+    main {
+      width: min(1000px, 90%);
+      margin: auto;
+      padding: 55px 0 80px;
+    }
+
+    .back {
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: #fff;
+    }
+
+    h1 {
+      margin-top: 25px;
+      font-size: 42px;
+      letter-spacing: -2px;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #7f899a;
+      line-height: 1.5;
+    }
+
+    .panel {
+      margin-top: 35px;
+      padding: 26px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 18px;
+    }
+
+    .panel h2 {
+      margin-bottom: 22px;
+      font-size: 20px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #b9c2d1;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 13px 14px;
+      background: #090d15;
+      border: 1px solid #293243;
+      border-radius: 10px;
+      color: #fff;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #5b8cff;
+      box-shadow: 0 0 0 3px rgba(91,140,255,.1);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .primary {
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 10px;
+      background: #5b8cff;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary:hover {
+      background: #6c98ff;
+    }
+
+    .primary:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .section-title {
+      margin: 45px 0 18px;
+      font-size: 21px;
+    }
+
+    #materials {
+      display: grid;
+      gap: 13px;
+    }
+
+    .material {
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 14px;
+    }
+
+    .material-info {
+      min-width: 0;
+    }
+
+    .material-title {
+      margin-bottom: 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .material-description {
+      margin-bottom: 7px;
+      color: #7f899a;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .material-link {
+      display: block;
+      max-width: 650px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #5b8cff;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .delete {
+      flex-shrink: 0;
+      padding: 9px 13px;
+      background: rgba(255,77,77,.08);
+      border: 1px solid rgba(255,77,77,.22);
+      border-radius: 9px;
+      color: #ff8b8b;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .empty {
+      padding: 40px 20px;
+      border: 1px dashed #293243;
+      border-radius: 14px;
+      color: #657188;
+      text-align: center;
+    }
+
+    #status {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    #status.ok {
+      display: block;
+      color: #75e4a4;
+      background: rgba(67,211,126,.08);
+      border: 1px solid rgba(67,211,126,.2);
+    }
+
+    #status.error {
+      display: block;
+      color: #ff9292;
+      background: rgba(255,80,80,.08);
+      border: 1px solid rgba(255,80,80,.2);
+    }
+
+    footer {
+      padding: 28px;
+      border-top: 1px solid #1d2330;
+      color: #626d7f;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .material {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .delete {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <a href="/admin/" class="logo">
+    <img src="/logo.png" alt="VladLab">
+    <div class="logo-text">Vlad<span>Lab</span></div>
+  </a>
+
+  <div class="admin">ADMIN</div>
+</nav>
+
+<main>
+
+  <a class="back" href="/admin/">
+    ← Înapoi la Admin Panel
+  </a>
+
+  <h1>🎓 Școală</h1>
+
+  <p class="subtitle">
+    Gestionează materialele care vor putea fi afișate pe pagina Școală.
+  </p>
+
+
+  <div class="panel">
+
+    <h2>Adaugă material</h2>
+
+    <form id="form">
+
+      <div class="field">
+        <label for="title">Titlu</label>
+
+        <input
+          id="title"
+          type="text"
+          placeholder="Ex: Fișă matematică"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="description">Descriere</label>
+
+        <textarea
+          id="description"
+          placeholder="Descriere opțională..."
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="url">Link</label>
+
+        <input
+          id="url"
+          type="url"
+          placeholder="https://..."
+          required
+        >
+      </div>
+
+      <button
+        id="addButton"
+        class="primary"
+        type="submit"
+      >
+        + Adaugă material
+      </button>
+
+    </form>
+
+    <div id="status"></div>
+
+  </div>
+
+
+  <h2 class="section-title">
+    Materiale
+  </h2>
+
+  <div id="materials">
+    <div class="empty">Se încarcă...</div>
+  </div>
+
+</main>
+
+
+<footer>
+  © 2026 VladLab · Admin Panel
+</footer>
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    deleteDoc,
+    doc,
+    onSnapshot,
+    serverTimestamp,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
+  };
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+
+  const form = document.getElementById("form");
+  const addButton = document.getElementById("addButton");
+  const materials = document.getElementById("materials");
+  const status = document.getElementById("status");
+
+  let ready = false;
+
+
+  /* VERIFICARE ADMIN */
+
+  onAuthStateChanged(auth, user => {
+
+    if (!user) {
+      location.href = "/login/";
+      return;
+    }
+
+    if (user.uid !== ADMIN_UID) {
+      location.href = "/";
+      return;
+    }
+
+    ready = true;
+    loadMaterials();
+
+  });
+
+
+  /* ADAUGĂ */
+
+  form.addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+    if (!ready) return;
+
+
+    const title =
+      document.getElementById("title").value.trim();
+
+    const description =
+      document.getElementById("description").value.trim();
+
+    const url =
+      document.getElementById("url").value.trim();
+
+
+    if (!title || !url) return;
+
+
+    addButton.disabled = true;
+    addButton.textContent = "Se adaugă...";
+
+
+    try {
+
+      await addDoc(
+        collection(db, "schoolMaterials"),
+        {
+          title,
+          description,
+          url,
+          createdAt: serverTimestamp()
+        }
+      );
+
+      form.reset();
+
+      showStatus(
+        "Materialul a fost adăugat.",
+        "ok"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "Nu am putut adăuga materialul.",
+        "error"
+      );
+
+    } finally {
+
+      addButton.disabled = false;
+      addButton.textContent = "+ Adaugă material";
+
+    }
+
+  });
+
+
+  /* ÎNCARCĂ LISTA */
+
+  function loadMaterials() {
+
+    const q = query(
+      collection(db, "schoolMaterials"),
+      orderBy("createdAt", "desc")
+    );
+
+
+    onSnapshot(q, snapshot => {
+
+      materials.innerHTML = "";
+
+
+      if (snapshot.empty) {
+
+        materials.innerHTML =
+          '<div class="empty">Momentan nu există materiale adăugate din Admin.</div>';
+
+        return;
+      }
+
+
+      snapshot.forEach(item => {
+
+        const data = item.data();
+
+
+        const card =
+          document.createElement("div");
+
+        card.className = "material";
+
+
+        const info =
+          document.createElement("div");
+
+        info.className = "material-info";
+
+
+        const title =
+          document.createElement("div");
+
+        title.className = "material-title";
+        title.textContent =
+          data.title || "Fără titlu";
+
+
+        const description =
+          document.createElement("div");
+
+        description.className =
+          "material-description";
+
+        description.textContent =
+          data.description || "";
+
+
+        const link =
+          document.createElement("a");
+
+        link.className = "material-link";
+        link.href = data.url || "#";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = data.url || "";
+
+
+        info.appendChild(title);
+
+        if (data.description) {
+          info.appendChild(description);
+        }
+
+        info.appendChild(link);
+
+
+        const remove =
+          document.createElement("button");
+
+        remove.className = "delete";
+        remove.type = "button";
+        remove.textContent = "Șterge";
+
+
+        remove.onclick = async () => {
+
+          if (
+            !confirm(
+              `Ștergi „${data.title || "materialul"}”?`
+            )
+          ) {
+            return;
+          }
+
+
+          remove.disabled = true;
+          remove.textContent = "Se șterge...";
+
+
+          try {
+
+            await deleteDoc(
+              doc(
+                db,
+                "schoolMaterials",
+                item.id
+              )
+            );
+
+          } catch (error) {
+
+            console.error(error);
+
+            alert(
+              "Materialul nu a putut fi șters."
+            );
+
+            remove.disabled = false;
+            remove.textContent = "Șterge";
+
+          }
+
+        };
+
+
+        card.appendChild(info);
+        card.appendChild(remove);
+
+        materials.appendChild(card);
+
+      });
+
+    }, error => {
+
+      console.error(error);
+
+      materials.innerHTML =
+        '<div class="empty">Nu am putut încărca materialele.</div>';
+
+    });
+
+  }
+
+
+  function showStatus(text, type) {
+
+    status.className = type;
+    status.textContent = text;
+
+    setTimeout(() => {
+      status.className = "";
+      status.textContent = "";
+    }, 4000);
+
+  }
+
+</script>
+
+</body>
+</html>
