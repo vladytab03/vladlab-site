@@ -145,7 +145,6 @@
       outline: none;
       font-family: inherit;
       font-size: 14px;
-      transition: 0.2s;
     }
 
     input:focus,
@@ -167,12 +166,12 @@
     }
 
     .file-icon {
-      font-size: 32px;
+      font-size: 34px;
       margin-bottom: 12px;
     }
 
     input[type="file"] {
-      margin-top: 15px;
+      margin-top: 16px;
       border: none;
       background: transparent;
       padding: 0;
@@ -194,16 +193,12 @@
 
     button:hover {
       background: #729cff;
-      transform: translateY(-1px);
     }
 
     button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
     }
-
-    /* STATUS */
 
     #status {
       display: none;
@@ -213,20 +208,27 @@
       text-align: center;
     }
 
-    #status .status-icon {
-      font-size: 27px;
+    .status-icon {
+      font-size: 28px;
       margin-bottom: 7px;
     }
 
-    #status .status-title {
+    .status-title {
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 5px;
     }
 
-    #status .status-text {
+    .status-text {
       font-size: 13px;
       opacity: 0.85;
+    }
+
+    .loading {
+      display: block !important;
+      background: rgba(91, 140, 255, 0.1);
+      border: 1px solid rgba(91, 140, 255, 0.35);
+      color: #8eafff;
     }
 
     .success {
@@ -241,13 +243,6 @@
       background: rgba(230, 70, 70, 0.1);
       border: 1px solid rgba(230, 70, 70, 0.35);
       color: #ff8585;
-    }
-
-    .loading {
-      display: block !important;
-      background: rgba(91, 140, 255, 0.1);
-      border: 1px solid rgba(91, 140, 255, 0.35);
-      color: #8eafff;
     }
 
     footer {
@@ -302,22 +297,31 @@
 
 </nav>
 
+
 <main>
 
-  <a href="/" class="back">← Înapoi la VladLab</a>
+  <a href="/" class="back">
+    ← Înapoi la VladLab
+  </a>
 
-  <h1>📤 Trimite <span>fișier</span></h1>
+  <h1>
+    📤 Trimite <span>fișier</span>
+  </h1>
 
   <p class="subtitle">
     Trimite rapid un fișier prin VladLab.
   </p>
+
 
   <div class="upload-box">
 
     <form id="uploadForm">
 
       <div class="field">
-        <label for="name">Nume</label>
+
+        <label for="name">
+          Nume
+        </label>
 
         <input
           type="text"
@@ -326,25 +330,36 @@
           maxlength="60"
           required
         >
+
       </div>
 
+
       <div class="field">
-        <label for="message">Mesaj (opțional)</label>
+
+        <label for="message">
+          Mesaj (opțional)
+        </label>
 
         <textarea
           id="message"
           placeholder="Scrie un mesaj..."
           maxlength="500"
         ></textarea>
+
       </div>
+
 
       <div class="field">
 
-        <label>Fișier</label>
+        <label>
+          Fișier
+        </label>
 
         <div class="file-area">
 
-          <div class="file-icon">📁</div>
+          <div class="file-icon">
+            📁
+          </div>
 
           <div>
             Alege fișierul pe care vrei să-l trimiți
@@ -360,9 +375,14 @@
 
       </div>
 
-      <button type="submit" id="sendButton">
+
+      <button
+        type="submit"
+        id="sendButton"
+      >
         Trimite fișier
       </button>
+
 
       <div id="status"></div>
 
@@ -388,232 +408,257 @@
 
 <script>
 
-  const SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
 
 
-  const form =
-    document.getElementById("uploadForm");
+const form =
+  document.getElementById("uploadForm");
 
-  const statusBox =
-    document.getElementById("status");
+const button =
+  document.getElementById("sendButton");
 
-  const button =
-    document.getElementById("sendButton");
+const statusBox =
+  document.getElementById("status");
 
 
-  form.addEventListener("submit", async function(event) {
+form.addEventListener("submit", async function(event) {
 
-    event.preventDefault();
+  event.preventDefault();
 
 
-    const fileInput =
-      document.getElementById("file");
+  const name =
+    document.getElementById("name").value.trim();
 
-    const file =
-      fileInput.files[0];
+  const message =
+    document.getElementById("message").value.trim();
 
+  const file =
+    document.getElementById("file").files[0];
 
-    if (!file) {
 
-      showError(
-        "Nu ai ales niciun fișier."
-      );
+  if (!file) {
 
-      return;
-    }
+    showError(
+      "Selectează un fișier."
+    );
 
+    return;
 
-    /* LIMITĂ 10 MB */
+  }
 
-    if (file.size > 10 * 1024 * 1024) {
 
-      showError(
-        "Fișierul este prea mare. Limita este de 10 MB."
-      );
+  /*
+    LIMITĂ FIȘIER: 10 MB
+  */
 
-      return;
-    }
+  if (file.size > 10 * 1024 * 1024) {
 
+    showError(
+      "Fișierul este prea mare. Limita este de 10 MB."
+    );
 
-    button.disabled = true;
+    return;
 
-    button.textContent =
-      "Se trimite...";
+  }
 
 
-    showLoading();
+  button.disabled = true;
 
+  button.textContent =
+    "Se trimite...";
 
-    try {
 
-      const base64 =
-        await fileToBase64(file);
+  showLoading();
 
 
-      const data = {
+  try {
 
-        name:
-          document
-            .getElementById("name")
-            .value
-            .trim(),
+    const fileData =
+      await convertFileToBase64(file);
 
-        message:
-          document
-            .getElementById("message")
-            .value
-            .trim(),
 
-        fileName:
-          file.name,
+    const payload = {
 
-        mimeType:
-          file.type ||
-          "application/octet-stream",
+      name: name,
 
-        fileData:
-          base64
+      message: message,
 
-      };
+      fileName: file.name,
 
+      mimeType:
+        file.type ||
+        "application/octet-stream",
 
-      await fetch(
-        SCRIPT_URL,
-        {
-          method: "POST",
+      fileData: fileData
 
-          mode: "no-cors",
+    };
 
-          headers: {
-            "Content-Type":
-              "text/plain;charset=utf-8"
-          },
 
-          body:
-            JSON.stringify(data)
-        }
-      );
+    await fetch(
+      SCRIPT_URL,
+      {
+        method: "POST",
 
+        mode: "no-cors",
 
-      showSuccess();
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
 
-      form.reset();
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      showError(
-        "Fișierul nu a putut fi trimis. Încearcă din nou."
-      );
-
-    } finally {
-
-      button.disabled = false;
-
-      button.textContent =
-        "Trimite alt fișier";
-
-    }
-
-  });
-
-
-  function fileToBase64(file) {
-
-    return new Promise(
-      (resolve, reject) => {
-
-        const reader =
-          new FileReader();
-
-
-        reader.onload =
-          function() {
-
-            const result =
-              reader.result;
-
-            const base64 =
-              result.split(",")[1];
-
-            resolve(base64);
-
-          };
-
-
-        reader.onerror =
-          reject;
-
-
-        reader.readAsDataURL(file);
-
+        body:
+          JSON.stringify(payload)
       }
+    );
+
+
+    showSuccess();
+
+    form.reset();
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "UPLOAD ERROR:",
+      error
+    );
+
+
+    showError(
+      "Fișierul nu a putut fi trimis."
     );
 
   }
 
+  finally {
 
-  function showLoading() {
+    button.disabled = false;
 
-    statusBox.className =
-      "loading";
-
-    statusBox.innerHTML = `
-      <div class="status-icon">⏳</div>
-
-      <div class="status-title">
-        Se încarcă fișierul...
-      </div>
-
-      <div class="status-text">
-        Nu închide pagina până la finalizarea încărcării.
-      </div>
-    `;
+    button.textContent =
+      "Trimite fișier";
 
   }
 
-
-  function showSuccess() {
-
-    statusBox.className =
-      "success";
-
-    statusBox.innerHTML = `
-      <div class="status-icon">✓</div>
-
-      <div class="status-title">
-        Încărcare finalizată!
-      </div>
-
-      <div class="status-text">
-        Fișierul a fost trimis cu succes.
-      </div>
-    `;
-
-  }
+});
 
 
-  function showError(message) {
+function convertFileToBase64(file) {
 
-    statusBox.className =
-      "error";
+  return new Promise(
+    function(resolve, reject) {
 
-    statusBox.innerHTML = `
-      <div class="status-icon">!</div>
+      const reader =
+        new FileReader();
 
-      <div class="status-title">
-        Încărcarea a eșuat
-      </div>
 
-      <div class="status-text">
-        ${message}
-      </div>
-    `;
+      reader.onload =
+        function() {
 
-  }
+          const result =
+            reader.result;
+
+          const base64 =
+            result.split(",")[1];
+
+          resolve(base64);
+
+        };
+
+
+      reader.onerror =
+        function() {
+
+          reject(
+            new Error(
+              "Fișierul nu a putut fi citit."
+            )
+          );
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+}
+
+
+function showLoading() {
+
+  statusBox.className =
+    "loading";
+
+  statusBox.innerHTML = `
+
+    <div class="status-icon">
+      ⏳
+    </div>
+
+    <div class="status-title">
+      Se încarcă fișierul...
+    </div>
+
+    <div class="status-text">
+      Nu închide pagina.
+    </div>
+
+  `;
+
+}
+
+
+function showSuccess() {
+
+  statusBox.className =
+    "success";
+
+  statusBox.innerHTML = `
+
+    <div class="status-icon">
+      ✓
+    </div>
+
+    <div class="status-title">
+      Încărcare finalizată!
+    </div>
+
+    <div class="status-text">
+      Fișierul a fost trimis cu succes.
+    </div>
+
+  `;
+
+}
+
+
+function showError(message) {
+
+  statusBox.className =
+    "error";
+
+  statusBox.innerHTML = `
+
+    <div class="status-icon">
+      !
+    </div>
+
+    <div class="status-title">
+      Încărcarea a eșuat
+    </div>
+
+    <div class="status-text">
+      ${message}
+    </div>
+
+  `;
+
+}
 
 </script>
 
