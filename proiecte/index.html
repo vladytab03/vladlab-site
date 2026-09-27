@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Proiecte | VladLab</title>
@@ -10,54 +13,73 @@
   <link rel="apple-touch-icon" href="/logo.png">
 
   <style>
+
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      min-height: 100vh;
-      background: #080b12;
-      color: #ffffff;
       font-family: Arial, Helvetica, sans-serif;
+      background: #080b12;
+      color: white;
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
     }
 
     nav {
       height: 72px;
-      border-bottom: 1px solid #1d2330;
-      background: rgba(8, 11, 18, 0.94);
-      backdrop-filter: blur(15px);
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 0 6%;
+      padding: 0 8%;
+
+      border-bottom: 1px solid #1d2330;
+
+      background: rgba(8, 11, 18, 0.92);
 
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 10;
+
+      backdrop-filter: blur(12px);
     }
 
-    .brand {
+    .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 11px;
 
-      color: white;
       text-decoration: none;
-
-      font-size: 20px;
-      font-weight: 700;
+      color: white;
     }
 
-    .brand img {
+    .logo img {
       width: 44px;
       height: 44px;
+
       border-radius: 11px;
+
       object-fit: cover;
     }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
+      color: #5b8cff;
+    }
+
+
+    /* LOGIN / USER */
 
     .account {
       display: flex;
@@ -74,19 +96,25 @@
     .user-button,
     .logout-button {
       border-radius: 10px;
+
       padding: 9px 15px;
 
       font-size: 14px;
+
       text-decoration: none;
 
       cursor: pointer;
+
       transition: 0.2s;
     }
 
     .login-button {
       background: #5b8cff;
+
       color: white;
+
       border: 1px solid #5b8cff;
+
       font-weight: 700;
     }
 
@@ -96,105 +124,143 @@
 
     .user-button {
       background: transparent;
+
       color: #cbd4e4;
+
       border: 1px solid #293142;
     }
 
     .user-button:hover {
       color: white;
+
       border-color: #5b8cff;
     }
 
     .logout-button {
       background: #161c27;
+
       color: white;
+
       border: 1px solid #293142;
     }
 
     .logout-button:hover {
       border-color: #5b8cff;
+
       background: #1a2230;
     }
 
+
+    /* MAIN */
+
     main {
-      max-width: 1150px;
+      flex: 1;
+
+      width: min(1100px, 90%);
+
       margin: auto;
-      padding: 70px 25px 90px;
-      min-height: calc(100vh - 150px);
+
+      padding: 80px 0;
     }
 
-    .badge {
-      display: inline-block;
+    .back {
+      color: #71809a;
 
-      background: rgba(91, 140, 255, 0.12);
-      color: #7ca2ff;
+      text-decoration: none;
 
-      border: 1px solid rgba(91, 140, 255, 0.25);
-      border-radius: 100px;
+      font-size: 14px;
+    }
 
-      padding: 7px 12px;
-
-      font-size: 12px;
-      font-weight: 700;
-
-      margin-bottom: 18px;
+    .back:hover {
+      color: white;
     }
 
     h1 {
-      font-size: clamp(38px, 6vw, 60px);
-      margin-bottom: 10px;
+      font-size: clamp(48px, 7vw, 72px);
+
+      letter-spacing: -3px;
+
+      margin-top: 25px;
     }
 
-    .subtitle {
-      color: #8995a9;
-      line-height: 1.6;
-      margin-bottom: 45px;
+    h1 span {
+      color: #5b8cff;
     }
 
     .empty {
-      background: #0e131d;
-      border: 1px solid #202735;
+      margin-top: 45px;
+
+      min-height: 250px;
+
+      border: 1px dashed #293243;
+
       border-radius: 18px;
 
-      padding: 45px 30px;
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
 
       text-align: center;
+
+      padding: 30px;
     }
 
     .empty-icon {
-      font-size: 42px;
+      font-size: 38px;
+
       margin-bottom: 18px;
     }
 
     .empty h2 {
-      font-size: 20px;
-      margin-bottom: 9px;
+      font-size: 19px;
+
+      margin-bottom: 8px;
     }
 
     .empty p {
-      color: #7f8a9e;
+      color: #657188;
+
       font-size: 14px;
     }
 
+
+    /* FOOTER */
+
     footer {
-      max-width: 1150px;
-      margin: auto;
+      border-top: 1px solid #1d2330;
 
-      padding: 30px 25px 45px;
+      padding: 30px 8%;
 
-      border-top: 1px solid #171d28;
+      color: #626d7f;
 
-      color: #596477;
       font-size: 13px;
+
+      display: flex;
+
+      justify-content: space-between;
     }
 
-    @media (max-width: 700px) {
+
+    /* MOBILE */
+
+    @media (max-width: 750px) {
+
       nav {
-        padding: 0 18px;
+        padding: 0 5%;
       }
 
       main {
-        padding-top: 45px;
+        padding-top: 55px;
+      }
+
+      footer {
+        flex-direction: column;
+
+        gap: 10px;
       }
 
       .login-button,
@@ -202,18 +268,29 @@
       .logout-button {
         padding: 8px 11px;
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <nav>
 
-  <a href="/" class="brand">
+  <a href="/" class="logo">
+
     <img src="/logo.png" alt="VladLab">
-    VladLab
+
+    <div class="logo-text">
+      Vlad<span>Lab</span>
+    </div>
+
   </a>
+
 
   <div class="account">
 
@@ -224,6 +301,7 @@
       </a>
 
     </div>
+
 
     <div id="loggedIn" class="account">
 
@@ -248,31 +326,27 @@
 
 <main>
 
-  <div class="badge">
-    VLADLAB
-  </div>
+  <a href="/" class="back">
+    ← Înapoi la VladLab
+  </a>
 
   <h1>
-    💻 Proiecte
+    💻 <span>Proiecte</span>
   </h1>
-
-  <p class="subtitle">
-    Proiecte și lucruri create în VladLab.
-  </p>
 
 
   <div class="empty">
 
     <div class="empty-icon">
-      💻
+      🛠️
     </div>
 
     <h2>
-      Momentan nu există proiecte
+      Momentan nu există proiecte.
     </h2>
 
     <p>
-      Proiectele publicate vor apărea aici.
+      Proiectele vor apărea aici.
     </p>
 
   </div>
@@ -281,7 +355,15 @@
 
 
 <footer>
-  © 2026 VladLab • Proiecte
+
+  <div>
+    © 2026 VladLab
+  </div>
+
+  <div>
+    Proiecte
+  </div>
+
 </footer>
 
 
@@ -299,13 +381,28 @@
 
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-    authDomain: "vladlab-11887.firebaseapp.com",
-    projectId: "vladlab-11887",
-    storageBucket: "vladlab-11887.firebasestorage.app",
-    messagingSenderId: "741561223788",
-    appId: "1:741561223788:web:88ad3e62db87e32551a649",
-    measurementId: "G-9XN16BVYRN"
+
+    apiKey:
+      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+
+    authDomain:
+      "vladlab-11887.firebaseapp.com",
+
+    projectId:
+      "vladlab-11887",
+
+    storageBucket:
+      "vladlab-11887.firebasestorage.app",
+
+    messagingSenderId:
+      "741561223788",
+
+    appId:
+      "1:741561223788:web:88ad3e62db87e32551a649",
+
+    measurementId:
+      "G-9XN16BVYRN"
+
   };
 
 
@@ -335,11 +432,13 @@
     if (user && user.uid === ADMIN_UID) {
 
       loggedOut.style.display = "none";
+
       loggedIn.style.display = "flex";
 
     } else {
 
       loggedIn.style.display = "none";
+
       loggedOut.style.display = "block";
 
     }
@@ -362,5 +461,7 @@
 
 </script>
 
+
 </body>
+
 </html>
