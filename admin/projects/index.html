@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Proiecte | VladLab Admin</title>
+  <link rel="icon" href="/logo.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #080b12;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    nav {
+      height: 72px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, .94);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+    }
+
+    .logo-text {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
+      color: #5b8cff;
+    }
+
+    .admin {
+      padding: 6px 10px;
+      border: 1px solid #293142;
+      border-radius: 8px;
+      color: #8d9ab0;
+      font-size: 12px;
+    }
+
+    main {
+      width: min(1000px, 90%);
+      margin: auto;
+      padding: 55px 0 80px;
+    }
+
+    .back {
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+      margin-top: 25px;
+      font-size: 42px;
+      letter-spacing: -2px;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #7f899a;
+      line-height: 1.5;
+    }
+
+    .panel {
+      margin-top: 35px;
+      padding: 26px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 18px;
+    }
+
+    .panel h2 {
+      margin-bottom: 22px;
+      font-size: 20px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #b9c2d1;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 13px 14px;
+      background: #090d15;
+      border: 1px solid #293243;
+      border-radius: 10px;
+      color: white;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #5b8cff;
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, .1);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .primary {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: #5b8cff;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary:hover {
+      background: #6c98ff;
+    }
+
+    .primary:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .section-title {
+      margin: 45px 0 18px;
+      font-size: 21px;
+    }
+
+    #projects {
+      display: grid;
+      gap: 13px;
+    }
+
+    .project {
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 14px;
+    }
+
+    .project-info {
+      min-width: 0;
+    }
+
+    .project-title {
+      margin-bottom: 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .project-description {
+      margin-bottom: 8px;
+      color: #7f899a;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .project-link {
+      display: block;
+      max-width: 650px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #5b8cff;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .delete {
+      flex-shrink: 0;
+      padding: 9px 13px;
+      background: rgba(255, 77, 77, .08);
+      border: 1px solid rgba(255, 77, 77, .22);
+      border-radius: 9px;
+      color: #ff8b8b;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .delete:hover {
+      background: rgba(255, 77, 77, .14);
+    }
+
+    .empty {
+      padding: 40px 20px;
+      border: 1px dashed #293243;
+      border-radius: 14px;
+      color: #657188;
+      text-align: center;
+    }
+
+    #status {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    #status.ok {
+      display: block;
+      color: #75e4a4;
+      background: rgba(67, 211, 126, .08);
+      border: 1px solid rgba(67, 211, 126, .2);
+    }
+
+    #status.error {
+      display: block;
+      color: #ff9292;
+      background: rgba(255, 80, 80, .08);
+      border: 1px solid rgba(255, 80, 80, .2);
+    }
+
+    footer {
+      padding: 28px;
+      border-top: 1px solid #1d2330;
+      color: #626d7f;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .project {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .delete {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <a href="/admin/" class="logo">
+    <img src="/logo.png" alt="VladLab">
+    <div class="logo-text">Vlad<span>Lab</span></div>
+  </a>
+
+  <div class="admin">ADMIN</div>
+</nav>
+
+<main>
+
+  <a href="/admin/" class="back">
+    ← Înapoi la Admin Panel
+  </a>
+
+  <h1>💻 Proiecte</h1>
+
+  <p class="subtitle">
+    Adaugă și gestionează proiectele VladLab.
+  </p>
+
+  <div class="panel">
+
+    <h2>Adaugă proiect</h2>
+
+    <form id="form">
+
+      <div class="field">
+        <label for="title">Nume proiect</label>
+
+        <input
+          id="title"
+          type="text"
+          placeholder="Ex: Nova SMP"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="description">Descriere</label>
+
+        <textarea
+          id="description"
+          placeholder="Descrierea proiectului..."
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="url">Link proiect</label>
+
+        <input
+          id="url"
+          type="url"
+          placeholder="https://..."
+        >
+      </div>
+
+      <button
+        id="addButton"
+        class="primary"
+        type="submit"
+      >
+        + Adaugă proiect
+      </button>
+
+    </form>
+
+    <div id="status"></div>
+
+  </div>
+
+  <h2 class="section-title">
+    Proiecte existente
+  </h2>
+
+  <div id="projects">
+    <div class="empty">Se încarcă...</div>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 VladLab · Admin Panel
+</footer>
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    deleteDoc,
+    doc,
+    onSnapshot,
+    serverTimestamp,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
+  };
+
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+  const db = getFirestore(app);
+
+
+  const form =
+    document.getElementById("form");
+
+  const addButton =
+    document.getElementById("addButton");
+
+  const projects =
+    document.getElementById("projects");
+
+  const status =
+    document.getElementById("status");
+
+
+  let ready = false;
+
+
+  onAuthStateChanged(auth, user => {
+
+    if (!user) {
+      location.href = "/login/";
+      return;
+    }
+
+    if (user.uid !== ADMIN_UID) {
+      location.href = "/";
+      return;
+    }
+
+    ready = true;
+
+    loadProjects();
+
+  });
+
+
+  form.addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+    if (!ready) return;
+
+
+    const title =
+      document.getElementById("title").value.trim();
+
+    const description =
+      document.getElementById("description").value.trim();
+
+    const url =
+      document.getElementById("url").value.trim();
+
+
+    if (!title) {
+      showStatus(
+        "Scrie numele proiectului.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    addButton.disabled = true;
+
+    addButton.textContent =
+      "Se adaugă...";
+
+
+    try {
+
+      await addDoc(
+        collection(db, "projects"),
+        {
+          title,
+          description,
+          url,
+          createdAt: serverTimestamp()
+        }
+      );
+
+
+      form.reset();
+
+
+      showStatus(
+        "Proiectul a fost adăugat.",
+        "ok"
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "Nu am putut adăuga proiectul.",
+        "error"
+      );
+
+    }
+
+    finally {
+
+      addButton.disabled = false;
+
+      addButton.textContent =
+        "+ Adaugă proiect";
+
+    }
+
+  });
+
+
+  function loadProjects() {
+
+    const projectsQuery =
+      query(
+        collection(db, "projects"),
+        orderBy("createdAt", "desc")
+      );
+
+
+    onSnapshot(
+      projectsQuery,
+
+      snapshot => {
+
+        projects.innerHTML = "";
+
+
+        if (snapshot.empty) {
+
+          projects.innerHTML =
+            '<div class="empty">Momentan nu există proiecte adăugate din Admin.</div>';
+
+          return;
+        }
+
+
+        snapshot.forEach(item => {
+
+          const data = item.data();
+
+
+          const card =
+            document.createElement("div");
+
+          card.className = "project";
+
+
+          const info =
+            document.createElement("div");
+
+          info.className =
+            "project-info";
+
+
+          const title =
+            document.createElement("div");
+
+          title.className =
+            "project-title";
+
+          title.textContent =
+            data.title || "Fără titlu";
+
+
+          const description =
+            document.createElement("div");
+
+          description.className =
+            "project-description";
+
+          description.textContent =
+            data.description || "";
+
+
+          info.appendChild(title);
+
+
+          if (data.description) {
+            info.appendChild(description);
+          }
+
+
+          if (data.url) {
+
+            const link =
+              document.createElement("a");
+
+            link.className =
+              "project-link";
+
+            link.href =
+              data.url;
+
+            link.target =
+              "_blank";
+
+            link.rel =
+              "noopener noreferrer";
+
+            link.textContent =
+              data.url;
+
+            info.appendChild(link);
+
+          }
+
+
+          const remove =
+            document.createElement("button");
+
+          remove.className =
+            "delete";
+
+          remove.type =
+            "button";
+
+          remove.textContent =
+            "Șterge";
+
+
+          remove.onclick = async () => {
+
+            if (
+              !confirm(
+                `Ștergi proiectul „${data.title || "Fără titlu"}”?`
+              )
+            ) {
+              return;
+            }
+
+
+            remove.disabled = true;
+
+            remove.textContent =
+              "Se șterge...";
+
+
+            try {
+
+              await deleteDoc(
+                doc(
+                  db,
+                  "projects",
+                  item.id
+                )
+              );
+
+            }
+
+            catch (error) {
+
+              console.error(error);
+
+              alert(
+                "Nu am putut șterge proiectul."
+              );
+
+              remove.disabled = false;
+
+              remove.textContent =
+                "Șterge";
+
+            }
+
+          };
+
+
+          card.appendChild(info);
+
+          card.appendChild(remove);
+
+          projects.appendChild(card);
+
+        });
+
+      },
+
+      error => {
+
+        console.error(error);
+
+        projects.innerHTML =
+          '<div class="empty">Nu am putut încărca proiectele.</div>';
+
+      }
+    );
+
+  }
+
+
+  function showStatus(text, type) {
+
+    status.className = type;
+
+    status.textContent = text;
+
+
+    setTimeout(() => {
+
+      status.className = "";
+
+      status.textContent = "";
+
+    }, 4000);
+
+  }
+
+</script>
+
+</body>
+</html>
