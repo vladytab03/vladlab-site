@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login | VladLab</title>
+
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #080b12;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    nav {
+      height: 72px;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.92);
+      backdrop-filter: blur(15px);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 6%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .brand img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      object-fit: cover;
+    }
+
+    .back {
+      color: #aab3c5;
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    main {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 35px 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 22px;
+
+      padding: 36px;
+
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .login-logo {
+      display: block;
+      width: 75px;
+      height: 75px;
+
+      margin: 0 auto 18px;
+
+      border-radius: 18px;
+      object-fit: cover;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #8e99ad;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+
+      font-size: 14px;
+      color: #c9d1df;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 15px;
+
+      border-radius: 11px;
+      border: 1px solid #293142;
+
+      background: #090d15;
+      color: white;
+
+      outline: none;
+      font-size: 15px;
+
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #5b8cff;
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, 0.12);
+    }
+
+    button {
+      width: 100%;
+
+      border: none;
+      border-radius: 11px;
+
+      padding: 14px;
+
+      background: #5b8cff;
+      color: white;
+
+      font-size: 15px;
+      font-weight: 700;
+
+      cursor: pointer;
+      transition: 0.2s;
+
+      margin-top: 5px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #6c98ff;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #status {
+      display: none;
+
+      margin-top: 18px;
+      padding: 12px;
+
+      border-radius: 10px;
+
+      text-align: center;
+      font-size: 14px;
+    }
+
+    #status.error {
+      display: block;
+
+      background: rgba(255, 75, 75, 0.1);
+      border: 1px solid rgba(255, 75, 75, 0.25);
+
+      color: #ff8a8a;
+    }
+
+    #status.success {
+      display: block;
+
+      background: rgba(70, 220, 130, 0.1);
+      border: 1px solid rgba(70, 220, 130, 0.25);
+
+      color: #72e8a4;
+    }
+
+    .security {
+      margin-top: 24px;
+
+      text-align: center;
+      color: #667085;
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 520px) {
+      .login-box {
+        padding: 28px 22px;
+      }
+
+      nav {
+        padding: 0 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+
+  <a class="brand" href="/">
+    <img src="/logo.png" alt="VladLab">
+    VladLab
+  </a>
+
+  <a class="back" href="/">
+    ← Înapoi la site
+  </a>
+
+</nav>
+
+<main>
+
+  <div class="login-box">
+
+    <img
+      class="login-logo"
+      src="/logo.png"
+      alt="VladLab"
+    >
+
+    <h1>Autentificare</h1>
+
+    <p class="subtitle">
+      Conectează-te la VladLab
+    </p>
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          autocomplete="email"
+          placeholder="Email"
+          required
+        >
+      </div>
+
+      <div class="field">
+
+        <label for="password">
+          Parolă
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          autocomplete="current-password"
+          placeholder="Parolă"
+          required
+        >
+
+      </div>
+
+      <button
+        type="submit"
+        id="loginButton"
+      >
+        Login
+      </button>
+
+    </form>
+
+    <div id="status"></div>
+
+    <div class="security">
+      🔒 Autentificare securizată prin Firebase
+    </div>
+
+  </div>
+
+</main>
+
+
+<script type="module">
+
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged
+  }
+    from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+
+    apiKey:
+      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+
+    authDomain:
+      "vladlab-11887.firebaseapp.com",
+
+    projectId:
+      "vladlab-11887",
+
+    storageBucket:
+      "vladlab-11887.firebasestorage.app",
+
+    messagingSenderId:
+      "741561223788",
+
+    appId:
+      "1:741561223788:web:88ad3e62db87e32551a649",
+
+    measurementId:
+      "G-9XN16BVYRN"
+
+  };
+
+
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+
+  const form =
+    document.getElementById("loginForm");
+
+  const button =
+    document.getElementById("loginButton");
+
+  const status =
+    document.getElementById("status");
+
+
+  onAuthStateChanged(auth, (user) => {
+
+    if (user) {
+
+      window.location.href = "/admin/";
+
+    }
+
+  });
+
+
+  form.addEventListener(
+    "submit",
+
+    async (event) => {
+
+      event.preventDefault();
+
+
+      const email =
+        document.getElementById("email")
+        .value
+        .trim();
+
+
+      const password =
+        document.getElementById("password")
+        .value;
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Se conectează...";
+
+
+      status.className = "";
+
+      status.style.display = "none";
+
+
+      try {
+
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+
+        status.textContent =
+          "Autentificare reușită!";
+
+        status.className =
+          "success";
+
+
+        setTimeout(() => {
+
+          window.location.href =
+            "/admin/";
+
+        }, 500);
+
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        status.textContent =
+          "Email sau parolă incorectă.";
+
+        status.className =
+          "error";
+
+
+        button.disabled = false;
+
+        button.textContent =
+          "Login";
+
+      }
+
+    }
+
+  );
+
+</script>
+
+</body>
+</html>
