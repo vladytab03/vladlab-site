@@ -293,6 +293,11 @@
 
     /* MATERIALE */
 
+    #materialsList {
+      display: grid;
+      gap: 16px;
+    }
+
     .materials {
       border: 1px dashed #293243;
       border-radius: 18px;
@@ -319,6 +324,66 @@
     .materials p {
       color: #657188;
       font-size: 13px;
+    }
+
+    .material-card {
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 18px;
+      padding: 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+
+      transition: 0.2s;
+    }
+
+    .material-card:hover {
+      border-color: #303b50;
+      transform: translateY(-2px);
+    }
+
+    .material-info {
+      min-width: 0;
+    }
+
+    .material-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .material-description {
+      color: #7f899a;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .material-button {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #5b8cff;
+      color: white;
+
+      text-decoration: none;
+
+      border-radius: 10px;
+
+      padding: 11px 17px;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      transition: 0.2s;
+    }
+
+    .material-button:hover {
+      background: #6c98ff;
     }
 
     /* FOOTER */
@@ -361,6 +426,15 @@
       .logout-button {
         padding: 8px 11px;
       }
+
+      .material-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .material-button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -372,26 +446,20 @@
 <nav>
 
   <a href="/" class="logo">
-
     <img src="/logo.png" alt="VladLab">
 
     <div class="logo-text">
       Vlad<span>Lab</span>
     </div>
-
   </a>
-
 
   <div class="account">
 
     <div id="loggedOut">
-
       <a href="/login/" class="login-button">
         Login
       </a>
-
     </div>
-
 
     <div id="loggedIn" class="account">
 
@@ -627,19 +695,23 @@
     </h2>
 
 
-    <div class="materials">
+    <div id="materialsList">
 
-      <div class="materials-icon">
-        📂
+      <div class="materials">
+
+        <div class="materials-icon">
+          ⏳
+        </div>
+
+        <h3>
+          Se încarcă...
+        </h3>
+
+        <p>
+          Se verifică materialele disponibile.
+        </p>
+
       </div>
-
-      <h3>
-        Momentan nu există materiale.
-      </h3>
-
-      <p>
-        Proiectele și materialele pentru școală vor apărea aici.
-      </p>
 
     </div>
 
@@ -667,11 +739,21 @@
     initializeApp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
+
   import {
     getAuth,
     onAuthStateChanged,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    collection,
+    onSnapshot,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
   const firebaseConfig = {
@@ -692,8 +774,13 @@
   const app =
     initializeApp(firebaseConfig);
 
+
   const auth =
     getAuth(app);
+
+
+  const db =
+    getFirestore(app);
 
 
   const loggedOut =
@@ -705,6 +792,11 @@
   const logoutButton =
     document.getElementById("logoutButton");
 
+  const materialsList =
+    document.getElementById("materialsList");
+
+
+  /* LOGIN */
 
   onAuthStateChanged(auth, (user) => {
 
@@ -723,6 +815,8 @@
   });
 
 
+  /* LOGOUT */
+
   logoutButton.addEventListener(
     "click",
 
@@ -731,6 +825,191 @@
       await signOut(auth);
 
       window.location.reload();
+
+    }
+  );
+
+
+  /* =========================
+     MATERIALE DIN FIRESTORE
+  ========================= */
+
+  const materialsQuery =
+    query(
+      collection(db, "schoolMaterials"),
+      orderBy("createdAt", "desc")
+    );
+
+
+  onSnapshot(
+
+    materialsQuery,
+
+    (snapshot) => {
+
+      materialsList.innerHTML = "";
+
+
+      /* NICIUN MATERIAL */
+
+      if (snapshot.empty) {
+
+        materialsList.innerHTML = `
+          <div class="materials">
+
+            <div class="materials-icon">
+              📂
+            </div>
+
+            <h3>
+              Momentan nu există materiale.
+            </h3>
+
+            <p>
+              Proiectele și materialele pentru școală vor apărea aici.
+            </p>
+
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      /* AFIȘARE MATERIALE */
+
+      snapshot.forEach((documentSnapshot) => {
+
+        const data =
+          documentSnapshot.data();
+
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "material-card";
+
+
+        const info =
+          document.createElement("div");
+
+        info.className =
+          "material-info";
+
+
+        const title =
+          document.createElement("div");
+
+        title.className =
+          "material-title";
+
+        title.textContent =
+          data.title || "Material";
+
+
+        info.appendChild(title);
+
+
+        if (data.description) {
+
+          const description =
+            document.createElement("div");
+
+          description.className =
+            "material-description";
+
+          description.textContent =
+            data.description;
+
+          info.appendChild(description);
+
+        }
+
+
+        const button =
+          document.createElement("a");
+
+        button.className =
+          "material-button";
+
+        button.textContent =
+          "Deschide";
+
+
+        /* VERIFICARE LINK */
+
+        try {
+
+          const materialUrl =
+            new URL(data.url);
+
+          if (
+            materialUrl.protocol === "https:" ||
+            materialUrl.protocol === "http:"
+          ) {
+
+            button.href =
+              materialUrl.href;
+
+            button.target =
+              "_blank";
+
+            button.rel =
+              "noopener noreferrer";
+
+          } else {
+
+            button.removeAttribute("href");
+
+            button.textContent =
+              "Link indisponibil";
+
+          }
+
+        } catch {
+
+          button.removeAttribute("href");
+
+          button.textContent =
+            "Link indisponibil";
+
+        }
+
+
+        card.appendChild(info);
+
+        card.appendChild(button);
+
+        materialsList.appendChild(card);
+
+      });
+
+    },
+
+
+    (error) => {
+
+      console.error(error);
+
+      materialsList.innerHTML = `
+        <div class="materials">
+
+          <div class="materials-icon">
+            ⚠️
+          </div>
+
+          <h3>
+            Nu am putut încărca materialele.
+          </h3>
+
+          <p>
+            Încearcă din nou mai târziu.
+          </p>
+
+        </div>
+      `;
 
     }
 
