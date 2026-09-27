@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Trimite fișier | VladLab</title>
+
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080b12;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8%;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.92);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
+      color: #5b8cff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: #aeb7c7;
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links .active {
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      width: min(800px, 90%);
+      margin: auto;
+      padding: 70px 0 100px;
+    }
+
+    .back {
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 68px);
+      letter-spacing: -3px;
+      margin-top: 25px;
+      margin-bottom: 12px;
+    }
+
+    h1 span {
+      color: #5b8cff;
+    }
+
+    .subtitle {
+      color: #7f899a;
+      line-height: 1.6;
+      margin-bottom: 38px;
+    }
+
+    .upload-box {
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 20px;
+      padding: 32px;
+    }
+
+    .field {
+      margin-bottom: 23px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 9px;
+      color: #c8d0dc;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid #293243;
+      background: #090d14;
+      color: white;
+      padding: 14px 15px;
+      border-radius: 10px;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #5b8cff;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .file-area {
+      border: 1px dashed #34415a;
+      background: #090d14;
+      border-radius: 14px;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .file-area .icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    input[type="file"] {
+      margin-top: 15px;
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 27px;
+      border: none;
+      border-radius: 11px;
+      padding: 15px;
+      background: #5b8cff;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #729cff;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #status {
+      display: none;
+      margin-top: 20px;
+      padding: 13px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .success {
+      display: block !important;
+      background: rgba(47, 190, 110, 0.1);
+      border: 1px solid rgba(47, 190, 110, 0.35);
+      color: #66d996;
+    }
+
+    .error {
+      display: block !important;
+      background: rgba(230, 70, 70, 0.1);
+      border: 1px solid rgba(230, 70, 70, 0.35);
+      color: #ff8585;
+    }
+
+    .loading {
+      display: block !important;
+      background: rgba(91, 140, 255, 0.1);
+      border: 1px solid rgba(91, 140, 255, 0.35);
+      color: #8eafff;
+    }
+
+    footer {
+      border-top: 1px solid #1d2330;
+      padding: 30px 8%;
+      color: #626d7f;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 750px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .upload-box {
+        padding: 22px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+
+  <a href="/" class="logo">
+    <img src="/logo.png" alt="VladLab">
+
+    <div class="logo-text">
+      Vlad<span>Lab</span>
+    </div>
+  </a>
+
+  <div class="nav-links">
+    <a href="/scoala/">Școală</a>
+    <a href="http://novasmp.space/">Minecraft</a>
+    <a href="/proiecte/">Proiecte</a>
+    <a href="/upload/" class="active">Upload</a>
+    <a href="/download/">Descărcări</a>
+  </div>
+
+</nav>
+
+<main>
+
+  <a href="/" class="back">← Înapoi la VladLab</a>
+
+  <h1>📤 Trimite <span>fișier</span></h1>
+
+  <p class="subtitle">
+    Trimite-mi rapid un fișier prin VladLab.
+  </p>
+
+  <div class="upload-box">
+
+    <form id="uploadForm">
+
+      <div class="field">
+        <label for="name">Nume</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Numele tău"
+          maxlength="60"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="message">Mesaj (opțional)</label>
+        <textarea
+          id="message"
+          placeholder="Scrie un mesaj..."
+          maxlength="500"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label>Fișier</label>
+
+        <div class="file-area">
+          <div class="icon">📁</div>
+
+          <div>Alege fișierul pe care vrei să-l trimiți</div>
+
+          <input
+            type="file"
+            id="file"
+            required
+          >
+        </div>
+      </div>
+
+      <button type="submit" id="sendButton">
+        Trimite fișier
+      </button>
+
+      <div id="status"></div>
+
+    </form>
+
+  </div>
+
+</main>
+
+<footer>
+  <div>© 2026 VladLab</div>
+  <div>Upload</div>
+</footer>
+
+
+<script>
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
+
+  const form = document.getElementById("uploadForm");
+  const statusBox = document.getElementById("status");
+  const button = document.getElementById("sendButton");
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const fileInput = document.getElementById("file");
+    const file = fileInput.files[0];
+
+    if (!file) {
+      showStatus("Alege un fișier.", "error");
+      return;
+    }
+
+    /* Limită 10 MB */
+    if (file.size > 10 * 1024 * 1024) {
+      showStatus("Fișierul este prea mare. Limita este 10 MB.", "error");
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Se trimite...";
+
+    showStatus("Se încarcă fișierul...", "loading");
+
+    try {
+
+      const base64 = await fileToBase64(file);
+
+      const data = {
+        name: document.getElementById("name").value.trim(),
+        message: document.getElementById("message").value.trim(),
+        fileName: file.name,
+        mimeType: file.type || "application/octet-stream",
+        fileData: base64
+      };
+
+      /*
+        no-cors este necesar pentru trimiterea simplă
+        către Web App-ul Apps Script de pe alt domeniu.
+      */
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(data)
+      });
+
+      showStatus(
+        "✓ Fișierul a fost trimis. Verifică folderul VladLab Uploads.",
+        "success"
+      );
+
+      form.reset();
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "A apărut o eroare la trimiterea fișierului.",
+        "error"
+      );
+
+    } finally {
+
+      button.disabled = false;
+      button.textContent = "Trimite fișier";
+
+    }
+  });
+
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+
+      const reader = new FileReader();
+
+      reader.onload = function() {
+
+        const result = reader.result;
+
+        /*
+          Elimină:
+          data:image/png;base64,
+          sau prefixul echivalent.
+        */
+        const base64 = result.split(",")[1];
+
+        resolve(base64);
+      };
+
+      reader.onerror = reject;
+
+      reader.readAsDataURL(file);
+
+    });
+  }
+
+
+  function showStatus(message, type) {
+
+    statusBox.className = type;
+    statusBox.textContent = message;
+
+  }
+</script>
+
+</body>
+</html>
