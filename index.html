@@ -5,245 +5,233 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>VladLab</title>
-  <meta name="description" content="VladLab">
 
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="apple-touch-icon" href="/logo.png">
 
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #080b12;
-      color: white;
       min-height: 100vh;
+      background: #080b12;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* NAVBAR */
     nav {
       height: 72px;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.94);
+      backdrop-filter: blur(15px);
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 8%;
-      border-bottom: 1px solid #1d2330;
-      background: rgba(8, 11, 18, 0.92);
+
+      padding: 0 6%;
+
       position: sticky;
       top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
+      z-index: 100;
     }
 
-    /* LOGO */
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
-      text-decoration: none;
+      gap: 12px;
+
       color: white;
+      text-decoration: none;
+
+      font-size: 20px;
+      font-weight: 700;
     }
 
-    .logo img {
+    .brand img {
       width: 44px;
       height: 44px;
       border-radius: 11px;
       object-fit: cover;
-      box-shadow: 0 0 20px rgba(91, 140, 255, 0.18);
     }
 
-    .logo-text {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
-
-    .logo-text span {
-      color: #5b8cff;
-    }
-
-    /* NAV LINKS */
-    .nav-links {
+    .account {
       display: flex;
       align-items: center;
-      gap: 25px;
+      gap: 10px;
     }
 
-    .nav-links a {
-      color: #aeb7c7;
-      text-decoration: none;
+    .login-button,
+    .user-button,
+    .logout-button {
+      border-radius: 10px;
+      padding: 9px 15px;
+
       font-size: 14px;
+      text-decoration: none;
+
+      cursor: pointer;
       transition: 0.2s;
     }
 
-    .nav-links a:hover {
+    .login-button {
+      background: #5b8cff;
       color: white;
+      border: 1px solid #5b8cff;
+      font-weight: 700;
     }
 
-    /* HERO */
+    .login-button:hover {
+      background: #6c98ff;
+    }
+
+    .user-button {
+      background: transparent;
+      color: #cbd4e4;
+      border: 1px solid #293142;
+    }
+
+    .user-button:hover {
+      color: white;
+      border-color: #5b8cff;
+    }
+
+    .logout-button {
+      background: #161c27;
+      color: white;
+      border: 1px solid #293142;
+    }
+
+    .logout-button:hover {
+      border-color: #5b8cff;
+      background: #1a2230;
+    }
+
+    #loggedOut,
+    #loggedIn {
+      display: none;
+    }
+
+    main {
+      max-width: 1150px;
+      margin: auto;
+      padding: 90px 25px 80px;
+    }
+
     .hero {
-      text-align: center;
-      padding: 100px 20px 60px;
+      margin-bottom: 65px;
     }
 
-    .badge {
-      display: inline-block;
-      background: #10192c;
-      border: 1px solid #26375a;
-      color: #75a0ff;
-      padding: 7px 14px;
-      border-radius: 30px;
-      font-size: 13px;
-      margin-bottom: 25px;
+    .hero-logo {
+      width: 82px;
+      height: 82px;
+      border-radius: 20px;
+      object-fit: cover;
+      margin-bottom: 24px;
     }
 
-    .hero h1 {
-      font-size: clamp(48px, 8vw, 82px);
-      letter-spacing: -4px;
-      margin-bottom: 10px;
+    h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 850px;
     }
 
-    .hero h1 span {
+    .accent {
       color: #5b8cff;
     }
 
-    /* CARDS */
-    .cards {
-      width: min(1100px, 90%);
-      margin: 10px auto 100px;
+    .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 18px;
     }
 
     .card {
-      position: relative;
+      min-height: 180px;
+
       background: #0e131d;
       border: 1px solid #202735;
-      border-radius: 18px;
-      padding: 30px;
-      min-height: 210px;
+      border-radius: 20px;
+
+      padding: 27px;
+
       text-decoration: none;
       color: white;
-      transition: 0.25s;
-      overflow: hidden;
-    }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      width: 160px;
-      height: 160px;
-      background: rgba(91, 140, 255, 0.08);
-      border-radius: 50%;
-      top: -90px;
-      right: -70px;
-      filter: blur(10px);
-      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      transition: 0.2s;
     }
 
     .card:hover {
-      transform: translateY(-5px);
-      border-color: #496cae;
-      background: #111824;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+      transform: translateY(-4px);
+      border-color: #34415a;
+      background: #111722;
     }
 
-    .card:hover::before {
-      background: rgba(91, 140, 255, 0.14);
-    }
-
-    .icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: #17233c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 25px;
+    .card-icon {
+      font-size: 34px;
       margin-bottom: 25px;
     }
 
     .card h2 {
-      font-size: 21px;
-      margin-bottom: 10px;
+      font-size: 20px;
+      margin-bottom: 8px;
     }
 
     .card p {
-      color: #8993a3;
-      line-height: 1.5;
+      color: #7f8a9e;
       font-size: 14px;
-      max-width: 390px;
+      line-height: 1.5;
     }
 
     .arrow {
-      position: absolute;
-      right: 28px;
-      bottom: 27px;
-      color: #657188;
-      font-size: 20px;
-      transition: 0.2s;
+      margin-top: 20px;
+      color: #5b8cff;
+      font-size: 14px;
+      font-weight: 700;
     }
 
-    .card:hover .arrow {
-      color: #79a0ff;
-      transform: translateX(4px);
-    }
-
-    /* FOOTER */
     footer {
-      border-top: 1px solid #1d2330;
-      padding: 30px 8%;
-      color: #626d7f;
+      max-width: 1150px;
+
+      margin: auto;
+      padding: 30px 25px 45px;
+
+      border-top: 1px solid #171d28;
+
+      color: #596477;
       font-size: 13px;
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
     }
 
-    /* TELEFON */
-    @media (max-width: 750px) {
+    @media (max-width: 700px) {
       nav {
-        padding: 0 5%;
+        padding: 0 18px;
       }
 
-      .nav-links {
-        display: none;
+      main {
+        padding-top: 60px;
       }
 
-      .logo img {
-        width: 40px;
-        height: 40px;
-      }
-
-      .logo-text {
-        font-size: 21px;
-      }
-
-      .hero {
-        padding-top: 70px;
-        padding-bottom: 45px;
-      }
-
-      .hero h1 {
-        letter-spacing: -2px;
-      }
-
-      .cards {
+      .grid {
         grid-template-columns: 1fr;
       }
 
-      footer {
-        flex-direction: column;
+      h1 {
+        letter-spacing: -1px;
+      }
+
+      .user-button,
+      .logout-button,
+      .login-button {
+        padding: 8px 11px;
       }
     }
   </style>
@@ -251,142 +239,247 @@
 
 <body>
 
-  <!-- MENIU -->
-  <nav>
+<nav>
 
-    <a href="/" class="logo">
-      <img src="/logo.png" alt="VladLab Logo">
+  <a href="/" class="brand">
+    <img src="/logo.png" alt="VladLab">
+    VladLab
+  </a>
 
-      <div class="logo-text">
-        Vlad<span>Lab</span>
-      </div>
-    </a>
+  <div class="account">
 
-    <div class="nav-links">
-      <a href="/scoala/">Școală</a>
-
-      <!-- DUCE DIRECT LA NOVA SMP -->
-      <a href="http://novasmp.space/">Minecraft</a>
-
-      <a href="/proiecte/">Proiecte</a>
-      <a href="/upload/">Upload</a>
-      <a href="/download/">Descărcări</a>
+    <!-- NELOGAT -->
+    <div id="loggedOut">
+      <a href="/login/" class="login-button">
+        Login
+      </a>
     </div>
 
-  </nav>
+    <!-- LOGAT -->
+    <div id="loggedIn" class="account">
+
+      <a href="/admin/" class="user-button">
+        Vlad
+      </a>
+
+      <button
+        id="logoutButton"
+        class="logout-button"
+        type="button"
+      >
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+
+</nav>
 
 
-  <!-- TITLU -->
+<main>
+
   <section class="hero">
 
-    <div class="badge">
-      ⚡ VladLab
-    </div>
+    <img
+      src="/logo.png"
+      alt="VladLab"
+      class="hero-logo"
+    >
 
     <h1>
-      Totul într-un singur <span>loc.</span>
+      Totul într-un
+      <span class="accent">singur loc.</span>
     </h1>
 
   </section>
 
 
-  <!-- CARDURI -->
-  <section class="cards">
+  <section class="grid">
 
-    <!-- SCOALA -->
     <a href="/scoala/" class="card">
 
-      <div class="icon">🎓</div>
+      <div>
+        <div class="card-icon">🎓</div>
 
-      <h2>Școală</h2>
+        <h2>Școală</h2>
 
-      <p>
-        Materiale, proiecte și alte resurse pentru școală.
-      </p>
+        <p>
+          Orar, materiale și proiecte pentru școală.
+        </p>
+      </div>
 
-      <div class="arrow">→</div>
-
-    </a>
-
-
-    <!-- MINECRAFT / NOVA SMP -->
-    <a href="http://novasmp.space/" class="card">
-
-      <div class="icon">⛏️</div>
-
-      <h2>Minecraft</h2>
-
-      <p>
-        Nova SMP
-      </p>
-
-      <div class="arrow">→</div>
+      <div class="arrow">
+        Deschide →
+      </div>
 
     </a>
 
 
-    <!-- PROIECTE -->
+    <a
+      href="http://novasmp.space/"
+      class="card"
+    >
+
+      <div>
+        <div class="card-icon">⛏️</div>
+
+        <h2>Minecraft</h2>
+
+        <p>
+          Nova SMP.
+        </p>
+      </div>
+
+      <div class="arrow">
+        Deschide →
+      </div>
+
+    </a>
+
+
     <a href="/proiecte/" class="card">
 
-      <div class="icon">💻</div>
+      <div>
+        <div class="card-icon">💻</div>
 
-      <h2>Proiecte</h2>
+        <h2>Proiecte</h2>
 
-      <p>
-        Proiecte și experimente.
-      </p>
+        <p>
+          Proiectele VladLab.
+        </p>
+      </div>
 
-      <div class="arrow">→</div>
+      <div class="arrow">
+        Deschide →
+      </div>
 
     </a>
 
 
-    <!-- UPLOAD -->
     <a href="/upload/" class="card">
 
-      <div class="icon">📤</div>
+      <div>
+        <div class="card-icon">📤</div>
 
-      <h2>Trimite fișier</h2>
+        <h2>Trimite fișier</h2>
 
-      <p>
-        Trimite rapid un fișier.
-      </p>
+        <p>
+          Trimite rapid un fișier prin VladLab.
+        </p>
+      </div>
 
-      <div class="arrow">→</div>
+      <div class="arrow">
+        Deschide →
+      </div>
 
     </a>
 
 
-    <!-- DOWNLOAD -->
     <a href="/download/" class="card">
 
-      <div class="icon">📥</div>
+      <div>
+        <div class="card-icon">📥</div>
 
-      <h2>Descărcări</h2>
+        <h2>Descărcări</h2>
 
-      <p>
-        Fișiere și resurse disponibile pentru descărcare.
-      </p>
+        <p>
+          Fișiere disponibile pentru descărcare.
+        </p>
+      </div>
 
-      <div class="arrow">→</div>
+      <div class="arrow">
+        Deschide →
+      </div>
 
     </a>
 
   </section>
 
+</main>
 
-  <!-- FOOTER -->
-  <footer>
 
-    <div>
-      © 2026 VladLab
-    </div>
+<footer>
+  © 2026 VladLab
+</footer>
 
-    <div>
-      vladlab.space
-    </div>
 
-  </footer>
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
+  };
+
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+
+  const loggedOut =
+    document.getElementById("loggedOut");
+
+  const loggedIn =
+    document.getElementById("loggedIn");
+
+  const logoutButton =
+    document.getElementById("logoutButton");
+
+
+  onAuthStateChanged(auth, (user) => {
+
+    if (user && user.uid === ADMIN_UID) {
+
+      loggedOut.style.display = "none";
+      loggedIn.style.display = "flex";
+
+    } else {
+
+      loggedIn.style.display = "none";
+      loggedOut.style.display = "block";
+
+    }
+
+  });
+
+
+  logoutButton.addEventListener(
+    "click",
+
+    async () => {
+
+      await signOut(auth);
+
+      window.location.href = "/";
+
+    }
+
+  );
+
+</script>
 
 </body>
 </html>
