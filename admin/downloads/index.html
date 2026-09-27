@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Descărcări | VladLab Admin</title>
+
+  <link rel="icon" type="image/png" href="/logo.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080b12;
+      color: white;
+      min-height: 100vh;
+    }
+
+    nav {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 7%;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.94);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+    }
+
+    .logo-text {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
+      color: #5b8cff;
+    }
+
+    .admin-badge {
+      font-size: 12px;
+      color: #8d9ab0;
+      border: 1px solid #293142;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    main {
+      width: min(1050px, 90%);
+      margin: auto;
+      padding: 55px 0 80px;
+    }
+
+    .back {
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+      font-size: 42px;
+      letter-spacing: -2px;
+      margin-top: 25px;
+    }
+
+    .subtitle {
+      color: #7f899a;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .panel {
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 18px;
+      padding: 26px;
+      margin-top: 35px;
+    }
+
+    .panel h2 {
+      font-size: 20px;
+      margin-bottom: 22px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      color: #b9c2d1;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      background: #090d15;
+      border: 1px solid #293243;
+      border-radius: 10px;
+      padding: 13px 14px;
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #5b8cff;
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, 0.1);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .add-button {
+      width: 100%;
+      background: #5b8cff;
+      color: white;
+      border: none;
+      padding: 13px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .add-button:hover {
+      background: #6c98ff;
+    }
+
+    .add-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    #message {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    #message.success {
+      display: block;
+      color: #75e4a4;
+      background: rgba(67, 211, 126, 0.08);
+      border: 1px solid rgba(67, 211, 126, 0.2);
+    }
+
+    #message.error {
+      display: block;
+      color: #ff9292;
+      background: rgba(255, 80, 80, 0.08);
+      border: 1px solid rgba(255, 80, 80, 0.2);
+    }
+
+    .files-title {
+      margin-top: 45px;
+      margin-bottom: 18px;
+      font-size: 21px;
+    }
+
+    #filesList {
+      display: grid;
+      gap: 13px;
+    }
+
+    .file-card {
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 14px;
+      padding: 18px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .file-info {
+      min-width: 0;
+    }
+
+    .file-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .file-description {
+      color: #7f899a;
+      font-size: 13px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .file-link {
+      display: block;
+      color: #5b8cff;
+      font-size: 12px;
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 650px;
+    }
+
+    .file-link:hover {
+      text-decoration: underline;
+    }
+
+    .delete-button {
+      flex-shrink: 0;
+      background: rgba(255, 77, 77, 0.08);
+      color: #ff8b8b;
+      border: 1px solid rgba(255, 77, 77, 0.22);
+      padding: 9px 13px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .delete-button:hover {
+      background: rgba(255, 77, 77, 0.14);
+    }
+
+    .empty {
+      border: 1px dashed #293243;
+      border-radius: 14px;
+      padding: 40px 20px;
+      color: #657188;
+      text-align: center;
+    }
+
+    .loading {
+      color: #71809a;
+      text-align: center;
+      padding: 30px;
+    }
+
+    footer {
+      border-top: 1px solid #1d2330;
+      padding: 28px 7%;
+      color: #626d7f;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .file-card {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .delete-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+<nav>
+
+  <a href="/admin/" class="logo">
+
+    <img src="/logo.png" alt="VladLab">
+
+    <div class="logo-text">
+      Vlad<span>Lab</span>
+    </div>
+
+  </a>
+
+  <div class="admin-badge">
+    ADMIN
+  </div>
+
+</nav>
+
+
+<main>
+
+  <a href="/admin/" class="back">
+    ← Înapoi la Admin Panel
+  </a>
+
+  <h1>📥 Descărcări</h1>
+
+  <p class="subtitle">
+    Adaugă și gestionează fișierele afișate în pagina publică de descărcări.
+  </p>
+
+
+  <div class="panel">
+
+    <h2>Adaugă un fișier</h2>
+
+    <form id="addForm">
+
+      <div class="field">
+
+        <label for="title">
+          Titlu
+        </label>
+
+        <input
+          type="text"
+          id="title"
+          placeholder="Ex: Orar clasa a VII-a"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="description">
+          Descriere
+        </label>
+
+        <textarea
+          id="description"
+          placeholder="O scurtă descriere..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="url">
+          Link fișier
+        </label>
+
+        <input
+          type="url"
+          id="url"
+          placeholder="https://..."
+          required
+        >
+
+      </div>
+
+
+      <button
+        class="add-button"
+        id="addButton"
+        type="submit"
+      >
+        + Adaugă fișier
+      </button>
+
+    </form>
+
+    <div id="message"></div>
+
+  </div>
+
+
+  <h2 class="files-title">
+    Fișiere existente
+  </h2>
+
+  <div id="filesList">
+
+    <div class="loading">
+      Se încarcă...
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+  © 2026 VladLab · Admin Panel
+</footer>
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    deleteDoc,
+    doc,
+    onSnapshot,
+    serverTimestamp,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
+  };
+
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+  const db =
+    getFirestore(app);
+
+
+  const addForm =
+    document.getElementById("addForm");
+
+  const addButton =
+    document.getElementById("addButton");
+
+  const filesList =
+    document.getElementById("filesList");
+
+  const message =
+    document.getElementById("message");
+
+
+  let adminReady = false;
+
+
+  /* =========================
+     VERIFICARE ADMIN
+  ========================= */
+
+  onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+
+      window.location.href = "/login/";
+      return;
+
+    }
+
+
+    if (user.uid !== ADMIN_UID) {
+
+      window.location.href = "/";
+      return;
+
+    }
+
+
+    adminReady = true;
+
+    loadFiles();
+
+  });
+
+
+  /* =========================
+     ADAUGĂ FIȘIER
+  ========================= */
+
+  addForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+
+      if (!adminReady) {
+        return;
+      }
+
+
+      const title =
+        document
+          .getElementById("title")
+          .value
+          .trim();
+
+
+      const description =
+        document
+          .getElementById("description")
+          .value
+          .trim();
+
+
+      const url =
+        document
+          .getElementById("url")
+          .value
+          .trim();
+
+
+      if (!title || !url) {
+
+        showMessage(
+          "Completează titlul și linkul.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      addButton.disabled = true;
+
+      addButton.textContent =
+        "Se adaugă...";
+
+
+      try {
+
+        await addDoc(
+          collection(db, "downloads"),
+          {
+            title: title,
+            description: description,
+            url: url,
+            createdAt: serverTimestamp()
+          }
+        );
+
+
+        addForm.reset();
+
+
+        showMessage(
+          "Fișierul a fost adăugat.",
+          "success"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        showMessage(
+          "Nu am putut adăuga fișierul.",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        addButton.disabled = false;
+
+        addButton.textContent =
+          "+ Adaugă fișier";
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     LISTĂ FIȘIERE
+  ========================= */
+
+  function loadFiles() {
+
+    const downloadsQuery =
+      query(
+        collection(db, "downloads"),
+        orderBy("createdAt", "desc")
+      );
+
+
+    onSnapshot(
+      downloadsQuery,
+
+      (snapshot) => {
+
+        filesList.innerHTML = "";
+
+
+        if (snapshot.empty) {
+
+          filesList.innerHTML =
+            `
+              <div class="empty">
+                Momentan nu există fișiere.
+              </div>
+            `;
+
+          return;
+        }
+
+
+        snapshot.forEach((documentSnapshot) => {
+
+          const data =
+            documentSnapshot.data();
+
+
+          const card =
+            document.createElement("div");
+
+          card.className =
+            "file-card";
+
+
+          const info =
+            document.createElement("div");
+
+          info.className =
+            "file-info";
+
+
+          const title =
+            document.createElement("div");
+
+          title.className =
+            "file-title";
+
+          title.textContent =
+            data.title || "Fără titlu";
+
+
+          const description =
+            document.createElement("div");
+
+          description.className =
+            "file-description";
+
+          description.textContent =
+            data.description || "";
+
+
+          const link =
+            document.createElement("a");
+
+          link.className =
+            "file-link";
+
+          link.href =
+            data.url || "#";
+
+          link.target =
+            "_blank";
+
+          link.rel =
+            "noopener noreferrer";
+
+          link.textContent =
+            data.url || "";
+
+
+          info.appendChild(title);
+
+          if (data.description) {
+            info.appendChild(description);
+          }
+
+          info.appendChild(link);
+
+
+          const deleteButton =
+            document.createElement("button");
+
+          deleteButton.className =
+            "delete-button";
+
+          deleteButton.type =
+            "button";
+
+          deleteButton.textContent =
+            "Șterge";
+
+
+          deleteButton.addEventListener(
+            "click",
+            async () => {
+
+              const confirmed =
+                confirm(
+                  `Ștergi „${data.title || "acest fișier"}”?`
+                );
+
+
+              if (!confirmed) {
+                return;
+              }
+
+
+              deleteButton.disabled = true;
+
+              deleteButton.textContent =
+                "Se șterge...";
+
+
+              try {
+
+                await deleteDoc(
+                  doc(
+                    db,
+                    "downloads",
+                    documentSnapshot.id
+                  )
+                );
+
+              }
+
+              catch (error) {
+
+                console.error(error);
+
+                alert(
+                  "Nu am putut șterge fișierul."
+                );
+
+
+                deleteButton.disabled =
+                  false;
+
+                deleteButton.textContent =
+                  "Șterge";
+
+              }
+
+            }
+          );
+
+
+          card.appendChild(info);
+
+          card.appendChild(
+            deleteButton
+          );
+
+
+          filesList.appendChild(card);
+
+        });
+
+      },
+
+      (error) => {
+
+        console.error(error);
+
+
+        filesList.innerHTML =
+          `
+            <div class="empty">
+              Nu am putut încărca fișierele.
+            </div>
+          `;
+
+      }
+    );
+
+  }
+
+
+  function showMessage(text, type) {
+
+    message.className = type;
+
+    message.textContent = text;
+
+
+    setTimeout(() => {
+
+      message.className = "";
+
+      message.textContent = "";
+
+    }, 4000);
+
+  }
+
+</script>
+
+</body>
+
+</html>
