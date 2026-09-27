@@ -194,11 +194,92 @@
     }
 
 
+    /* DOWNLOADS */
+
+    #downloadsList {
+      margin-top: 45px;
+
+      display: grid;
+
+      gap: 16px;
+    }
+
+    .download-card {
+      background: #0e131d;
+
+      border: 1px solid #202735;
+
+      border-radius: 18px;
+
+      padding: 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+
+      transition: 0.2s;
+    }
+
+    .download-card:hover {
+      border-color: #303b50;
+
+      transform: translateY(-2px);
+    }
+
+    .download-info {
+      min-width: 0;
+    }
+
+    .download-title {
+      font-size: 18px;
+
+      font-weight: 700;
+
+      margin-bottom: 7px;
+    }
+
+    .download-description {
+      color: #7f899a;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+    .download-button {
+      flex-shrink: 0;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 11px 17px;
+
+      border-radius: 10px;
+
+      background: #5b8cff;
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      transition: 0.2s;
+    }
+
+    .download-button:hover {
+      background: #6c98ff;
+    }
+
+
     /* EMPTY */
 
     .empty {
-      margin-top: 45px;
-
       min-height: 250px;
 
       border: 1px dashed #293243;
@@ -278,6 +359,16 @@
         padding: 8px 11px;
       }
 
+      .download-card {
+        flex-direction: column;
+
+        align-items: stretch;
+      }
+
+      .download-button {
+        width: 100%;
+      }
+
     }
 
   </style>
@@ -353,19 +444,23 @@
   </h1>
 
 
-  <div class="empty">
+  <div id="downloadsList">
 
-    <div class="empty-icon">
-      📂
+    <div class="empty">
+
+      <div class="empty-icon">
+        ⏳
+      </div>
+
+      <h2>
+        Se încarcă...
+      </h2>
+
+      <p>
+        Se verifică fișierele disponibile.
+      </p>
+
     </div>
-
-    <h2>
-      Momentan nu există fișiere.
-    </h2>
-
-    <p>
-      Fișierele disponibile pentru descărcare vor apărea aici.
-    </p>
 
   </div>
 
@@ -399,6 +494,15 @@
     onAuthStateChanged,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    collection,
+    onSnapshot,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
   const firebaseConfig = {
@@ -439,6 +543,10 @@
     getAuth(app);
 
 
+  const db =
+    getFirestore(app);
+
+
   const loggedOut =
     document.getElementById("loggedOut");
 
@@ -448,6 +556,13 @@
   const logoutButton =
     document.getElementById("logoutButton");
 
+  const downloadsList =
+    document.getElementById("downloadsList");
+
+
+  /* =========================
+     LOGIN / LOGOUT
+  ========================= */
 
   onAuthStateChanged(auth, (user) => {
 
@@ -487,6 +602,196 @@
       window.location.reload();
 
     }
+  );
+
+
+  /* =========================
+     DESCĂRCĂRI DIN FIRESTORE
+  ========================= */
+
+  const downloadsQuery =
+    query(
+      collection(db, "downloads"),
+      orderBy("createdAt", "desc")
+    );
+
+
+  onSnapshot(
+
+    downloadsQuery,
+
+    (snapshot) => {
+
+      downloadsList.innerHTML = "";
+
+
+      /* NICIUN FIȘIER */
+
+      if (snapshot.empty) {
+
+        downloadsList.innerHTML = `
+          <div class="empty">
+
+            <div class="empty-icon">
+              📂
+            </div>
+
+            <h2>
+              Momentan nu există fișiere.
+            </h2>
+
+            <p>
+              Fișierele disponibile pentru descărcare vor apărea aici.
+            </p>
+
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      /* AFIȘARE FIȘIERE */
+
+      snapshot.forEach((documentSnapshot) => {
+
+        const data =
+          documentSnapshot.data();
+
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "download-card";
+
+
+        const info =
+          document.createElement("div");
+
+        info.className =
+          "download-info";
+
+
+        const title =
+          document.createElement("div");
+
+        title.className =
+          "download-title";
+
+        title.textContent =
+          data.title || "Fișier";
+
+
+        info.appendChild(title);
+
+
+        if (data.description) {
+
+          const description =
+            document.createElement("div");
+
+          description.className =
+            "download-description";
+
+          description.textContent =
+            data.description;
+
+          info.appendChild(description);
+
+        }
+
+
+        const button =
+          document.createElement("a");
+
+        button.className =
+          "download-button";
+
+        button.textContent =
+          "Descarcă";
+
+
+        /* ACCEPTĂ DOAR LINKURI HTTP / HTTPS */
+
+        try {
+
+          const fileUrl =
+            new URL(data.url);
+
+          if (
+            fileUrl.protocol === "https:" ||
+            fileUrl.protocol === "http:"
+          ) {
+
+            button.href =
+              fileUrl.href;
+
+            button.target =
+              "_blank";
+
+            button.rel =
+              "noopener noreferrer";
+
+          }
+
+          else {
+
+            button.removeAttribute("href");
+
+            button.textContent =
+              "Link indisponibil";
+
+          }
+
+        }
+
+        catch {
+
+          button.removeAttribute("href");
+
+          button.textContent =
+            "Link indisponibil";
+
+        }
+
+
+        card.appendChild(info);
+
+        card.appendChild(button);
+
+        downloadsList.appendChild(card);
+
+      });
+
+    },
+
+
+    (error) => {
+
+      console.error(error);
+
+      downloadsList.innerHTML = `
+        <div class="empty">
+
+          <div class="empty-icon">
+            ⚠️
+          </div>
+
+          <h2>
+            Nu am putut încărca fișierele.
+          </h2>
+
+          <p>
+            Încearcă din nou mai târziu.
+          </p>
+
+        </div>
+      `;
+
+    }
+
   );
 
 </script>
