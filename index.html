@@ -7,11 +7,19 @@
   <title>VladLab</title>
   <meta name="description" content="VladLab">
 
+  <!-- ICONIȚĂ TAB -->
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -23,7 +31,7 @@
 
     /* NAVBAR */
     nav {
-      height: 70px;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -33,22 +41,40 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
 
+    /* LOGO */
     .logo {
-      font-size: 24px;
-      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 11px;
       text-decoration: none;
       color: white;
     }
 
-    .logo span {
+    .logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(91, 140, 255, 0.18);
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
       color: #5b8cff;
     }
 
+    /* NAV LINKS */
     .nav-links {
       display: flex;
+      align-items: center;
       gap: 25px;
     }
 
@@ -112,10 +138,28 @@
       overflow: hidden;
     }
 
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: rgba(91, 140, 255, 0.08);
+      border-radius: 50%;
+      top: -90px;
+      right: -70px;
+      filter: blur(10px);
+      transition: 0.3s;
+    }
+
     .card:hover {
       transform: translateY(-5px);
       border-color: #496cae;
       background: #111824;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .card:hover::before {
+      background: rgba(91, 140, 255, 0.14);
     }
 
     .icon {
@@ -167,14 +211,24 @@
       gap: 20px;
     }
 
-    /* MOBILE */
+    /* TELEFON */
     @media (max-width: 750px) {
+
       nav {
         padding: 0 5%;
       }
 
       .nav-links {
         display: none;
+      }
+
+      .logo img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .logo-text {
+        font-size: 21px;
       }
 
       .hero {
@@ -199,71 +253,134 @@
 
 <body>
 
-<nav>
-  <a href="/" class="logo">Vlad<span>Lab</span></a>
+  <!-- MENIU -->
+  <nav>
 
-  <div class="nav-links">
-    <a href="/scoala/">Școală</a>
-    <a href="/minecraft/">Minecraft</a>
-    <a href="/proiecte/">Proiecte</a>
-    <a href="/upload/">Upload</a>
-    <a href="/download/">Descărcări</a>
-  </div>
-</nav>
+    <a href="/" class="logo">
+      <img src="/logo.png" alt="VladLab Logo">
 
-<section class="hero">
+      <div class="logo-text">
+        Vlad<span>Lab</span>
+      </div>
+    </a>
 
-  <div class="badge">⚡ VladLab</div>
+    <div class="nav-links">
+      <a href="/scoala/">Școală</a>
+      <a href="/minecraft/">Minecraft</a>
+      <a href="/proiecte/">Proiecte</a>
+      <a href="/upload/">Upload</a>
+      <a href="/download/">Descărcări</a>
+    </div>
 
-  <h1>
-    Totul într-un singur <span>loc.</span>
-  </h1>
+  </nav>
 
-</section>
 
-<section class="cards">
+  <!-- TITLU -->
+  <section class="hero">
 
-  <a href="/scoala/" class="card">
-    <div class="icon">🎓</div>
-    <h2>Școală</h2>
-    <p>Materiale, proiecte și alte resurse pentru școală.</p>
-    <div class="arrow">→</div>
-  </a>
+    <div class="badge">
+      ⚡ VladLab
+    </div>
 
-  <a href="/minecraft/" class="card">
-    <div class="icon">⛏️</div>
-    <h2>Minecraft</h2>
-    <p>Servere, informații, resurse și proiecte Minecraft.</p>
-    <div class="arrow">→</div>
-  </a>
+    <h1>
+      Totul într-un singur <span>loc.</span>
+    </h1>
 
-  <a href="/proiecte/" class="card">
-    <div class="icon">💻</div>
-    <h2>Proiecte</h2>
-    <p>Proiecte și experimente.</p>
-    <div class="arrow">→</div>
-  </a>
+  </section>
 
-  <a href="/upload/" class="card">
-    <div class="icon">📤</div>
-    <h2>Trimite fișier</h2>
-    <p>Trimite rapid un fișier.</p>
-    <div class="arrow">→</div>
-  </a>
 
-  <a href="/download/" class="card">
-    <div class="icon">📥</div>
-    <h2>Descărcări</h2>
-    <p>Fișiere și resurse disponibile pentru descărcare.</p>
-    <div class="arrow">→</div>
-  </a>
+  <!-- CARDURI -->
+  <section class="cards">
 
-</section>
+    <a href="/scoala/" class="card">
 
-<footer>
-  <div>© 2026 VladLab</div>
-  <div>vladlab.site</div>
-</footer>
+      <div class="icon">🎓</div>
+
+      <h2>Școală</h2>
+
+      <p>
+        Materiale, proiecte și alte resurse pentru școală.
+      </p>
+
+      <div class="arrow">→</div>
+
+    </a>
+
+
+    <a href="/minecraft/" class="card">
+
+      <div class="icon">⛏️</div>
+
+      <h2>Minecraft</h2>
+
+      <p>
+        Servere, informații, resurse și proiecte Minecraft.
+      </p>
+
+      <div class="arrow">→</div>
+
+    </a>
+
+
+    <a href="/proiecte/" class="card">
+
+      <div class="icon">💻</div>
+
+      <h2>Proiecte</h2>
+
+      <p>
+        Proiecte și experimente.
+      </p>
+
+      <div class="arrow">→</div>
+
+    </a>
+
+
+    <a href="/upload/" class="card">
+
+      <div class="icon">📤</div>
+
+      <h2>Trimite fișier</h2>
+
+      <p>
+        Trimite rapid un fișier.
+      </p>
+
+      <div class="arrow">→</div>
+
+    </a>
+
+
+    <a href="/download/" class="card">
+
+      <div class="icon">📥</div>
+
+      <h2>Descărcări</h2>
+
+      <p>
+        Fișiere și resurse disponibile pentru descărcare.
+      </p>
+
+      <div class="arrow">→</div>
+
+    </a>
+
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+
+    <div>
+      © 2026 VladLab
+    </div>
+
+    <div>
+      vladlab.site
+    </div>
+
+  </footer>
 
 </body>
 </html>
