@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Descărcări | VladLab</title>
+
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080b12;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8%;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.92);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo-text span {
+      color: #5b8cff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: #aeb7c7;
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links .active {
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      width: min(1000px, 90%);
+      margin: auto;
+      padding: 70px 0 100px;
+    }
+
+    .back {
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 68px);
+      letter-spacing: -3px;
+      margin-top: 25px;
+    }
+
+    h1 span {
+      color: #5b8cff;
+    }
+
+    .subtitle {
+      color: #7f899a;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    .downloads {
+      margin-top: 45px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .empty {
+      min-height: 240px;
+      border: 1px dashed #293243;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .empty-icon {
+      font-size: 42px;
+      margin-bottom: 18px;
+    }
+
+    .empty h2 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .empty p {
+      color: #657188;
+      font-size: 14px;
+    }
+
+    /*
+      STIL PENTRU VIITOARELE FIȘIERE
+    */
+
+    .file {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .file-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #17233c;
+      border-radius: 12px;
+      font-size: 23px;
+    }
+
+    .file h3 {
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .file p {
+      color: #657188;
+      font-size: 12px;
+    }
+
+    .download-button {
+      background: #5b8cff;
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: bold;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+
+    .download-button:hover {
+      background: #729cff;
+    }
+
+    footer {
+      border-top: 1px solid #1d2330;
+      padding: 30px 8%;
+      color: #626d7f;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 750px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .file {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .download-button {
+        width: 100%;
+        text-align: center;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+
+  <a href="/" class="logo">
+    <img src="/logo.png" alt="VladLab">
+
+    <div class="logo-text">
+      Vlad<span>Lab</span>
+    </div>
+  </a>
+
+  <div class="nav-links">
+    <a href="/scoala/">Școală</a>
+    <a href="http://novasmp.space/">Minecraft</a>
+    <a href="/proiecte/">Proiecte</a>
+    <a href="/upload/">Upload</a>
+    <a href="/download/" class="active">Descărcări</a>
+  </div>
+
+</nav>
+
+<main>
+
+  <a href="/" class="back">← Înapoi la VladLab</a>
+
+  <h1>📥 <span>Descărcări</span></h1>
+
+  <p class="subtitle">
+    Fișiere și resurse disponibile pentru descărcare.
+  </p>
+
+  <div class="downloads">
+
+    <!-- MOMENTAN PAGINA ESTE GOALĂ -->
+
+    <div class="empty">
+      <div class="empty-icon">📂</div>
+
+      <h2>Momentan nu există fișiere.</h2>
+
+      <p>
+        Fișierele disponibile pentru descărcare vor apărea aici.
+      </p>
+    </div>
+
+
+    <!--
+      EXEMPLU PENTRU MAI TÂRZIU:
+
+      <div class="file">
+
+        <div class="file-info">
+
+          <div class="file-icon">📄</div>
+
+          <div>
+            <h3>Nume fișier</h3>
+            <p>PDF • 2.4 MB</p>
+          </div>
+
+        </div>
+
+        <a
+          href="/files/fisier.pdf"
+          class="download-button"
+          download
+        >
+          Descarcă
+        </a>
+
+      </div>
+    -->
+
+  </div>
+
+</main>
+
+<footer>
+  <div>© 2026 VladLab</div>
+  <div>Descărcări</div>
+</footer>
+
+</body>
+</html>
