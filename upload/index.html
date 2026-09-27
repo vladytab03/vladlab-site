@@ -166,7 +166,7 @@
       text-align: center;
     }
 
-    .file-area .icon {
+    .file-icon {
       font-size: 32px;
       margin-bottom: 12px;
     }
@@ -203,13 +203,30 @@
       transform: none;
     }
 
+    /* STATUS */
+
     #status {
       display: none;
-      margin-top: 20px;
-      padding: 13px;
-      border-radius: 10px;
+      margin-top: 22px;
+      border-radius: 14px;
+      padding: 18px;
       text-align: center;
-      font-size: 14px;
+    }
+
+    #status .status-icon {
+      font-size: 27px;
+      margin-bottom: 7px;
+    }
+
+    #status .status-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    #status .status-text {
+      font-size: 13px;
+      opacity: 0.85;
     }
 
     .success {
@@ -292,7 +309,7 @@
   <h1>📤 Trimite <span>fișier</span></h1>
 
   <p class="subtitle">
-    Trimite-mi rapid un fișier prin VladLab.
+    Trimite rapid un fișier prin VladLab.
   </p>
 
   <div class="upload-box">
@@ -301,6 +318,7 @@
 
       <div class="field">
         <label for="name">Nume</label>
+
         <input
           type="text"
           id="name"
@@ -312,6 +330,7 @@
 
       <div class="field">
         <label for="message">Mesaj (opțional)</label>
+
         <textarea
           id="message"
           placeholder="Scrie un mesaj..."
@@ -320,19 +339,25 @@
       </div>
 
       <div class="field">
+
         <label>Fișier</label>
 
         <div class="file-area">
-          <div class="icon">📁</div>
 
-          <div>Alege fișierul pe care vrei să-l trimiți</div>
+          <div class="file-icon">📁</div>
+
+          <div>
+            Alege fișierul pe care vrei să-l trimiți
+          </div>
 
           <input
             type="file"
             id="file"
             required
           >
+
         </div>
+
       </div>
 
       <button type="submit" id="sendButton">
@@ -347,125 +372,249 @@
 
 </main>
 
+
 <footer>
-  <div>© 2026 VladLab</div>
-  <div>Upload</div>
+
+  <div>
+    © 2026 VladLab
+  </div>
+
+  <div>
+    Upload
+  </div>
+
 </footer>
 
 
 <script>
+
   const SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
 
-  const form = document.getElementById("uploadForm");
-  const statusBox = document.getElementById("status");
-  const button = document.getElementById("sendButton");
+
+  const form =
+    document.getElementById("uploadForm");
+
+  const statusBox =
+    document.getElementById("status");
+
+  const button =
+    document.getElementById("sendButton");
+
 
   form.addEventListener("submit", async function(event) {
+
     event.preventDefault();
 
-    const fileInput = document.getElementById("file");
-    const file = fileInput.files[0];
+
+    const fileInput =
+      document.getElementById("file");
+
+    const file =
+      fileInput.files[0];
+
 
     if (!file) {
-      showStatus("Alege un fișier.", "error");
+
+      showError(
+        "Nu ai ales niciun fișier."
+      );
+
       return;
     }
 
-    /* Limită 10 MB */
+
+    /* LIMITĂ 10 MB */
+
     if (file.size > 10 * 1024 * 1024) {
-      showStatus("Fișierul este prea mare. Limita este 10 MB.", "error");
+
+      showError(
+        "Fișierul este prea mare. Limita este de 10 MB."
+      );
+
       return;
     }
+
 
     button.disabled = true;
-    button.textContent = "Se trimite...";
 
-    showStatus("Se încarcă fișierul...", "loading");
+    button.textContent =
+      "Se trimite...";
+
+
+    showLoading();
+
 
     try {
 
-      const base64 = await fileToBase64(file);
+      const base64 =
+        await fileToBase64(file);
+
 
       const data = {
-        name: document.getElementById("name").value.trim(),
-        message: document.getElementById("message").value.trim(),
-        fileName: file.name,
-        mimeType: file.type || "application/octet-stream",
-        fileData: base64
+
+        name:
+          document
+            .getElementById("name")
+            .value
+            .trim(),
+
+        message:
+          document
+            .getElementById("message")
+            .value
+            .trim(),
+
+        fileName:
+          file.name,
+
+        mimeType:
+          file.type ||
+          "application/octet-stream",
+
+        fileData:
+          base64
+
       };
 
-      /*
-        no-cors este necesar pentru trimiterea simplă
-        către Web App-ul Apps Script de pe alt domeniu.
-      */
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(data)
-      });
 
-      showStatus(
-        "✓ Fișierul a fost trimis. Verifică folderul VladLab Uploads.",
-        "success"
+      await fetch(
+        SCRIPT_URL,
+        {
+          method: "POST",
+
+          mode: "no-cors",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify(data)
+        }
       );
 
+
+      showSuccess();
+
       form.reset();
+
 
     } catch (error) {
 
       console.error(error);
 
-      showStatus(
-        "A apărut o eroare la trimiterea fișierului.",
-        "error"
+      showError(
+        "Fișierul nu a putut fi trimis. Încearcă din nou."
       );
 
     } finally {
 
       button.disabled = false;
-      button.textContent = "Trimite fișier";
+
+      button.textContent =
+        "Trimite alt fișier";
 
     }
+
   });
 
 
   function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
 
-      const reader = new FileReader();
+    return new Promise(
+      (resolve, reject) => {
 
-      reader.onload = function() {
+        const reader =
+          new FileReader();
 
-        const result = reader.result;
 
-        /*
-          Elimină:
-          data:image/png;base64,
-          sau prefixul echivalent.
-        */
-        const base64 = result.split(",")[1];
+        reader.onload =
+          function() {
 
-        resolve(base64);
-      };
+            const result =
+              reader.result;
 
-      reader.onerror = reject;
+            const base64 =
+              result.split(",")[1];
 
-      reader.readAsDataURL(file);
+            resolve(base64);
 
-    });
+          };
+
+
+        reader.onerror =
+          reject;
+
+
+        reader.readAsDataURL(file);
+
+      }
+    );
+
   }
 
 
-  function showStatus(message, type) {
+  function showLoading() {
 
-    statusBox.className = type;
-    statusBox.textContent = message;
+    statusBox.className =
+      "loading";
+
+    statusBox.innerHTML = `
+      <div class="status-icon">⏳</div>
+
+      <div class="status-title">
+        Se încarcă fișierul...
+      </div>
+
+      <div class="status-text">
+        Nu închide pagina până la finalizarea încărcării.
+      </div>
+    `;
 
   }
+
+
+  function showSuccess() {
+
+    statusBox.className =
+      "success";
+
+    statusBox.innerHTML = `
+      <div class="status-icon">✓</div>
+
+      <div class="status-title">
+        Încărcare finalizată!
+      </div>
+
+      <div class="status-text">
+        Fișierul a fost trimis cu succes.
+      </div>
+    `;
+
+  }
+
+
+  function showError(message) {
+
+    statusBox.className =
+      "error";
+
+    statusBox.innerHTML = `
+      <div class="status-icon">!</div>
+
+      <div class="status-title">
+        Încărcarea a eșuat
+      </div>
+
+      <div class="status-text">
+        ${message}
+      </div>
+    `;
+
+  }
+
 </script>
 
 </body>
