@@ -2,17 +2,15 @@
 <html lang="ro">
 
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Upload | VladLab</title>
+  <title>Trimite fișier | VladLab</title>
 
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="apple-touch-icon" href="/logo.png">
 
   <style>
-
     * {
       margin: 0;
       padding: 0;
@@ -24,58 +22,44 @@
       background: #080b12;
       color: white;
       min-height: 100vh;
-
       display: flex;
       flex-direction: column;
     }
-
 
     /* NAVBAR */
 
     nav {
       height: 72px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 0 8%;
-
       border-bottom: 1px solid #1d2330;
-
       background: rgba(8, 11, 18, 0.92);
-
       position: sticky;
       top: 0;
       z-index: 10;
-
       backdrop-filter: blur(12px);
     }
 
     .logo {
       display: flex;
       align-items: center;
-
       gap: 11px;
-
       text-decoration: none;
-
       color: white;
     }
 
     .logo img {
       width: 44px;
       height: 44px;
-
       border-radius: 11px;
-
       object-fit: cover;
     }
 
     .logo-text {
       font-size: 24px;
       font-weight: 800;
-
       letter-spacing: -1px;
     }
 
@@ -83,13 +67,11 @@
       color: #5b8cff;
     }
 
-
     /* LOGIN */
 
     .account {
       display: flex;
       align-items: center;
-
       gap: 10px;
     }
 
@@ -101,26 +83,18 @@
     .login-button,
     .user-button,
     .logout-button {
-      border-radius: 10px;
-
       padding: 9px 15px;
-
+      border-radius: 10px;
       font-size: 14px;
-
       text-decoration: none;
-
       cursor: pointer;
-
       transition: 0.2s;
     }
 
     .login-button {
       background: #5b8cff;
-
       color: white;
-
       border: 1px solid #5b8cff;
-
       font-weight: 700;
     }
 
@@ -130,50 +104,38 @@
 
     .user-button {
       background: transparent;
-
       color: #cbd4e4;
-
       border: 1px solid #293142;
     }
 
     .user-button:hover {
       color: white;
-
       border-color: #5b8cff;
     }
 
     .logout-button {
       background: #161c27;
-
       color: white;
-
       border: 1px solid #293142;
     }
 
     .logout-button:hover {
       background: #1a2230;
-
       border-color: #5b8cff;
     }
-
 
     /* MAIN */
 
     main {
       flex: 1;
-
       width: min(850px, 90%);
-
       margin: auto;
-
       padding: 80px 0;
     }
 
     .back {
       color: #71809a;
-
       text-decoration: none;
-
       font-size: 14px;
     }
 
@@ -183,9 +145,7 @@
 
     h1 {
       font-size: clamp(48px, 7vw, 72px);
-
       letter-spacing: -3px;
-
       margin-top: 25px;
     }
 
@@ -195,24 +155,17 @@
 
     .subtitle {
       margin-top: 10px;
-
       color: #7f899a;
-
       font-size: 15px;
     }
-
 
     /* UPLOAD */
 
     .upload-box {
       margin-top: 45px;
-
       background: #0e131d;
-
       border: 1px solid #202735;
-
       border-radius: 20px;
-
       padding: 28px;
     }
 
@@ -222,50 +175,34 @@
 
     label {
       display: block;
-
       margin-bottom: 9px;
-
       color: #c7cfdd;
-
       font-size: 14px;
-
       font-weight: 600;
     }
 
     input,
     textarea {
       width: 100%;
-
       padding: 14px 15px;
-
       background: #090d15;
-
       border: 1px solid #293243;
-
       border-radius: 11px;
-
       color: white;
-
       font-family: Arial, Helvetica, sans-serif;
-
       font-size: 14px;
-
       outline: none;
-
       transition: 0.2s;
     }
 
     input:focus,
     textarea:focus {
       border-color: #5b8cff;
-
-      box-shadow:
-        0 0 0 3px rgba(91, 140, 255, 0.1);
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, 0.10);
     }
 
     textarea {
       min-height: 110px;
-
       resize: vertical;
     }
 
@@ -275,31 +212,20 @@
 
     .hint {
       margin-top: 8px;
-
       color: #657188;
-
       font-size: 12px;
     }
 
     .send-button {
       width: 100%;
-
       padding: 14px 18px;
-
       border: none;
-
       border-radius: 11px;
-
       background: #5b8cff;
-
       color: white;
-
       font-size: 15px;
-
       font-weight: 700;
-
       cursor: pointer;
-
       transition: 0.2s;
     }
 
@@ -309,77 +235,54 @@
 
     .send-button:disabled {
       opacity: 0.55;
-
       cursor: not-allowed;
     }
-
 
     /* STATUS */
 
     #status {
       display: none;
-
       margin-top: 20px;
-
       padding: 14px 16px;
-
       border-radius: 11px;
-
       font-size: 14px;
     }
 
     #status.loading {
       display: block;
-
       background: rgba(91, 140, 255, 0.08);
-
       border: 1px solid rgba(91, 140, 255, 0.22);
-
       color: #9bb7ff;
     }
 
     #status.success {
       display: block;
-
       background: rgba(58, 210, 120, 0.08);
-
       border: 1px solid rgba(58, 210, 120, 0.22);
-
       color: #72e7a4;
     }
 
     #status.error {
       display: block;
-
       background: rgba(255, 75, 75, 0.08);
-
       border: 1px solid rgba(255, 75, 75, 0.22);
-
       color: #ff9292;
     }
-
 
     /* FOOTER */
 
     footer {
       border-top: 1px solid #1d2330;
-
       padding: 30px 8%;
-
       color: #626d7f;
-
       font-size: 13px;
-
       display: flex;
-
       justify-content: space-between;
     }
-
 
     /* MOBILE */
 
     @media (max-width: 750px) {
-
       nav {
         padding: 0 5%;
       }
@@ -394,7 +297,6 @@
 
       footer {
         flex-direction: column;
-
         gap: 10px;
       }
 
@@ -403,16 +305,11 @@
       .logout-button {
         padding: 8px 11px;
       }
-
     }
-
   </style>
-
 </head>
 
-
 <body>
-
 
 <!-- NAVBAR -->
 
@@ -428,17 +325,13 @@
 
   </a>
 
-
   <div class="account">
 
     <div id="loggedOut">
-
       <a href="/login/" class="login-button">
         Login
       </a>
-
     </div>
-
 
     <div id="loggedIn" class="account">
 
@@ -469,21 +362,18 @@
     ← Înapoi la VladLab
   </a>
 
-
   <h1>
     📤 <span>Trimite fișier</span>
   </h1>
 
-
   <p class="subtitle">
-    Trimite rapid un fișier prin VladLab.
+    Trimite un fișier către VladLab.
   </p>
 
 
   <div class="upload-box">
 
     <form id="uploadForm">
-
 
       <div class="field">
 
@@ -492,8 +382,8 @@
         </label>
 
         <input
-          type="text"
           id="name"
+          type="text"
           placeholder="Numele tău"
           required
         >
@@ -522,8 +412,8 @@
         </label>
 
         <input
-          type="file"
           id="file"
+          type="file"
           required
         >
 
@@ -535,13 +425,12 @@
 
 
       <button
-        type="submit"
-        class="send-button"
         id="sendButton"
+        class="send-button"
+        type="submit"
       >
         Trimite fișier
       </button>
-
 
     </form>
 
@@ -562,7 +451,7 @@
   </div>
 
   <div>
-    Upload
+    Trimite fișier
   </div>
 
 </footer>
@@ -570,12 +459,13 @@
 
 <script type="module">
 
-  /* FIREBASE */
+  /* =========================
+     FIREBASE LOGIN
+  ========================= */
 
   import {
     initializeApp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-
 
   import {
     getAuth,
@@ -585,28 +475,13 @@
 
 
   const firebaseConfig = {
-
-    apiKey:
-      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-
-    authDomain:
-      "vladlab-11887.firebaseapp.com",
-
-    projectId:
-      "vladlab-11887",
-
-    storageBucket:
-      "vladlab-11887.firebasestorage.app",
-
-    messagingSenderId:
-      "741561223788",
-
-    appId:
-      "1:741561223788:web:88ad3e62db87e32551a649",
-
-    measurementId:
-      "G-9XN16BVYRN"
-
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
   };
 
 
@@ -616,7 +491,6 @@
 
   const app =
     initializeApp(firebaseConfig);
-
 
   const auth =
     getAuth(app);
@@ -634,26 +508,15 @@
 
   onAuthStateChanged(auth, (user) => {
 
-    if (
-      user &&
-      user.uid === ADMIN_UID
-    ) {
+    if (user && user.uid === ADMIN_UID) {
 
-      loggedOut.style.display =
-        "none";
+      loggedOut.style.display = "none";
+      loggedIn.style.display = "flex";
 
-      loggedIn.style.display =
-        "flex";
+    } else {
 
-    }
-
-    else {
-
-      loggedIn.style.display =
-        "none";
-
-      loggedOut.style.display =
-        "block";
+      loggedIn.style.display = "none";
+      loggedOut.style.display = "block";
 
     }
 
@@ -662,7 +525,6 @@
 
   logoutButton.addEventListener(
     "click",
-
     async () => {
 
       await signOut(auth);
@@ -673,7 +535,9 @@
   );
 
 
-  /* GOOGLE DRIVE UPLOAD */
+  /* =========================
+     GOOGLE DRIVE UPLOAD
+  ========================= */
 
   const SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
@@ -689,156 +553,110 @@
     document.getElementById("status");
 
 
-  form.addEventListener(
-    "submit",
+  form.addEventListener("submit", async (event) => {
 
-    async (event) => {
-
-      event.preventDefault();
+    event.preventDefault();
 
 
-      const name =
-        document
-          .getElementById("name")
-          .value
-          .trim();
+    const name =
+      document.getElementById("name").value.trim();
+
+    const message =
+      document.getElementById("message").value.trim();
+
+    const file =
+      document.getElementById("file").files[0];
 
 
-      const message =
-        document
-          .getElementById("message")
-          .value
-          .trim();
+    if (!file) {
+
+      showError("Selectează un fișier.");
+
+      return;
+    }
 
 
-      const file =
-        document
-          .getElementById("file")
-          .files[0];
+    if (file.size > 10 * 1024 * 1024) {
+
+      showError(
+        "Fișierul este prea mare. Limita este de 10 MB."
+      );
+
+      return;
+    }
 
 
-      if (!file) {
+    sendButton.disabled = true;
+    sendButton.textContent = "Se trimite...";
 
-        showError(
-          "Selectează un fișier."
-        );
-
-        return;
-      }
+    statusBox.className = "loading";
+    statusBox.textContent = "Se încarcă fișierul...";
 
 
-      if (
-        file.size >
-        10 * 1024 * 1024
-      ) {
+    try {
 
-        showError(
-          "Fișierul este prea mare. Limita este de 10 MB."
-        );
-
-        return;
-      }
+      const fileData =
+        await fileToBase64(file);
 
 
-      sendButton.disabled = true;
+      const payload = {
+        name: name,
+        message: message,
+        fileName: file.name,
+        mimeType:
+          file.type || "application/octet-stream",
+        fileData: fileData
+      };
 
-      sendButton.textContent =
-        "Se trimite...";
+
+      await fetch(
+        SCRIPT_URL,
+        {
+          method: "POST",
+
+          mode: "no-cors",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
 
 
-      statusBox.className =
-        "loading";
+      statusBox.className = "success";
 
       statusBox.textContent =
-        "Se încarcă fișierul...";
+        "Fișierul a fost trimis!";
 
 
-      try {
-
-        const fileData =
-          await fileToBase64(file);
-
-
-        const payload = {
-
-          name: name,
-
-          message: message,
-
-          fileName:
-            file.name,
-
-          mimeType:
-            file.type ||
-            "application/octet-stream",
-
-          fileData:
-            fileData
-
-        };
-
-
-        await fetch(
-
-          SCRIPT_URL,
-
-          {
-
-            method: "POST",
-
-            mode: "no-cors",
-
-            headers: {
-
-              "Content-Type":
-                "text/plain;charset=utf-8"
-
-            },
-
-            body:
-              JSON.stringify(payload)
-
-          }
-
-        );
-
-
-        statusBox.className =
-          "success";
-
-
-        statusBox.innerHTML =
-          "<strong>Fișier trimis!</strong><br>Încărcarea a fost finalizată.";
-
-
-        form.reset();
-
-      }
-
-      catch (error) {
-
-        console.error(error);
-
-
-        showError(
-          "A apărut o problemă la trimiterea fișierului."
-        );
-
-      }
-
-      finally {
-
-        sendButton.disabled =
-          false;
-
-
-        sendButton.textContent =
-          "Trimite fișier";
-
-      }
+      form.reset();
 
     }
-  );
+
+    catch (error) {
+
+      console.error(error);
+
+      showError(
+        "A apărut o problemă la trimiterea fișierului."
+      );
+
+    }
+
+    finally {
+
+      sendButton.disabled = false;
+
+      sendButton.textContent =
+        "Trimite fișier";
+
+    }
+
+  });
 
 
   function fileToBase64(file) {
@@ -853,9 +671,7 @@
         reader.onload = () => {
 
           const base64 =
-            reader.result
-              .split(",")[1];
-
+            reader.result.split(",")[1];
 
           resolve(base64);
 
@@ -866,9 +682,7 @@
           reject;
 
 
-        reader.readAsDataURL(
-          file
-        );
+        reader.readAsDataURL(file);
 
       }
     );
@@ -878,17 +692,13 @@
 
   function showError(message) {
 
-    statusBox.className =
-      "error";
+    statusBox.className = "error";
 
-    statusBox.textContent =
-      message;
+    statusBox.textContent = message;
 
   }
 
 </script>
 
-
 </body>
-
 </html>
