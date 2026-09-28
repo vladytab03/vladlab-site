@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -120,7 +121,8 @@
       font-weight: 600;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    textarea {
       width: 100%;
       padding: 13px 14px;
       background: #090d15;
@@ -131,9 +133,23 @@
       outline: none;
     }
 
-    input[type="text"]:focus {
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
       border-color: #5b8cff;
-      box-shadow: 0 0 0 3px rgba(91,140,255,.1);
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, .1);
+    }
+
+    .hint {
+      margin-top: 7px;
+      color: #68758a;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .toggle-box {
@@ -199,6 +215,22 @@
       transform: translateX(21px);
     }
 
+    .maintenance-warning {
+      display: none;
+      margin-top: 15px;
+      padding: 14px;
+      border-radius: 11px;
+      background: rgba(255, 180, 60, .08);
+      border: 1px solid rgba(255, 180, 60, .22);
+      color: #ffc76a;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .maintenance-warning.active {
+      display: block;
+    }
+
     .save {
       width: 100%;
       margin-top: 8px;
@@ -232,26 +264,30 @@
     #status.success {
       display: block;
       color: #75e4a4;
-      background: rgba(67,211,126,.08);
-      border: 1px solid rgba(67,211,126,.2);
+      background: rgba(67, 211, 126, .08);
+      border: 1px solid rgba(67, 211, 126, .2);
     }
 
     #status.error {
       display: block;
       color: #ff9292;
-      background: rgba(255,80,80,.08);
-      border: 1px solid rgba(255,80,80,.2);
+      background: rgba(255, 80, 80, .08);
+      border: 1px solid rgba(255, 80, 80, .2);
     }
 
     .info {
       margin-top: 25px;
       padding: 18px;
-      background: rgba(91,140,255,.06);
-      border: 1px solid rgba(91,140,255,.18);
+      background: rgba(91, 140, 255, .06);
+      border: 1px solid rgba(91, 140, 255, .18);
       border-radius: 13px;
       color: #91a7d0;
       font-size: 13px;
       line-height: 1.6;
+    }
+
+    .info strong {
+      color: #b8caff;
     }
 
     footer {
@@ -262,6 +298,18 @@
       text-align: center;
     }
 
+    #loading {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #080b12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8d9ab0;
+      font-size: 14px;
+    }
+
     @media (max-width: 700px) {
       h1 {
         font-size: 34px;
@@ -270,17 +318,26 @@
       nav {
         padding: 0 5%;
       }
+
+      .panel {
+        padding: 21px 18px;
+      }
     }
   </style>
 </head>
 
 <body>
 
+<div id="loading">
+  Se verifică accesul...
+</div>
+
 <nav>
 
   <a href="/admin/" class="logo">
     <img src="/logo.png" alt="VladLab">
-    <div class="logo-text">
+
+    <div class="logo-text" id="adminSiteName">
       Vlad<span>Lab</span>
     </div>
   </a>
@@ -301,13 +358,13 @@
   <h1>⚙️ Site</h1>
 
   <p class="subtitle">
-    Setări generale pentru VladLab.
+    Setările generale care vor fi folosite pe tot site-ul.
   </p>
 
 
   <div class="panel">
 
-    <h2>Setări site</h2>
+    <h2>Setări globale</h2>
 
     <form id="settingsForm">
 
@@ -321,8 +378,15 @@
           id="siteName"
           type="text"
           value="VladLab"
+          maxlength="40"
           required
         >
+
+        <div class="hint">
+          Exemplu: dacă schimbi VladLab în VladHub,
+          numele site-ului se va putea actualiza automat
+          pe toate paginile conectate la setările globale.
+        </div>
 
       </div>
 
@@ -337,8 +401,33 @@
           id="heroTitle"
           type="text"
           value="Totul într-un singur loc."
+          maxlength="100"
           required
         >
+
+        <div class="hint">
+          Acesta va fi titlul mare de pe pagina principală.
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="maintenanceMessage">
+          Mesaj mentenanță
+        </label>
+
+        <textarea
+          id="maintenanceMessage"
+          maxlength="300"
+          placeholder="Site-ul este momentan în mentenanță. Revino în curând."
+        ></textarea>
+
+        <div class="hint">
+          Mesajul pe care îl vor vedea vizitatorii când
+          modul mentenanță este activ.
+        </div>
 
       </div>
 
@@ -348,23 +437,39 @@
         <div class="toggle-box">
 
           <div>
+
             <div class="toggle-title">
               Mod mentenanță
             </div>
 
             <div class="toggle-description">
-              Salvează dacă site-ul trebuie marcat ca fiind în mentenanță.
+              Blochează paginile publice pentru vizitatori și
+              utilizatorii normali. Administratorul va putea
+              continua să folosească site-ul.
             </div>
+
           </div>
 
           <label class="switch">
+
             <input
               type="checkbox"
               id="maintenance"
             >
+
             <span class="slider"></span>
+
           </label>
 
+        </div>
+
+        <div
+          id="maintenanceWarning"
+          class="maintenance-warning"
+        >
+          ⚠️ Modul mentenanță este activat. După ce conectăm
+          paginile publice la aceste setări, utilizatorii normali
+          vor vedea pagina de mentenanță.
         </div>
 
       </div>
@@ -387,15 +492,28 @@
 
 
   <div class="info">
-    Aceste setări sunt salvate în Firestore. Nu modificăm încă automat
-    pagina principală, ca să nu schimbăm designul actual până nu terminăm
-    conectarea tuturor paginilor.
+
+    <strong>Cum va funcționa:</strong><br><br>
+
+    • <strong>Nume site</strong> — brandingul VladLab de pe
+    paginile publice va lua automat această valoare.<br>
+
+    • <strong>Titlu pagina principală</strong> — schimbă titlul
+    mare de pe Home.<br>
+
+    • <strong>Mod mentenanță</strong> — utilizatorii normali vor
+    vedea pagina de mentenanță, dar contul de administrator va
+    avea în continuare acces.<br><br>
+
+    Numele tău personal „Vlad” și numele celorlalți utilizatori
+    nu vor fi schimbate când modifici numele site-ului.
+
   </div>
 
 </main>
 
 
-<footer>
+<footer id="footerText">
   © 2026 VladLab · Admin Panel
 </footer>
 
@@ -440,37 +558,91 @@
   const app =
     initializeApp(firebaseConfig);
 
+
   const auth =
     getAuth(app);
+
 
   const db =
     getFirestore(app);
 
 
+  const settingsRef =
+    doc(
+      db,
+      "settings",
+      "site"
+    );
+
+
+  const loading =
+    document.getElementById(
+      "loading"
+    );
+
+
   const form =
-    document.getElementById("settingsForm");
+    document.getElementById(
+      "settingsForm"
+    );
+
 
   const siteName =
-    document.getElementById("siteName");
+    document.getElementById(
+      "siteName"
+    );
+
 
   const heroTitle =
-    document.getElementById("heroTitle");
+    document.getElementById(
+      "heroTitle"
+    );
+
+
+  const maintenanceMessage =
+    document.getElementById(
+      "maintenanceMessage"
+    );
+
 
   const maintenance =
-    document.getElementById("maintenance");
+    document.getElementById(
+      "maintenance"
+    );
+
+
+  const maintenanceWarning =
+    document.getElementById(
+      "maintenanceWarning"
+    );
+
 
   const saveButton =
-    document.getElementById("saveButton");
+    document.getElementById(
+      "saveButton"
+    );
+
 
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
 
 
-  const settingsRef =
-    doc(db, "settings", "site");
+  const adminSiteName =
+    document.getElementById(
+      "adminSiteName"
+    );
 
 
-  let ready = false;
+  const footerText =
+    document.getElementById(
+      "footerText"
+    );
+
+
+  let ready =
+    false;
 
 
   /* =========================
@@ -483,23 +655,38 @@
 
       if (!user) {
 
-        location.href = "/login/";
+        window.location.replace(
+          "/login/?next=/admin/site/"
+        );
+
         return;
 
       }
 
 
-      if (user.uid !== ADMIN_UID) {
+      if (
+        user.uid !==
+        ADMIN_UID
+      ) {
 
-        location.href = "/";
+        window.location.replace(
+          "/"
+        );
+
         return;
 
       }
 
 
-      ready = true;
+      ready =
+        true;
+
 
       await loadSettings();
+
+
+      loading.style.display =
+        "none";
 
     }
   );
@@ -514,11 +701,20 @@
     try {
 
       const snapshot =
-        await getDoc(settingsRef);
+        await getDoc(
+          settingsRef
+        );
 
 
-      if (!snapshot.exists()) {
+      if (
+        !snapshot.exists()
+      ) {
+
+        maintenanceMessage.value =
+          "Site-ul este momentan în mentenanță. Revino în curând.";
+
         return;
+
       }
 
 
@@ -526,26 +722,68 @@
         snapshot.data();
 
 
-      if (data.siteName) {
+      if (
+        typeof data.siteName ===
+          "string" &&
+        data.siteName.trim()
+      ) {
+
         siteName.value =
-          data.siteName;
+          data.siteName.trim();
+
       }
 
 
-      if (data.heroTitle) {
+      if (
+        typeof data.heroTitle ===
+          "string" &&
+        data.heroTitle.trim()
+      ) {
+
         heroTitle.value =
-          data.heroTitle;
+          data.heroTitle.trim();
+
+      }
+
+
+      if (
+        typeof data.maintenanceMessage ===
+          "string" &&
+        data.maintenanceMessage.trim()
+      ) {
+
+        maintenanceMessage.value =
+          data.maintenanceMessage.trim();
+
+      }
+
+      else {
+
+        maintenanceMessage.value =
+          "Site-ul este momentan în mentenanță. Revino în curând.";
+
       }
 
 
       maintenance.checked =
         data.maintenance === true;
 
+
+      updateMaintenanceWarning();
+
+
+      updateAdminBrand(
+        siteName.value
+      );
+
     }
 
     catch (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       showStatus(
         "Nu am putut încărca setările.",
@@ -573,8 +811,56 @@
       }
 
 
+      const cleanSiteName =
+        siteName
+          .value
+          .trim();
+
+
+      const cleanHeroTitle =
+        heroTitle
+          .value
+          .trim();
+
+
+      const cleanMaintenanceMessage =
+        maintenanceMessage
+          .value
+          .trim() ||
+        "Site-ul este momentan în mentenanță. Revino în curând.";
+
+
+      if (
+        cleanSiteName.length < 2
+      ) {
+
+        showStatus(
+          "Numele site-ului trebuie să aibă cel puțin 2 caractere.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        cleanHeroTitle.length < 2
+      ) {
+
+        showStatus(
+          "Titlul principal trebuie să aibă cel puțin 2 caractere.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
       saveButton.disabled =
         true;
+
 
       saveButton.textContent =
         "Se salvează...";
@@ -585,17 +871,22 @@
         await setDoc(
           settingsRef,
           {
+
             siteName:
-              siteName.value.trim(),
+              cleanSiteName,
 
             heroTitle:
-              heroTitle.value.trim(),
+              cleanHeroTitle,
 
             maintenance:
               maintenance.checked,
 
+            maintenanceMessage:
+              cleanMaintenanceMessage,
+
             updatedAt:
               serverTimestamp()
+
           },
           {
             merge: true
@@ -603,8 +894,16 @@
         );
 
 
+        updateAdminBrand(
+          cleanSiteName
+        );
+
+
+        updateMaintenanceWarning();
+
+
         showStatus(
-          "Setările au fost salvate.",
+          "Setările globale au fost salvate.",
           "success"
         );
 
@@ -612,7 +911,9 @@
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
 
         showStatus(
@@ -627,6 +928,7 @@
         saveButton.disabled =
           false;
 
+
         saveButton.textContent =
           "Salvează setările";
 
@@ -636,20 +938,98 @@
   );
 
 
-  function showStatus(text, type) {
+  /* =========================
+     MENTENANȚĂ UI
+  ========================= */
 
-    status.className = type;
+  maintenance.addEventListener(
+    "change",
+    updateMaintenanceWarning
+  );
 
-    status.textContent = text;
+
+  function updateMaintenanceWarning() {
+
+    maintenanceWarning.classList.toggle(
+      "active",
+      maintenance.checked
+    );
+
+  }
 
 
-    setTimeout(() => {
+  /* =========================
+     BRAND ADMIN
+  ========================= */
 
-      status.className = "";
+  function updateAdminBrand(name) {
 
-      status.textContent = "";
+    const cleanName =
+      name.trim() ||
+      "VladLab";
 
-    }, 4000);
+
+    adminSiteName.textContent =
+      cleanName;
+
+
+    footerText.textContent =
+      "© 2026 " +
+      cleanName +
+      " · Admin Panel";
+
+
+    document.title =
+      "Site | " +
+      cleanName +
+      " Admin";
+
+  }
+
+
+  /* =========================
+     STATUS
+  ========================= */
+
+  let statusTimer =
+    null;
+
+
+  function showStatus(
+    text,
+    type
+  ) {
+
+    if (statusTimer) {
+
+      clearTimeout(
+        statusTimer
+      );
+
+    }
+
+
+    status.className =
+      type;
+
+
+    status.textContent =
+      text;
+
+
+    statusTimer =
+      setTimeout(
+        () => {
+
+          status.className =
+            "";
+
+          status.textContent =
+            "";
+
+        },
+        4000
+      );
 
   }
 
