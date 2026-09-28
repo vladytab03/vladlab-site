@@ -31,6 +31,75 @@
       overflow: hidden;
     }
 
+    #pageLoading {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: #080b12;
+      color: #8995a9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    #maintenancePage {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: #080b12;
+    }
+
+    .maintenance-card {
+      width: min(520px, 100%);
+      padding: 40px 30px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 22px;
+      text-align: center;
+    }
+
+    .maintenance-logo {
+      width: 78px;
+      height: 78px;
+      object-fit: cover;
+      border-radius: 19px;
+      margin-bottom: 23px;
+    }
+
+    .maintenance-card h2 {
+      font-size: clamp(30px, 6vw, 42px);
+      margin-bottom: 14px;
+    }
+
+    .maintenance-card p {
+      color: #8995a9;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .maintenance-login {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 11px 17px;
+      background: #5b8cff;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    #siteContent {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
     nav {
       height: 72px;
       display: flex;
@@ -321,6 +390,12 @@
       font-size: 20px;
     }
 
+    .schedule-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .class-badge {
       background: #17233c;
       color: #7da3ff;
@@ -562,6 +637,15 @@
         padding: 16px;
       }
 
+      .schedule-header {
+        align-items: flex-start;
+      }
+
+      .schedule-header-actions {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
       .mobile-tip {
         display: block;
       }
@@ -608,6 +692,40 @@
 
 <body>
 
+<div id="pageLoading">
+  Se încarcă...
+</div>
+
+<section id="maintenancePage">
+  <div class="maintenance-card">
+
+    <img
+      src="/logo.png"
+      class="maintenance-logo"
+      id="maintenanceLogo"
+      alt="VladLab"
+    >
+
+    <h2 id="maintenanceTitle">
+      VladLab
+    </h2>
+
+    <p id="maintenanceText">
+      Site-ul este momentan în mentenanță. Revino în curând.
+    </p>
+
+    <a
+      href="/login/?next=/scoala/"
+      class="maintenance-login"
+    >
+      Login administrator
+    </a>
+
+  </div>
+</section>
+
+<div id="siteContent">
+
 <div id="menuOverlay" class="menu-overlay"></div>
 
 <aside id="sideMenu" class="side-menu">
@@ -615,8 +733,14 @@
   <div class="side-menu-header">
 
     <div class="side-brand">
-      <img src="/logo.png" alt="VladLab">
-      VladLab
+      <img
+        id="sideLogo"
+        src="/logo.png"
+        alt="VladLab"
+      >
+      <span id="sideBrandName">
+        VladLab
+      </span>
     </div>
 
     <button
@@ -632,7 +756,10 @@
 
   <div class="side-menu-content">
 
-    <div class="menu-label">
+    <div
+      class="menu-label"
+      id="menuLabel"
+    >
       VLADLAB
     </div>
 
@@ -668,14 +795,20 @@
 
     <div class="menu-separator"></div>
 
-    <a href="http://novasmp.space/" class="menu-link">
+    <a
+      href="http://novasmp.space/"
+      class="menu-link"
+    >
       <span class="menu-icon">⛏️</span>
       Nova SMP
     </a>
 
   </div>
 
-  <div class="side-menu-footer">
+  <div
+    class="side-menu-footer"
+    id="sideFooter"
+  >
     © 2026 VladLab
   </div>
 
@@ -726,7 +859,11 @@
 
 <main>
 
-  <a href="/" class="back">
+  <a
+    href="/"
+    class="back"
+    id="backButton"
+  >
     ← Înapoi la VladLab
   </a>
 
@@ -738,7 +875,6 @@
     Orar, materiale și proiecte școlare.
   </p>
 
-
   <section class="section">
 
     <div class="schedule-card">
@@ -747,60 +883,89 @@
 
         <h2>📅 Orar</h2>
 
-        <div class="class-badge">
-          CLASA 7D
+        <div class="schedule-header-actions">
+
+          <button
+            id="scheduleFavoriteButton"
+            class="favorite-button"
+            data-favorite-id="school_schedule_7d"
+            type="button"
+            title="Adaugă la Favorite"
+            aria-label="Adaugă la Favorite"
+          >
+            ♡
+          </button>
+
+          <div class="class-badge">
+            CLASA 7D
+          </div>
+
         </div>
 
       </div>
-
 
       <div class="table-wrapper">
 
         <table>
 
           <thead>
+
             <tr>
 
               <th>ZI</th>
 
               <th>
                 Ora 0
-                <span class="time">12:00 – 12:50</span>
+                <span class="time">
+                  12:00 – 12:50
+                </span>
               </th>
 
               <th>
                 Ora 1
-                <span class="time">13:00 – 13:50</span>
+                <span class="time">
+                  13:00 – 13:50
+                </span>
               </th>
 
               <th>
                 Ora 2
-                <span class="time">14:00 – 14:50</span>
+                <span class="time">
+                  14:00 – 14:50
+                </span>
               </th>
 
               <th>
                 Ora 3
-                <span class="time">15:00 – 15:50</span>
+                <span class="time">
+                  15:00 – 15:50
+                </span>
               </th>
 
               <th>
                 Ora 4
-                <span class="time">16:00 – 16:50</span>
+                <span class="time">
+                  16:00 – 16:50
+                </span>
               </th>
 
               <th>
                 Ora 5
-                <span class="time">17:00 – 17:50</span>
+                <span class="time">
+                  17:00 – 17:50
+                </span>
               </th>
 
               <th>
                 Ora 6
-                <span class="time">18:00 – 18:50</span>
+                <span class="time">
+                  18:00 – 18:50
+                </span>
               </th>
 
             </tr>
-          </thead>
 
+          </thead>
 
           <tbody>
 
@@ -873,7 +1038,6 @@
 
   </section>
 
-
   <section class="section">
 
     <h2 class="section-title">
@@ -904,10 +1068,9 @@
 
 </main>
 
-
 <footer>
 
-  <div>
+  <div id="footerBrand">
     © 2026 VladLab
   </div>
 
@@ -917,6 +1080,7 @@
 
 </footer>
 
+</div>
 
 <script type="module">
 
@@ -924,13 +1088,11 @@
     initializeApp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
-
   import {
     getAuth,
     onAuthStateChanged,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-
 
   import {
     getFirestore,
@@ -941,7 +1103,8 @@
     doc,
     setDoc,
     deleteDoc,
-    serverTimestamp
+    serverTimestamp,
+    getDoc
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
@@ -985,6 +1148,26 @@
   const materialsList =
     document.getElementById("materialsList");
 
+  const scheduleFavoriteButton =
+    document.getElementById(
+      "scheduleFavoriteButton"
+    );
+
+  const pageLoading =
+    document.getElementById(
+      "pageLoading"
+    );
+
+  const siteContent =
+    document.getElementById(
+      "siteContent"
+    );
+
+  const maintenancePage =
+    document.getElementById(
+      "maintenancePage"
+    );
+
 
   let currentUser = null;
 
@@ -996,12 +1179,12 @@
 
 
   /* =========================
-     CONTURI
+     CONTURI + SETĂRI
   ========================= */
 
   onAuthStateChanged(
     auth,
-    user => {
+    async user => {
 
       currentUser = user;
 
@@ -1024,46 +1207,240 @@
         loggedOut.style.display =
           "block";
 
-        updateFavoriteButtons();
-
-        return;
-      }
-
-
-      loggedOut.style.display =
-        "none";
-
-      loggedIn.style.display =
-        "flex";
-
-
-      if (user.uid === ADMIN_UID) {
-
-        userButton.textContent =
-          "Vlad";
-
-        userButton.href =
-          "/admin/";
-
       } else {
 
-        userButton.textContent =
-          user.displayName ||
-          user.email?.split("@")[0] ||
-          "Cont";
+        loggedOut.style.display =
+          "none";
 
-        userButton.href =
-          "/cont/";
+        loggedIn.style.display =
+          "flex";
+
+
+        if (user.uid === ADMIN_UID) {
+
+          userButton.textContent =
+            "Vlad";
+
+          userButton.href =
+            "/admin/";
+
+        } else {
+
+          userButton.textContent =
+            user.displayName ||
+            user.email?.split("@")[0] ||
+            "Cont";
+
+          userButton.href =
+            "/cont/";
+
+        }
+
+
+        watchFavorites(
+          user.uid
+        );
 
       }
 
 
-      watchFavorites(
-        user.uid
+      updateFavoriteButtons();
+
+
+      const settings =
+        await loadSiteSettings();
+
+
+      applySiteSettings(
+        settings
       );
+
+
+      if (
+        settings.maintenance === true &&
+        (!user || user.uid !== ADMIN_UID)
+      ) {
+
+        showMaintenance(
+          settings
+        );
+
+        return;
+
+      }
+
+
+      maintenancePage.style.display =
+        "none";
+
+      siteContent.style.display =
+        "flex";
+
+      pageLoading.style.display =
+        "none";
 
     }
   );
+
+
+  /* =========================
+     SETĂRI GLOBALE
+  ========================= */
+
+  async function loadSiteSettings() {
+
+    const defaults = {
+      siteName: "VladLab",
+      maintenance: false,
+      maintenanceMessage:
+        "Site-ul este momentan în mentenanță. Revino în curând."
+    };
+
+
+    try {
+
+      const snapshot =
+        await getDoc(
+          doc(
+            db,
+            "settings",
+            "site"
+          )
+        );
+
+
+      if (!snapshot.exists()) {
+        return defaults;
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      return {
+
+        siteName:
+          typeof data.siteName === "string" &&
+          data.siteName.trim()
+            ? data.siteName.trim()
+            : defaults.siteName,
+
+        maintenance:
+          data.maintenance === true,
+
+        maintenanceMessage:
+          typeof data.maintenanceMessage === "string" &&
+          data.maintenanceMessage.trim()
+            ? data.maintenanceMessage.trim()
+            : defaults.maintenanceMessage
+
+      };
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Eroare setări site:",
+        error
+      );
+
+      return defaults;
+
+    }
+
+  }
+
+
+  function applySiteSettings(
+    settings
+  ) {
+
+    const siteName =
+      settings.siteName;
+
+
+    document.title =
+      "Școală | " +
+      siteName;
+
+
+    document.getElementById(
+      "sideBrandName"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "sideLogo"
+    ).alt =
+      siteName;
+
+
+    document.getElementById(
+      "menuLabel"
+    ).textContent =
+      siteName.toUpperCase();
+
+
+    document.getElementById(
+      "sideFooter"
+    ).textContent =
+      "© 2026 " +
+      siteName;
+
+
+    document.getElementById(
+      "backButton"
+    ).textContent =
+      "← Înapoi la " +
+      siteName;
+
+
+    document.getElementById(
+      "footerBrand"
+    ).textContent =
+      "© 2026 " +
+      siteName;
+
+
+    document.getElementById(
+      "maintenanceTitle"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "maintenanceText"
+    ).textContent =
+      settings.maintenanceMessage;
+
+
+    document.getElementById(
+      "maintenanceLogo"
+    ).alt =
+      siteName;
+
+  }
+
+
+  function showMaintenance(
+    settings
+  ) {
+
+    siteContent.style.display =
+      "none";
+
+
+    maintenancePage.style.display =
+      "flex";
+
+
+    pageLoading.style.display =
+      "none";
+
+  }
 
 
   /* =========================
@@ -1169,6 +1546,112 @@
   }
 
 
+  /* =========================
+     FAVORIT ORAR
+  ========================= */
+
+  scheduleFavoriteButton
+    .addEventListener(
+      "click",
+      async () => {
+
+        if (!currentUser) {
+
+          window.location.href =
+            "/login/?next=/scoala/";
+
+          return;
+
+        }
+
+
+        const favoriteId =
+          "school_schedule_7d";
+
+
+        const favoriteRef =
+          doc(
+            db,
+            "users",
+            currentUser.uid,
+            "favorites",
+            favoriteId
+          );
+
+
+        scheduleFavoriteButton.disabled =
+          true;
+
+
+        try {
+
+          if (
+            favoriteIds.has(
+              favoriteId
+            )
+          ) {
+
+            await deleteDoc(
+              favoriteRef
+            );
+
+          } else {
+
+            await setDoc(
+              favoriteRef,
+              {
+                type:
+                  "schedule",
+
+                sourceId:
+                  "schedule_7d",
+
+                title:
+                  "Orar · Clasa 7D",
+
+                description:
+                  "Orarul clasei 7D",
+
+                url:
+                  "/scoala/",
+
+                createdAt:
+                  serverTimestamp()
+              }
+            );
+
+          }
+
+        }
+
+        catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          alert(
+            "Nu am putut modifica Favoritele."
+          );
+
+        }
+
+        finally {
+
+          scheduleFavoriteButton.disabled =
+            false;
+
+        }
+
+      }
+    );
+
+
+  /* =========================
+     FAVORIT MATERIAL
+  ========================= */
+
   async function toggleFavorite(
     button,
     materialId,
@@ -1181,6 +1664,7 @@
         "/login/?next=/scoala/";
 
       return;
+
     }
 
 
@@ -1220,20 +1704,29 @@
         await setDoc(
           favoriteRef,
           {
-            type: "school",
-            sourceId: materialId,
+            type:
+              "school",
+
+            sourceId:
+              materialId,
+
             title:
               data.title ||
               "Material",
+
             description:
               data.description ||
               "",
+
             url:
-              getSafeUrl(data.url) ||
-              "",
+              getSafeUrl(
+                data.url
+              ) || "",
+
             fileName:
               data.fileName ||
               "",
+
             createdAt:
               serverTimestamp()
           }
@@ -1245,7 +1738,10 @@
 
     catch (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       alert(
         "Nu am putut modifica Favoritele."
@@ -1273,7 +1769,10 @@
 
       try {
 
-        await signOut(auth);
+        await signOut(
+          auth
+        );
+
 
         window.location.href =
           "/";
@@ -1282,7 +1781,9 @@
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
       }
 
@@ -1327,7 +1828,7 @@
 
 
   /* =========================
-     MATERIALE DIN FIRESTORE
+     MATERIALE FIRESTORE
   ========================= */
 
   const materialsQuery =
@@ -1399,6 +1900,7 @@
               "div"
             );
 
+
           card.className =
             "material-card";
 
@@ -1407,6 +1909,7 @@
             document.createElement(
               "div"
             );
+
 
           info.className =
             "material-info";
@@ -1417,8 +1920,10 @@
               "div"
             );
 
+
           title.className =
             "material-title";
+
 
           title.textContent =
             data.title ||
@@ -1437,8 +1942,10 @@
                 "div"
               );
 
+
             description.className =
               "material-description";
+
 
             description.textContent =
               data.description;
@@ -1456,6 +1963,7 @@
               "div"
             );
 
+
           actions.className =
             "material-actions";
 
@@ -1465,11 +1973,14 @@
               "button"
             );
 
+
           favoriteButton.className =
             "favorite-button";
 
+
           favoriteButton.type =
             "button";
+
 
           favoriteButton.dataset.favoriteId =
             favoriteId;
@@ -1499,8 +2010,10 @@
               "a"
             );
 
+
           button.className =
             "material-button";
+
 
           button.textContent =
             "Deschide";
@@ -1517,8 +2030,10 @@
             button.href =
               safeUrl;
 
+
             button.target =
               "_blank";
+
 
             button.rel =
               "noopener noreferrer";
@@ -1528,6 +2043,7 @@
             button.removeAttribute(
               "href"
             );
+
 
             button.textContent =
               "Link indisponibil";
@@ -1543,6 +2059,7 @@
           card.appendChild(
             info
           );
+
 
           card.appendChild(
             actions
@@ -1564,7 +2081,10 @@
 
     error => {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       materialsList.innerHTML = `
         <div class="materials">
@@ -1594,16 +2114,27 @@
   ========================= */
 
   const openMenuButton =
-    document.getElementById("openMenu");
+    document.getElementById(
+      "openMenu"
+    );
+
 
   const closeMenuButton =
-    document.getElementById("closeMenu");
+    document.getElementById(
+      "closeMenu"
+    );
+
 
   const sideMenu =
-    document.getElementById("sideMenu");
+    document.getElementById(
+      "sideMenu"
+    );
+
 
   const menuOverlay =
-    document.getElementById("menuOverlay");
+    document.getElementById(
+      "menuOverlay"
+    );
 
 
   function openMenu() {
@@ -1612,9 +2143,11 @@
       "active"
     );
 
+
     menuOverlay.classList.add(
       "active"
     );
+
 
     document.body.classList.add(
       "menu-open"
@@ -1629,9 +2162,11 @@
       "active"
     );
 
+
     menuOverlay.classList.remove(
       "active"
     );
+
 
     document.body.classList.remove(
       "menu-open"
@@ -1659,7 +2194,9 @@
 
 
   document
-    .querySelectorAll(".menu-link")
+    .querySelectorAll(
+      ".menu-link"
+    )
     .forEach(link => {
 
       link.addEventListener(
