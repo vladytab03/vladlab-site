@@ -574,7 +574,7 @@
 
         Nu ai cont?
 
-        <a href="/signup/">
+        <a id="signupLink" href="/signup/">
           Creează cont
         </a>
 
@@ -609,29 +609,23 @@
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+
   const firebaseConfig = {
-
-    apiKey:
-      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-
-    authDomain:
-      "vladlab-11887.firebaseapp.com",
-
-    projectId:
-      "vladlab-11887",
-
-    storageBucket:
-      "vladlab-11887.firebasestorage.app",
-
-    messagingSenderId:
-      "741561223788",
-
-    appId:
-      "1:741561223788:web:88ad3e62db87e32551a649",
-
-    measurementId:
-      "G-9XN16BVYRN"
-
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
   };
 
 
@@ -645,6 +639,10 @@
 
   const auth =
     getAuth(app);
+
+
+  const db =
+    getFirestore(app);
 
 
   const googleProvider =
@@ -677,23 +675,123 @@
   const showPassword =
     document.getElementById("showPassword");
 
+  const signupLink =
+    document.getElementById("signupLink");
 
-  let loginStarted = false;
+
+  let loginStarted =
+    false;
+
+
+  /* =========================
+     NEXT
+  ========================= */
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const nextPage =
+    getSafeNext(
+      params.get("next")
+    );
+
+
+  if (nextPage !== "/") {
+
+    signupLink.href =
+      "/signup/?next=" +
+      encodeURIComponent(nextPage);
+
+  }
+
+
+  function getSafeNext(value) {
+
+    if (!value) {
+      return "/";
+    }
+
+
+    try {
+
+      const decoded =
+        decodeURIComponent(value);
+
+
+      /*
+        Acceptăm doar rute interne VladLab.
+
+        Nu permitem:
+        https://...
+        http://...
+        //alt-site.ro
+      */
+
+      if (
+        !decoded.startsWith("/") ||
+        decoded.startsWith("//")
+      ) {
+
+        return "/";
+
+      }
+
+
+      /*
+        Nu permitem redirect către login/signup
+        pentru a evita buclele.
+      */
+
+      if (
+        decoded.startsWith("/login") ||
+        decoded.startsWith("/signup")
+      ) {
+
+        return "/";
+
+      }
+
+
+      return decoded;
+
+    }
+
+    catch {
+
+      return "/";
+
+    }
+
+  }
 
 
   /* =========================
      UTILIZATOR DEJA CONECTAT
   ========================= */
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(
+    auth,
+    user => {
 
-    if (!user || loginStarted) {
-      return;
+      if (
+        !user ||
+        loginStarted
+      ) {
+
+        return;
+
+      }
+
+
+      redirectUser(
+        user
+      );
+
     }
-
-    redirectUser(user);
-
-  });
+  );
 
 
   /* =========================
@@ -702,33 +800,42 @@
 
   loginForm.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
       event.preventDefault();
+
 
       clearStatus();
 
 
       const email =
-        emailInput.value.trim();
+        emailInput
+          .value
+          .trim();
+
 
       const password =
         passwordInput.value;
 
 
-      if (!email || !password) {
+      if (
+        !email ||
+        !password
+      ) {
 
         showError(
           "Completează emailul și parola."
         );
 
         return;
+
       }
 
 
       setLoading(true);
 
-      loginStarted = true;
+      loginStarted =
+        true;
 
 
       try {
@@ -739,6 +846,12 @@
             email,
             password
           );
+
+
+        await saveUserProfile(
+          credential.user,
+          "password"
+        );
 
 
         showSuccess(
@@ -754,13 +867,17 @@
 
       catch (error) {
 
-        loginStarted = false;
+        loginStarted =
+          false;
+
 
         console.error(error);
+
 
         showError(
           getAuthErrorMessage(error)
         );
+
 
         setLoading(false);
 
@@ -771,7 +888,7 @@
 
 
   /* =========================
-     LOGIN CU GOOGLE
+     LOGIN GOOGLE
   ========================= */
 
   googleButton.addEventListener(
@@ -782,7 +899,8 @@
 
       setLoading(true);
 
-      loginStarted = true;
+      loginStarted =
+        true;
 
 
       try {
@@ -792,6 +910,12 @@
             auth,
             googleProvider
           );
+
+
+        await saveUserProfile(
+          credential.user,
+          "google"
+        );
 
 
         showSuccess(
@@ -807,7 +931,9 @@
 
       catch (error) {
 
-        loginStarted = false;
+        loginStarted =
+          false;
+
 
         console.error(error);
 
@@ -818,15 +944,18 @@
         ) {
 
           clearStatus();
+
           setLoading(false);
 
           return;
+
         }
 
 
         showError(
           getAuthErrorMessage(error)
         );
+
 
         setLoading(false);
 
@@ -837,7 +966,79 @@
 
 
   /* =========================
-     ARATĂ / ASCUNDE PAROLA
+     PROFIL FIRESTORE
+  ========================= */
+
+  async function saveUserProfile(
+    user,
+    provider
+  ) {
+
+    if (!user) {
+      return;
+    }
+
+
+    const userRef =
+      doc(
+        db,
+        "users",
+        user.uid
+      );
+
+
+    const existing =
+      await getDoc(
+        userRef
+      );
+
+
+    const data = {
+      uid:
+        user.uid,
+
+      name:
+        user.displayName ||
+        user.email?.split("@")[0] ||
+        "Utilizator",
+
+      email:
+        user.email ||
+        "",
+
+      photoURL:
+        user.photoURL ||
+        "",
+
+      provider:
+        provider,
+
+      updatedAt:
+        serverTimestamp()
+    };
+
+
+    if (!existing.exists()) {
+
+      data.createdAt =
+        serverTimestamp();
+
+    }
+
+
+    await setDoc(
+      userRef,
+      data,
+      {
+        merge: true
+      }
+    );
+
+  }
+
+
+  /* =========================
+     PAROLĂ VIZIBILĂ
   ========================= */
 
   showPassword.addEventListener(
@@ -878,6 +1079,11 @@
 
   function redirectUser(user) {
 
+    /*
+      Adminul merge întotdeauna
+      în panoul Admin.
+    */
+
     if (
       user.uid ===
       ADMIN_UID
@@ -888,11 +1094,18 @@
       );
 
       return;
+
     }
 
 
+    /*
+      Utilizator normal:
+      dacă există ?next= îl trimitem
+      exact unde voia să ajungă.
+    */
+
     window.location.replace(
-      "/"
+      nextPage
     );
 
   }
@@ -926,8 +1139,11 @@
 
   function clearStatus() {
 
-    status.className = "";
-    status.textContent = "";
+    status.className =
+      "";
+
+    status.textContent =
+      "";
 
   }
 
@@ -1003,5 +1219,4 @@
 </script>
 
 </body>
-
 </html>
