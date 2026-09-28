@@ -2,454 +2,450 @@
 <html lang="ro">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Login | VladLab</title>
 
-  <link
-    rel="icon"
-    type="image/png"
-    href="/logo.png"
-  >
-
-  <link
-    rel="apple-touch-icon"
-    href="/logo.png"
-  >
-
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
 
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-
     body {
       min-height: 100vh;
-
       background: #080b12;
-
-      color: #ffffff;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      overflow-x: hidden;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
     }
-
-
-    /* =========================
-       NAVBAR
-    ========================= */
 
     nav {
       height: 72px;
-
-      border-bottom:
-        1px solid #1d2330;
-
-      background:
-        rgba(8, 11, 18, 0.94);
-
-      backdrop-filter:
-        blur(15px);
-
-      -webkit-backdrop-filter:
-        blur(15px);
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, 0.94);
+      backdrop-filter: blur(15px);
 
       display: flex;
-
       align-items: center;
-
-      justify-content:
-        space-between;
+      justify-content: space-between;
 
       padding: 0 6%;
+
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-
-    .home-button {
-      width: 44px;
-      height: 44px;
+    .back-button {
+      width: 42px;
+      height: 42px;
 
       display: flex;
-
       align-items: center;
-
       justify-content: center;
 
-      background: #0e131d;
-
-      border:
-        1px solid #293142;
-
-      border-radius: 12px;
+      background: #111722;
+      border: 1px solid #252e3d;
+      border-radius: 11px;
 
       color: white;
-
       text-decoration: none;
 
       font-size: 20px;
 
-      transition: 0.2s;
+      transition: .2s;
     }
 
-
-    .home-button:hover {
-      background: #161c27;
-
+    .back-button:hover {
+      background: #161d29;
       border-color: #5b8cff;
     }
 
-
-    .back {
-      color: #aab3c5;
-
+    .site-link {
+      color: #9ba8bd;
       text-decoration: none;
-
       font-size: 14px;
+      font-weight: 600;
 
-      transition: 0.2s;
+      padding: 9px 13px;
+      border-radius: 9px;
+
+      transition: .2s;
     }
 
-
-    .back:hover {
+    .site-link:hover {
       color: white;
+      background: #111722;
     }
-
-
-    /* =========================
-       MAIN
-    ========================= */
 
     main {
-      min-height:
-        calc(100vh - 72px);
-
-      min-height:
-        calc(100dvh - 72px);
+      min-height: calc(100vh - 72px);
 
       display: flex;
-
+      align-items: center;
       justify-content: center;
 
-      align-items: center;
-
-      padding: 35px 20px;
+      padding: 45px 20px;
     }
 
-
-    /* =========================
-       LOGIN BOX
-    ========================= */
-
-    .login-box {
+    .login-container {
       width: 100%;
-
-      max-width: 420px;
-
-      background: #0e131d;
-
-      border:
-        1px solid #202735;
-
-      border-radius: 22px;
-
-      padding: 36px;
-
-      box-shadow:
-        0 25px 80px
-        rgba(0, 0, 0, 0.35);
+      max-width: 430px;
     }
 
+    .logo-area {
+      text-align: center;
+      margin-bottom: 28px;
+    }
 
-    .login-logo {
-      display: block;
+    .logo-area img {
+      width: 76px;
+      height: 76px;
 
-      width: 75px;
-      height: 75px;
-
-      margin:
-        0 auto 18px;
-
-      border-radius: 18px;
-
+      border-radius: 19px;
       object-fit: cover;
-    }
 
-
-    h1 {
-      text-align: center;
-
-      font-size: 28px;
-
-      margin-bottom: 8px;
-    }
-
-
-    .subtitle {
-      text-align: center;
-
-      color: #8e99ad;
-
-      font-size: 14px;
-
-      line-height: 1.5;
-
-      margin-bottom: 30px;
-    }
-
-
-    /* =========================
-       FORM
-    ========================= */
-
-    .field {
       margin-bottom: 18px;
     }
 
+    .logo-area h1 {
+      font-size: 32px;
+      letter-spacing: -1.4px;
+      margin-bottom: 8px;
+    }
+
+    .logo-area h1 span {
+      color: #5b8cff;
+    }
+
+    .logo-area p {
+      color: #7f8a9e;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 20px;
+
+      padding: 28px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .card-description {
+      color: #7f8a9e;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
 
     label {
       display: block;
 
       margin-bottom: 8px;
 
-      font-size: 14px;
+      color: #b9c2d1;
 
-      color: #c9d1df;
+      font-size: 13px;
+      font-weight: 600;
     }
-
 
     input {
       width: 100%;
 
-      padding: 14px 15px;
-
-      border-radius: 11px;
-
-      border:
-        1px solid #293142;
+      padding: 13px 14px;
 
       background: #090d15;
+      border: 1px solid #293243;
+      border-radius: 10px;
 
       color: white;
+
+      font-family: inherit;
+      font-size: 16px;
 
       outline: none;
 
-      font-size: 16px;
-
-      transition: 0.2s;
+      transition: .2s;
     }
-
 
     input:focus {
       border-color: #5b8cff;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(91, 140, 255, 0.12);
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, .10);
     }
 
+    input::placeholder {
+      color: #586477;
+    }
 
-    button {
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      padding-right: 52px;
+    }
+
+    .show-password {
+      position: absolute;
+
+      right: 8px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 38px;
+      height: 38px;
+
+      border: 0;
+      border-radius: 8px;
+
+      background: transparent;
+      color: #8491a6;
+
+      cursor: pointer;
+
+      font-size: 17px;
+    }
+
+    .show-password:hover {
+      background: #151b26;
+      color: white;
+    }
+
+    .login-button {
       width: 100%;
 
-      border: none;
+      padding: 13px 16px;
 
-      border-radius: 11px;
-
-      padding: 14px;
+      border: 0;
+      border-radius: 10px;
 
       background: #5b8cff;
-
       color: white;
 
-      font-size: 15px;
-
+      font-size: 14px;
       font-weight: 700;
 
       cursor: pointer;
 
-      transition: 0.2s;
-
-      margin-top: 5px;
+      transition: .2s;
     }
 
-
-    button:hover {
-      transform:
-        translateY(-1px);
-
+    .login-button:hover {
       background: #6c98ff;
     }
 
-
-    button:disabled {
-      opacity: 0.6;
-
+    .login-button:disabled {
+      opacity: .55;
       cursor: not-allowed;
-
-      transform: none;
     }
 
+    .separator {
+      display: flex;
+      align-items: center;
+      gap: 13px;
 
-    /* =========================
-       STATUS
-    ========================= */
+      margin: 22px 0;
+
+      color: #606c80;
+
+      font-size: 12px;
+    }
+
+    .separator::before,
+    .separator::after {
+      content: "";
+
+      height: 1px;
+      flex: 1;
+
+      background: #252c39;
+    }
+
+    .google-button {
+      width: 100%;
+
+      min-height: 46px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 11px;
+
+      padding: 11px 15px;
+
+      background: #111722;
+      border: 1px solid #293243;
+      border-radius: 10px;
+
+      color: white;
+
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition: .2s;
+    }
+
+    .google-button:hover {
+      border-color: #46536a;
+      background: #151c28;
+    }
+
+    .google-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .google-icon {
+      width: 22px;
+      height: 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: white;
+      border-radius: 50%;
+
+      color: #4285f4;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
 
     #status {
       display: none;
 
-      margin-top: 18px;
+      margin-top: 17px;
 
-      padding: 12px;
+      padding: 12px 14px;
 
       border-radius: 10px;
 
-      text-align: center;
-
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.45;
     }
-
 
     #status.error {
       display: block;
 
-      background:
-        rgba(255, 75, 75, 0.1);
+      color: #ff9292;
 
-      border:
-        1px solid
-        rgba(255, 75, 75, 0.25);
-
-      color: #ff8a8a;
+      background: rgba(255, 80, 80, .08);
+      border: 1px solid rgba(255, 80, 80, .20);
     }
-
 
     #status.success {
       display: block;
 
-      background:
-        rgba(70, 220, 130, 0.1);
+      color: #75e4a4;
 
-      border:
-        1px solid
-        rgba(70, 220, 130, 0.25);
-
-      color: #72e8a4;
+      background: rgba(67, 211, 126, .08);
+      border: 1px solid rgba(67, 211, 126, .20);
     }
 
+    .signup {
+      margin-top: 23px;
 
-    /* =========================
-       TELEFON
-    ========================= */
+      padding-top: 21px;
 
-    @media (max-width: 520px) {
+      border-top: 1px solid #202735;
 
+      text-align: center;
+
+      color: #7f8a9e;
+
+      font-size: 13px;
+    }
+
+    .signup a {
+      color: #7ca2ff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .signup a:hover {
+      text-decoration: underline;
+    }
+
+    .privacy {
+      margin-top: 20px;
+
+      color: #566174;
+
+      font-size: 11px;
+      line-height: 1.5;
+
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
       nav {
-        padding:
-          0 16px;
+        padding: 0 16px;
       }
-
-
-      .home-button {
-        width: 42px;
-
-        height: 42px;
-      }
-
 
       main {
-        align-items:
-          flex-start;
-
-        padding:
-          35px 16px 45px;
+        align-items: flex-start;
+        padding: 32px 16px 50px;
       }
 
-
-      .login-box {
-        padding:
-          28px 22px;
-
-        border-radius: 18px;
-
-        margin-top: 15px;
+      .card {
+        padding: 23px 18px;
+        border-radius: 17px;
       }
 
-
-      .login-logo {
+      .logo-area img {
         width: 68px;
-
         height: 68px;
-
-        border-radius: 16px;
       }
 
-
-      h1 {
-        font-size: 26px;
+      .logo-area h1 {
+        font-size: 28px;
       }
 
-
-      .back {
+      .site-link {
         font-size: 13px;
+        padding: 8px 9px;
       }
-
     }
-
-
-    @media (max-width: 350px) {
-
-      .back {
-        font-size: 12px;
-      }
-
-
-      .login-box {
-        padding:
-          25px 18px;
-      }
-
-    }
-
   </style>
-
 </head>
 
-
 <body>
-
-
-<!-- =========================
-     NAVBAR
-========================= -->
 
 <nav>
 
   <a
-    class="home-button"
     href="/"
-    aria-label="Acasă"
+    class="back-button"
+    aria-label="Înapoi la site"
+    title="Înapoi la site"
   >
     ←
   </a>
 
-
   <a
-    class="back"
     href="/"
+    class="site-link"
   >
     Înapoi la site
   </a>
@@ -457,84 +453,140 @@
 </nav>
 
 
-<!-- =========================
-     LOGIN
-========================= -->
-
 <main>
 
-  <div class="login-box">
+  <div class="login-container">
+
+    <div class="logo-area">
+
+      <img
+        src="/logo.png"
+        alt="VladLab"
+      >
+
+      <h1>
+        Vlad<span>Lab</span>
+      </h1>
+
+      <p>
+        Conectează-te la contul tău.
+      </p>
+
+    </div>
 
 
-    <img
-      class="login-logo"
-      src="/logo.png"
-      alt="VladLab"
-    >
+    <div class="card">
+
+      <h2 class="card-title">
+        Login
+      </h2>
+
+      <p class="card-description">
+        Introdu emailul și parola sau continuă cu Google.
+      </p>
 
 
-    <h1>
-      Autentificare
-    </h1>
+      <form id="loginForm">
+
+        <div class="field">
+
+          <label for="email">
+            Email
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            placeholder="nume@email.com"
+            required
+          >
+
+        </div>
 
 
-    <p class="subtitle">
-      Conectează-te la VladLab
-    </p>
+        <div class="field">
+
+          <label for="password">
+            Parolă
+          </label>
+
+          <div class="password-wrapper">
+
+            <input
+              id="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Parola ta"
+              required
+            >
+
+            <button
+              id="showPassword"
+              class="show-password"
+              type="button"
+              aria-label="Arată parola"
+              title="Arată parola"
+            >
+              👁
+            </button>
+
+          </div>
+
+        </div>
 
 
-    <form id="loginForm">
-
-
-      <div class="field">
-
-        <label for="email">
-          Email
-        </label>
-
-
-        <input
-          type="email"
-          id="email"
-          autocomplete="email"
-          inputmode="email"
-          placeholder="Email"
-          required
+        <button
+          id="loginButton"
+          class="login-button"
+          type="submit"
         >
+          Login
+        </button>
 
-      </div>
-
-
-      <div class="field">
-
-        <label for="password">
-          Parolă
-        </label>
+      </form>
 
 
-        <input
-          type="password"
-          id="password"
-          autocomplete="current-password"
-          placeholder="Parolă"
-          required
-        >
-
+      <div class="separator">
+        SAU
       </div>
 
 
       <button
-        type="submit"
-        id="loginButton"
+        id="googleButton"
+        class="google-button"
+        type="button"
       >
-        Login
+
+        <span class="google-icon">
+          G
+        </span>
+
+        Continuă cu Google
+
       </button>
 
-    </form>
+
+      <div id="status"></div>
 
 
-    <div id="status"></div>
+      <div class="signup">
 
+        Nu ai cont?
+
+        <a href="/signup/">
+          Creează cont
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="privacy">
+      Contul tău este folosit pentru funcțiile personale VladLab,
+      precum profilul, favoritele și fișierele trimise.
+    </div>
 
   </div>
 
@@ -545,16 +597,16 @@
 
   import {
     initializeApp
-  } from
-    "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
 
   import {
     getAuth,
+    onAuthStateChanged,
     signInWithEmailAndPassword,
-    onAuthStateChanged
-  } from
-    "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    GoogleAuthProvider,
+    signInWithPopup
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 
   const firebaseConfig = {
@@ -595,83 +647,88 @@
     getAuth(app);
 
 
-  const form =
-    document.getElementById(
-      "loginForm"
-    );
+  const googleProvider =
+    new GoogleAuthProvider();
 
 
-  const button =
-    document.getElementById(
-      "loginButton"
-    );
+  googleProvider.setCustomParameters({
+    prompt: "select_account"
+  });
 
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const emailInput =
+    document.getElementById("email");
+
+  const passwordInput =
+    document.getElementById("password");
+
+  const loginButton =
+    document.getElementById("loginButton");
+
+  const googleButton =
+    document.getElementById("googleButton");
 
   const status =
-    document.getElementById(
-      "status"
-    );
+    document.getElementById("status");
+
+  const showPassword =
+    document.getElementById("showPassword");
+
+
+  let loginStarted = false;
 
 
   /* =========================
-     DEJA AUTENTIFICAT
+     UTILIZATOR DEJA CONECTAT
   ========================= */
 
-  onAuthStateChanged(
-    auth,
+  onAuthStateChanged(auth, (user) => {
 
-    (user) => {
-
-      if (
-        user &&
-        user.uid === ADMIN_UID
-      ) {
-
-        window.location.replace(
-          "/admin/"
-        );
-
-      }
-
+    if (!user || loginStarted) {
+      return;
     }
-  );
+
+    redirectUser(user);
+
+  });
 
 
   /* =========================
-     LOGIN
+     LOGIN EMAIL + PAROLĂ
   ========================= */
 
-  form.addEventListener(
+  loginForm.addEventListener(
     "submit",
-
     async (event) => {
 
       event.preventDefault();
 
+      clearStatus();
+
 
       const email =
-        document
-          .getElementById("email")
-          .value
-          .trim();
-
+        emailInput.value.trim();
 
       const password =
-        document
-          .getElementById("password")
-          .value;
+        passwordInput.value;
 
 
-      button.disabled = true;
+      if (!email || !password) {
 
-      button.textContent =
-        "Se conectează...";
+        showError(
+          "Completează emailul și parola."
+        );
+
+        return;
+      }
 
 
-      status.className = "";
+      setLoading(true);
 
-      status.style.display =
-        "none";
+      loginStarted = true;
 
 
       try {
@@ -684,73 +741,266 @@
           );
 
 
-        /*
-          Permitem accesul la Admin
-          numai contului Vlad.
-        */
-
-        if (
-          credential.user.uid !==
-          ADMIN_UID
-        ) {
-
-          throw new Error(
-            "Cont fără acces la Admin."
-          );
-
-        }
+        showSuccess(
+          "Autentificare reușită."
+        );
 
 
-        status.textContent =
-          "Autentificare reușită!";
-
-
-        status.className =
-          "success";
-
-
-        setTimeout(
-          () => {
-
-            window.location.replace(
-              "/admin/"
-            );
-
-          },
-
-          300
+        redirectUser(
+          credential.user
         );
 
       }
 
-
       catch (error) {
+
+        loginStarted = false;
 
         console.error(error);
 
+        showError(
+          getAuthErrorMessage(error)
+        );
 
-        status.textContent =
-          "Email sau parolă incorectă.";
-
-
-        status.className =
-          "error";
-
-
-        button.disabled =
-          false;
-
-
-        button.textContent =
-          "Login";
+        setLoading(false);
 
       }
 
     }
   );
 
-</script>
 
+  /* =========================
+     LOGIN CU GOOGLE
+  ========================= */
+
+  googleButton.addEventListener(
+    "click",
+    async () => {
+
+      clearStatus();
+
+      setLoading(true);
+
+      loginStarted = true;
+
+
+      try {
+
+        const credential =
+          await signInWithPopup(
+            auth,
+            googleProvider
+          );
+
+
+        showSuccess(
+          "Autentificare cu Google reușită."
+        );
+
+
+        redirectUser(
+          credential.user
+        );
+
+      }
+
+      catch (error) {
+
+        loginStarted = false;
+
+        console.error(error);
+
+
+        if (
+          error.code ===
+          "auth/popup-closed-by-user"
+        ) {
+
+          clearStatus();
+          setLoading(false);
+
+          return;
+        }
+
+
+        showError(
+          getAuthErrorMessage(error)
+        );
+
+        setLoading(false);
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     ARATĂ / ASCUNDE PAROLA
+  ========================= */
+
+  showPassword.addEventListener(
+    "click",
+    () => {
+
+      const hidden =
+        passwordInput.type ===
+        "password";
+
+
+      passwordInput.type =
+        hidden
+          ? "text"
+          : "password";
+
+
+      showPassword.textContent =
+        hidden
+          ? "🙈"
+          : "👁";
+
+
+      showPassword.setAttribute(
+        "aria-label",
+        hidden
+          ? "Ascunde parola"
+          : "Arată parola"
+      );
+
+    }
+  );
+
+
+  /* =========================
+     REDIRECT
+  ========================= */
+
+  function redirectUser(user) {
+
+    if (
+      user.uid ===
+      ADMIN_UID
+    ) {
+
+      window.location.replace(
+        "/admin/"
+      );
+
+      return;
+    }
+
+
+    window.location.replace(
+      "/"
+    );
+
+  }
+
+
+  /* =========================
+     STATUS
+  ========================= */
+
+  function showError(message) {
+
+    status.className =
+      "error";
+
+    status.textContent =
+      message;
+
+  }
+
+
+  function showSuccess(message) {
+
+    status.className =
+      "success";
+
+    status.textContent =
+      message;
+
+  }
+
+
+  function clearStatus() {
+
+    status.className = "";
+    status.textContent = "";
+
+  }
+
+
+  /* =========================
+     LOADING
+  ========================= */
+
+  function setLoading(loading) {
+
+    loginButton.disabled =
+      loading;
+
+    googleButton.disabled =
+      loading;
+
+    emailInput.disabled =
+      loading;
+
+    passwordInput.disabled =
+      loading;
+
+
+    loginButton.textContent =
+      loading
+        ? "Se conectează..."
+        : "Login";
+
+  }
+
+
+  /* =========================
+     ERORI FIREBASE
+  ========================= */
+
+  function getAuthErrorMessage(error) {
+
+    switch (error.code) {
+
+      case "auth/invalid-email":
+        return "Adresa de email nu este validă.";
+
+      case "auth/invalid-credential":
+      case "auth/wrong-password":
+      case "auth/user-not-found":
+        return "Email sau parolă incorectă.";
+
+      case "auth/user-disabled":
+        return "Acest cont a fost dezactivat.";
+
+      case "auth/too-many-requests":
+        return "Prea multe încercări. Încearcă din nou mai târziu.";
+
+      case "auth/network-request-failed":
+        return "Eroare de conexiune. Verifică internetul și încearcă din nou.";
+
+      case "auth/popup-blocked":
+        return "Browserul a blocat fereastra Google. Permite ferestrele pop-up și încearcă din nou.";
+
+      case "auth/operation-not-allowed":
+        return "Această metodă de autentificare nu este activată încă în Firebase.";
+
+      case "auth/account-exists-with-different-credential":
+        return "Există deja un cont cu acest email folosind altă metodă de autentificare.";
+
+      default:
+        return "Autentificarea nu a reușit. Încearcă din nou.";
+
+    }
+
+  }
+
+</script>
 
 </body>
 
