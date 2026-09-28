@@ -1,92 +1,178 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Login | VladLab</title>
 
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="apple-touch-icon" href="/logo.png">
+  <link
+    rel="icon"
+    type="image/png"
+    href="/logo.png"
+  >
+
+  <link
+    rel="apple-touch-icon"
+    href="/logo.png"
+  >
+
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+
     body {
       min-height: 100vh;
+
       background: #080b12;
+
       color: #ffffff;
-      font-family: Arial, Helvetica, sans-serif;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      overflow-x: hidden;
     }
+
+
+    /* =========================
+       NAVBAR
+    ========================= */
 
     nav {
       height: 72px;
-      border-bottom: 1px solid #1d2330;
-      background: rgba(8, 11, 18, 0.92);
-      backdrop-filter: blur(15px);
+
+      border-bottom:
+        1px solid #1d2330;
+
+      background:
+        rgba(8, 11, 18, 0.94);
+
+      backdrop-filter:
+        blur(15px);
+
+      -webkit-backdrop-filter:
+        blur(15px);
 
       display: flex;
+
       align-items: center;
-      justify-content: space-between;
+
+      justify-content:
+        space-between;
 
       padding: 0 6%;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
 
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 20px;
-    }
-
-    .brand img {
+    .home-button {
       width: 44px;
       height: 44px;
-      border-radius: 11px;
-      object-fit: cover;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background: #0e131d;
+
+      border:
+        1px solid #293142;
+
+      border-radius: 12px;
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 20px;
+
+      transition: 0.2s;
     }
+
+
+    .home-button:hover {
+      background: #161c27;
+
+      border-color: #5b8cff;
+    }
+
 
     .back {
       color: #aab3c5;
+
       text-decoration: none;
+
       font-size: 14px;
+
       transition: 0.2s;
     }
+
 
     .back:hover {
       color: white;
     }
 
+
+    /* =========================
+       MAIN
+    ========================= */
+
     main {
-      min-height: calc(100vh - 72px);
+      min-height:
+        calc(100vh - 72px);
+
+      min-height:
+        calc(100dvh - 72px);
 
       display: flex;
+
       justify-content: center;
+
       align-items: center;
 
       padding: 35px 20px;
     }
 
+
+    /* =========================
+       LOGIN BOX
+    ========================= */
+
     .login-box {
       width: 100%;
+
       max-width: 420px;
 
       background: #0e131d;
-      border: 1px solid #202735;
+
+      border:
+        1px solid #202735;
+
       border-radius: 22px;
 
       padding: 36px;
 
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+      box-shadow:
+        0 25px 80px
+        rgba(0, 0, 0, 0.35);
     }
+
 
     .login-logo {
       display: block;
@@ -94,30 +180,45 @@
       width: 75px;
       height: 75px;
 
-      margin: 0 auto 18px;
+      margin:
+        0 auto 18px;
 
       border-radius: 18px;
+
       object-fit: cover;
     }
 
+
     h1 {
       text-align: center;
+
       font-size: 28px;
+
       margin-bottom: 8px;
     }
+
 
     .subtitle {
       text-align: center;
 
       color: #8e99ad;
+
       font-size: 14px;
+
+      line-height: 1.5;
 
       margin-bottom: 30px;
     }
 
+
+    /* =========================
+       FORM
+    ========================= */
+
     .field {
       margin-bottom: 18px;
     }
+
 
     label {
       display: block;
@@ -125,8 +226,10 @@
       margin-bottom: 8px;
 
       font-size: 14px;
+
       color: #c9d1df;
     }
+
 
     input {
       width: 100%;
@@ -134,37 +237,46 @@
       padding: 14px 15px;
 
       border-radius: 11px;
-      border: 1px solid #293142;
+
+      border:
+        1px solid #293142;
 
       background: #090d15;
+
       color: white;
 
       outline: none;
 
-      font-size: 15px;
+      font-size: 16px;
 
       transition: 0.2s;
     }
+
 
     input:focus {
       border-color: #5b8cff;
 
       box-shadow:
-        0 0 0 3px rgba(91, 140, 255, 0.12);
+        0 0 0 3px
+        rgba(91, 140, 255, 0.12);
     }
+
 
     button {
       width: 100%;
 
       border: none;
+
       border-radius: 11px;
 
       padding: 14px;
 
       background: #5b8cff;
+
       color: white;
 
       font-size: 15px;
+
       font-weight: 700;
 
       cursor: pointer;
@@ -174,80 +286,185 @@
       margin-top: 5px;
     }
 
+
     button:hover {
-      transform: translateY(-1px);
+      transform:
+        translateY(-1px);
+
       background: #6c98ff;
     }
 
+
     button:disabled {
       opacity: 0.6;
+
       cursor: not-allowed;
+
       transform: none;
     }
+
+
+    /* =========================
+       STATUS
+    ========================= */
 
     #status {
       display: none;
 
       margin-top: 18px;
+
       padding: 12px;
 
       border-radius: 10px;
 
       text-align: center;
+
       font-size: 14px;
     }
+
 
     #status.error {
       display: block;
 
-      background: rgba(255, 75, 75, 0.1);
-      border: 1px solid rgba(255, 75, 75, 0.25);
+      background:
+        rgba(255, 75, 75, 0.1);
+
+      border:
+        1px solid
+        rgba(255, 75, 75, 0.25);
 
       color: #ff8a8a;
     }
 
+
     #status.success {
       display: block;
 
-      background: rgba(70, 220, 130, 0.1);
-      border: 1px solid rgba(70, 220, 130, 0.25);
+      background:
+        rgba(70, 220, 130, 0.1);
+
+      border:
+        1px solid
+        rgba(70, 220, 130, 0.25);
 
       color: #72e8a4;
     }
 
+
+    /* =========================
+       TELEFON
+    ========================= */
+
     @media (max-width: 520px) {
 
-      .login-box {
-        padding: 28px 22px;
+      nav {
+        padding:
+          0 16px;
       }
 
-      nav {
-        padding: 0 20px;
+
+      .home-button {
+        width: 42px;
+
+        height: 42px;
+      }
+
+
+      main {
+        align-items:
+          flex-start;
+
+        padding:
+          35px 16px 45px;
+      }
+
+
+      .login-box {
+        padding:
+          28px 22px;
+
+        border-radius: 18px;
+
+        margin-top: 15px;
+      }
+
+
+      .login-logo {
+        width: 68px;
+
+        height: 68px;
+
+        border-radius: 16px;
+      }
+
+
+      h1 {
+        font-size: 26px;
+      }
+
+
+      .back {
+        font-size: 13px;
       }
 
     }
+
+
+    @media (max-width: 350px) {
+
+      .back {
+        font-size: 12px;
+      }
+
+
+      .login-box {
+        padding:
+          25px 18px;
+      }
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
 <nav>
 
-  <a class="brand" href="/">
-    <img src="/logo.png" alt="VladLab">
-    VladLab
+  <a
+    class="home-button"
+    href="/"
+    aria-label="Acasă"
+  >
+    ←
   </a>
 
-  <a class="back" href="/">
-    ← Înapoi la site
+
+  <a
+    class="back"
+    href="/"
+  >
+    Înapoi la site
   </a>
 
 </nav>
 
 
+<!-- =========================
+     LOGIN
+========================= -->
+
 <main>
 
   <div class="login-box">
+
 
     <img
       class="login-logo"
@@ -255,9 +472,11 @@
       alt="VladLab"
     >
 
+
     <h1>
       Autentificare
     </h1>
+
 
     <p class="subtitle">
       Conectează-te la VladLab
@@ -266,16 +485,19 @@
 
     <form id="loginForm">
 
+
       <div class="field">
 
         <label for="email">
           Email
         </label>
 
+
         <input
           type="email"
           id="email"
           autocomplete="email"
+          inputmode="email"
           placeholder="Email"
           required
         >
@@ -288,6 +510,7 @@
         <label for="password">
           Parolă
         </label>
+
 
         <input
           type="password"
@@ -312,6 +535,7 @@
 
     <div id="status"></div>
 
+
   </div>
 
 </main>
@@ -321,14 +545,16 @@
 
   import {
     initializeApp
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  } from
+    "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
 
   import {
     getAuth,
     signInWithEmailAndPassword,
     onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  } from
+    "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 
   const firebaseConfig = {
@@ -357,6 +583,10 @@
   };
 
 
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
   const app =
     initializeApp(firebaseConfig);
 
@@ -366,27 +596,50 @@
 
 
   const form =
-    document.getElementById("loginForm");
+    document.getElementById(
+      "loginForm"
+    );
 
 
   const button =
-    document.getElementById("loginButton");
+    document.getElementById(
+      "loginButton"
+    );
 
 
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
 
 
-  onAuthStateChanged(auth, (user) => {
+  /* =========================
+     DEJA AUTENTIFICAT
+  ========================= */
 
-    if (user) {
+  onAuthStateChanged(
+    auth,
 
-      window.location.replace("/admin/");
+    (user) => {
+
+      if (
+        user &&
+        user.uid === ADMIN_UID
+      ) {
+
+        window.location.replace(
+          "/admin/"
+        );
+
+      }
 
     }
+  );
 
-  });
 
+  /* =========================
+     LOGIN
+  ========================= */
 
   form.addEventListener(
     "submit",
@@ -423,29 +676,53 @@
 
       try {
 
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        const credential =
+          await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+
+        /*
+          Permitem accesul la Admin
+          numai contului Vlad.
+        */
+
+        if (
+          credential.user.uid !==
+          ADMIN_UID
+        ) {
+
+          throw new Error(
+            "Cont fără acces la Admin."
+          );
+
+        }
 
 
         status.textContent =
           "Autentificare reușită!";
 
+
         status.className =
           "success";
 
 
-        setTimeout(() => {
+        setTimeout(
+          () => {
 
-          window.location.replace(
-            "/admin/"
-          );
+            window.location.replace(
+              "/admin/"
+            );
 
-        }, 400);
+          },
+
+          300
+        );
 
       }
+
 
       catch (error) {
 
@@ -455,11 +732,14 @@
         status.textContent =
           "Email sau parolă incorectă.";
 
+
         status.className =
           "error";
 
 
-        button.disabled = false;
+        button.disabled =
+          false;
+
 
         button.textContent =
           "Login";
@@ -467,10 +747,11 @@
       }
 
     }
-
   );
 
 </script>
 
+
 </body>
+
 </html>
