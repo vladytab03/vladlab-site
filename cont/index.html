@@ -210,7 +210,7 @@
       border-radius: 10px;
       color: white;
       font-family: inherit;
-      font-size: 16px;
+      font-size: 15px;
       outline: none;
       transition: .2s;
     }
@@ -220,15 +220,10 @@
       box-shadow: 0 0 0 3px rgba(91, 140, 255, .10);
     }
 
-    input:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
     .button {
       width: 100%;
       padding: 12px 15px;
-      border: 0;
+      border: 1px solid transparent;
       border-radius: 10px;
       background: #5b8cff;
       color: white;
@@ -250,7 +245,7 @@
 
     .secondary {
       background: #161c27;
-      border: 1px solid #293142;
+      border-color: #293142;
     }
 
     .secondary:hover {
@@ -264,7 +259,7 @@
       padding: 11px 13px;
       border-radius: 9px;
       font-size: 13px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .status.success {
@@ -281,9 +276,12 @@
       border: 1px solid rgba(255, 80, 80, .20);
     }
 
-    /* =========================
-       UPLOADURI
-    ========================= */
+    .provider-info {
+      margin-top: 12px;
+      color: #68758a;
+      font-size: 12px;
+      line-height: 1.5;
+    }
 
     .uploads-list {
       display: grid;
@@ -295,11 +293,6 @@
       background: #090d15;
       border: 1px solid #283142;
       border-radius: 13px;
-      transition: .2s;
-    }
-
-    .upload-item:hover {
-      border-color: #3a465d;
     }
 
     .upload-top {
@@ -312,7 +305,6 @@
     .upload-file {
       min-width: 0;
       display: flex;
-      align-items: flex-start;
       gap: 12px;
     }
 
@@ -344,7 +336,6 @@
       margin-top: 5px;
       color: #69768b;
       font-size: 12px;
-      line-height: 1.5;
     }
 
     .upload-status {
@@ -393,13 +384,6 @@
       line-height: 1.5;
     }
 
-    .provider-info {
-      margin-top: 12px;
-      color: #68758a;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
     footer {
       padding: 28px;
       border-top: 1px solid #1d2330;
@@ -429,16 +413,8 @@
         padding: 17px;
       }
 
-      .back {
-        padding-left: 4px;
-      }
-
       .upload-top {
         flex-direction: column;
-      }
-
-      .upload-status {
-        align-self: flex-start;
       }
     }
   </style>
@@ -456,11 +432,7 @@
     ← Înapoi la site
   </a>
 
-  <button
-    id="logoutButton"
-    class="logout"
-    type="button"
-  >
+  <button id="logoutButton" class="logout" type="button">
     Logout
   </button>
 
@@ -469,19 +441,13 @@
 <main>
 
   <section class="top">
+    <div class="badge">CONTUL MEU</div>
 
-    <div class="badge">
-      CONTUL MEU
-    </div>
-
-    <h1>
-      Profil
-    </h1>
+    <h1>Profil</h1>
 
     <p class="description">
       Vezi și gestionează informațiile contului tău VladLab.
     </p>
-
   </section>
 
 
@@ -492,7 +458,6 @@
     </div>
 
     <div>
-
       <div id="profileName" class="profile-name">
         Utilizator
       </div>
@@ -500,7 +465,6 @@
       <div id="profileEmail" class="profile-email">
         —
       </div>
-
     </div>
 
   </section>
@@ -512,9 +476,7 @@
 
     <div class="panel">
 
-      <h2>
-        👤 Nume
-      </h2>
+      <h2>👤 Nume</h2>
 
       <p class="panel-description">
         Acest nume va apărea în contul tău VladLab.
@@ -523,10 +485,7 @@
       <form id="nameForm">
 
         <div class="field">
-
-          <label for="displayName">
-            Nume
-          </label>
+          <label for="displayName">Nume</label>
 
           <input
             id="displayName"
@@ -535,7 +494,6 @@
             maxlength="40"
             required
           >
-
         </div>
 
         <button
@@ -548,10 +506,7 @@
 
       </form>
 
-      <div
-        id="nameStatus"
-        class="status"
-      ></div>
+      <div id="nameStatus" class="status"></div>
 
     </div>
 
@@ -560,39 +515,40 @@
 
     <div class="panel">
 
-      <h2>
-        ✉️ Email
-      </h2>
+      <h2>✉️ Email</h2>
 
       <p class="panel-description">
-        Adresa de email asociată contului.
+        Schimbă adresa de email asociată contului.
       </p>
 
-      <div class="field">
+      <form id="emailForm">
 
-        <label for="accountEmail">
-          Email
-        </label>
+        <div class="field">
+          <label for="accountEmail">
+            Email nou
+          </label>
 
-        <input
-          id="accountEmail"
-          type="email"
-          disabled
+          <input
+            id="accountEmail"
+            type="email"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <button
+          id="saveEmailButton"
+          class="button"
+          type="submit"
         >
+          Schimbă emailul
+        </button>
 
-      </div>
+      </form>
 
-      <button
-        class="button secondary"
-        type="button"
-        disabled
-      >
-        Schimbă emailul
-      </button>
+      <div id="emailStatus" class="status"></div>
 
-      <div class="provider-info">
-        Modificarea emailului va fi activată ulterior.
-      </div>
+      <div id="emailProviderInfo" class="provider-info"></div>
 
     </div>
 
@@ -601,28 +557,55 @@
 
     <div class="panel">
 
-      <h2>
-        🔒 Parolă
-      </h2>
+      <h2>🔒 Parolă</h2>
 
       <p class="panel-description">
         Schimbă parola contului tău.
       </p>
 
-      <button
-        class="button secondary"
-        type="button"
-        disabled
-      >
-        Schimbă parola
-      </button>
+      <form id="passwordForm">
 
-      <div
-        id="passwordInfo"
-        class="provider-info"
-      >
-        Schimbarea parolei va fi activată ulterior.
-      </div>
+        <div class="field">
+          <label for="newPassword">
+            Parolă nouă
+          </label>
+
+          <input
+            id="newPassword"
+            type="password"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">
+            Confirmă parola
+          </label>
+
+          <input
+            id="confirmPassword"
+            type="password"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          >
+        </div>
+
+        <button
+          id="savePasswordButton"
+          class="button"
+          type="submit"
+        >
+          Schimbă parola
+        </button>
+
+      </form>
+
+      <div id="passwordStatus" class="status"></div>
+
+      <div id="passwordProviderInfo" class="provider-info"></div>
 
     </div>
 
@@ -631,9 +614,7 @@
 
     <div class="panel">
 
-      <h2>
-        ❤️ Favorite
-      </h2>
+      <h2>❤️ Favorite</h2>
 
       <p class="panel-description">
         Vezi materialele, proiectele și descărcările salvate de tine.
@@ -654,9 +635,7 @@
 
     <div class="panel full">
 
-      <h2>
-        📤 Ce am trimis
-      </h2>
+      <h2>📤 Ce am trimis</h2>
 
       <p class="panel-description">
         Fișierele trimise de tine prin VladLab.
@@ -665,19 +644,9 @@
       <div id="uploadsList" class="uploads-list">
 
         <div class="uploads-empty">
-
-          <div class="uploads-icon">
-            ⏳
-          </div>
-
-          <h3>
-            Se încarcă...
-          </h3>
-
-          <p>
-            Se verifică trimiterile contului tău.
-          </p>
-
+          <div class="uploads-icon">⏳</div>
+          <h3>Se încarcă...</h3>
+          <p>Se verifică trimiterile contului tău.</p>
         </div>
 
       </div>
@@ -705,6 +674,8 @@
     getAuth,
     onAuthStateChanged,
     updateProfile,
+    updatePassword,
+    verifyBeforeUpdateEmail,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
@@ -722,28 +693,13 @@
 
 
   const firebaseConfig = {
-
-    apiKey:
-      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-
-    authDomain:
-      "vladlab-11887.firebaseapp.com",
-
-    projectId:
-      "vladlab-11887",
-
-    storageBucket:
-      "vladlab-11887.firebasestorage.app",
-
-    messagingSenderId:
-      "741561223788",
-
-    appId:
-      "1:741561223788:web:88ad3e62db87e32551a649",
-
-    measurementId:
-      "G-9XN16BVYRN"
-
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
   };
 
 
@@ -754,10 +710,8 @@
   const app =
     initializeApp(firebaseConfig);
 
-
   const auth =
     getAuth(app);
-
 
   const db =
     getFirestore(app);
@@ -781,6 +735,7 @@
   const avatar =
     document.getElementById("avatar");
 
+
   const nameForm =
     document.getElementById("nameForm");
 
@@ -789,6 +744,39 @@
 
   const nameStatus =
     document.getElementById("nameStatus");
+
+
+  const emailForm =
+    document.getElementById("emailForm");
+
+  const saveEmailButton =
+    document.getElementById("saveEmailButton");
+
+  const emailStatus =
+    document.getElementById("emailStatus");
+
+  const emailProviderInfo =
+    document.getElementById("emailProviderInfo");
+
+
+  const passwordForm =
+    document.getElementById("passwordForm");
+
+  const newPasswordInput =
+    document.getElementById("newPassword");
+
+  const confirmPasswordInput =
+    document.getElementById("confirmPassword");
+
+  const savePasswordButton =
+    document.getElementById("savePasswordButton");
+
+  const passwordStatus =
+    document.getElementById("passwordStatus");
+
+  const passwordProviderInfo =
+    document.getElementById("passwordProviderInfo");
+
 
   const logoutButton =
     document.getElementById("logoutButton");
@@ -802,7 +790,6 @@
 
   let currentUser =
     null;
-
 
   let unsubscribeUploads =
     null;
@@ -823,7 +810,6 @@
         );
 
         return;
-
       }
 
 
@@ -837,7 +823,6 @@
         );
 
         return;
-
       }
 
 
@@ -845,14 +830,11 @@
         user;
 
 
-      renderUser(
-        user
-      );
+      renderUser(user);
 
+      configureProviders(user);
 
-      watchUploads(
-        user.uid
-      );
+      watchUploads(user.uid);
 
 
       loading.style.display =
@@ -863,7 +845,7 @@
 
 
   /* =========================
-     AFIȘARE PROFIL
+     PROFIL
   ========================= */
 
   function renderUser(user) {
@@ -900,10 +882,6 @@
   }
 
 
-  /* =========================
-     AVATAR
-  ========================= */
-
   function renderAvatar(
     user,
     name
@@ -913,23 +891,17 @@
       "";
 
 
-    if (
-      user.photoURL
-    ) {
+    if (user.photoURL) {
 
       const image =
-        document.createElement(
-          "img"
-        );
+        document.createElement("img");
 
 
       image.src =
         user.photoURL;
 
-
       image.alt =
         name;
-
 
       image.referrerPolicy =
         "no-referrer";
@@ -941,7 +913,6 @@
 
 
       return;
-
     }
 
 
@@ -949,6 +920,54 @@
       name
         .charAt(0)
         .toUpperCase();
+
+  }
+
+
+  function configureProviders(user) {
+
+    const providers =
+      user.providerData.map(
+        provider =>
+          provider.providerId
+      );
+
+
+    const hasPassword =
+      providers.includes(
+        "password"
+      );
+
+
+    if (hasPassword) {
+
+      passwordProviderInfo.textContent =
+        "Parola trebuie să aibă minimum 6 caractere.";
+
+    } else {
+
+      passwordForm.style.display =
+        "none";
+
+      passwordProviderInfo.textContent =
+        "Acest cont folosește autentificarea Google. Parola se gestionează prin furnizorul contului.";
+
+    }
+
+
+    if (
+      providers.includes("google.com")
+    ) {
+
+      emailProviderInfo.textContent =
+        "Dacă folosești Google, schimbarea emailului VladLab nu modifică adresa contului tău Google.";
+
+    } else {
+
+      emailProviderInfo.textContent =
+        "Firebase va trimite un mesaj de verificare la noua adresă.";
+
+    }
 
   }
 
@@ -975,33 +994,26 @@
           .trim();
 
 
-      if (
-        newName.length < 2
-      ) {
+      if (newName.length < 2) {
 
-        showNameStatus(
+        showStatus(
+          nameStatus,
           "Numele trebuie să aibă cel puțin 2 caractere.",
           "error"
         );
 
         return;
-
       }
 
 
       saveNameButton.disabled =
         true;
 
-
       saveNameButton.textContent =
         "Se salvează...";
 
 
       try {
-
-        /*
-          1. Actualizăm numele din Firebase Authentication.
-        */
 
         await updateProfile(
           currentUser,
@@ -1011,10 +1023,6 @@
           }
         );
 
-
-        /*
-          2. Actualizăm și profilul Firestore.
-        */
 
         await setDoc(
           doc(
@@ -1030,12 +1038,10 @@
               newName,
 
             email:
-              currentUser.email ||
-              "",
+              currentUser.email || "",
 
             photoURL:
-              currentUser.photoURL ||
-              "",
+              currentUser.photoURL || "",
 
             updatedAt:
               serverTimestamp()
@@ -1056,7 +1062,8 @@
         );
 
 
-        showNameStatus(
+        showStatus(
+          nameStatus,
           "Numele a fost actualizat.",
           "success"
         );
@@ -1065,13 +1072,12 @@
 
       catch (error) {
 
-        console.error(
-          error
-        );
+        console.error(error);
 
 
-        showNameStatus(
-          "Numele nu a putut fi actualizat.",
+        showStatus(
+          nameStatus,
+          getAccountError(error),
           "error"
         );
 
@@ -1081,7 +1087,6 @@
 
         saveNameButton.disabled =
           false;
-
 
         saveNameButton.textContent =
           "Salvează numele";
@@ -1093,20 +1098,220 @@
 
 
   /* =========================
-     CE AM TRIMIS
+     SCHIMBĂ EMAIL
+  ========================= */
+
+  emailForm.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      if (!currentUser) {
+        return;
+      }
+
+
+      const newEmail =
+        accountEmail
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      if (!newEmail) {
+
+        showStatus(
+          emailStatus,
+          "Introdu o adresă de email.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (
+        newEmail ===
+        (
+          currentUser.email ||
+          ""
+        ).toLowerCase()
+      ) {
+
+        showStatus(
+          emailStatus,
+          "Aceasta este deja adresa contului tău.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      saveEmailButton.disabled =
+        true;
+
+      saveEmailButton.textContent =
+        "Se trimite verificarea...";
+
+
+      try {
+
+        await verifyBeforeUpdateEmail(
+          currentUser,
+          newEmail
+        );
+
+
+        showStatus(
+          emailStatus,
+          "Ți-am trimis un email de verificare la noua adresă. Deschide mesajul și confirmă schimbarea.",
+          "success"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        showStatus(
+          emailStatus,
+          getAccountError(error),
+          "error"
+        );
+
+      }
+
+      finally {
+
+        saveEmailButton.disabled =
+          false;
+
+        saveEmailButton.textContent =
+          "Schimbă emailul";
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     SCHIMBĂ PAROLA
+  ========================= */
+
+  passwordForm.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      if (!currentUser) {
+        return;
+      }
+
+
+      const password =
+        newPasswordInput.value;
+
+
+      const confirmation =
+        confirmPasswordInput.value;
+
+
+      if (password.length < 6) {
+
+        showStatus(
+          passwordStatus,
+          "Parola trebuie să aibă minimum 6 caractere.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (
+        password !==
+        confirmation
+      ) {
+
+        showStatus(
+          passwordStatus,
+          "Parolele nu coincid.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      savePasswordButton.disabled =
+        true;
+
+      savePasswordButton.textContent =
+        "Se schimbă...";
+
+
+      try {
+
+        await updatePassword(
+          currentUser,
+          password
+        );
+
+
+        passwordForm.reset();
+
+
+        showStatus(
+          passwordStatus,
+          "Parola a fost schimbată.",
+          "success"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        showStatus(
+          passwordStatus,
+          getAccountError(error),
+          "error"
+        );
+
+      }
+
+      finally {
+
+        savePasswordButton.disabled =
+          false;
+
+        savePasswordButton.textContent =
+          "Schimbă parola";
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     UPLOADURI
   ========================= */
 
   function watchUploads(uid) {
 
-    if (
-      unsubscribeUploads
-    ) {
-
+    if (unsubscribeUploads) {
       unsubscribeUploads();
-
-      unsubscribeUploads =
-        null;
-
     }
 
 
@@ -1135,14 +1340,27 @@
             "";
 
 
-          if (
-            snapshot.empty
-          ) {
+          if (snapshot.empty) {
 
-            showEmptyUploads();
+            uploadsList.innerHTML = `
+              <div class="uploads-empty">
+
+                <div class="uploads-icon">
+                  📂
+                </div>
+
+                <h3>
+                  Nu ai trimis încă niciun fișier
+                </h3>
+
+                <p>
+                  Fișierele trimise când ești logat vor apărea aici.
+                </p>
+
+              </div>
+            `;
 
             return;
-
           }
 
 
@@ -1153,14 +1371,8 @@
                 uploadSnapshot.data();
 
 
-              const item =
-                createUploadItem(
-                  data
-                );
-
-
               uploadsList.appendChild(
-                item
+                createUploadItem(data)
               );
 
             }
@@ -1170,10 +1382,7 @@
 
         error => {
 
-          console.error(
-            "Eroare la încărcarea trimiterilor:",
-            error
-          );
+          console.error(error);
 
 
           uploadsList.innerHTML = `
@@ -1203,40 +1412,28 @@
   function createUploadItem(data) {
 
     const item =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     item.className =
       "upload-item";
 
 
     const top =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     top.className =
       "upload-top";
 
 
     const fileBox =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     fileBox.className =
       "upload-file";
 
 
     const icon =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     icon.className =
       "upload-file-icon";
@@ -1249,24 +1446,17 @@
 
 
     const info =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     info.className =
       "upload-file-info";
 
 
     const name =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     name.className =
       "upload-name";
-
 
     name.textContent =
       data.fileName ||
@@ -1274,16 +1464,13 @@
 
 
     const meta =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     meta.className =
       "upload-meta";
 
 
-    const metaParts =
+    const parts =
       [];
 
 
@@ -1292,7 +1479,7 @@
       "number"
     ) {
 
-      metaParts.push(
+      parts.push(
         formatFileSize(
           data.fileSize
         )
@@ -1301,162 +1488,81 @@
     }
 
 
-    const dateText =
+    const date =
       formatDate(
         data.createdAt
       );
 
 
-    if (
-      dateText
-    ) {
-
-      metaParts.push(
-        dateText
-      );
-
+    if (date) {
+      parts.push(date);
     }
 
 
     meta.textContent =
-      metaParts.length
-        ? metaParts.join(" • ")
+      parts.length
+        ? parts.join(" • ")
         : "Trimitere VladLab";
 
 
-    info.appendChild(
-      name
-    );
+    info.appendChild(name);
+    info.appendChild(meta);
 
-
-    info.appendChild(
-      meta
-    );
-
-
-    fileBox.appendChild(
-      icon
-    );
-
-
-    fileBox.appendChild(
-      info
-    );
+    fileBox.appendChild(icon);
+    fileBox.appendChild(info);
 
 
     const status =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     status.className =
       "upload-status";
 
-
     status.textContent =
-      data.status === "trimis"
-        ? "TRIMIS"
-        : (
-            data.status ||
-            "TRIMIS"
-          ).toUpperCase();
+      (
+        data.status ||
+        "trimis"
+      ).toUpperCase();
 
 
-    top.appendChild(
-      fileBox
-    );
+    top.appendChild(fileBox);
+    top.appendChild(status);
+
+    item.appendChild(top);
 
 
-    top.appendChild(
-      status
-    );
-
-
-    item.appendChild(
-      top
-    );
-
-
-    if (
-      data.message
-    ) {
+    if (data.message) {
 
       const message =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       message.className =
         "upload-message";
-
 
       message.textContent =
         "Mesaj: " +
         data.message;
 
-
-      item.appendChild(
-        message
-      );
+      item.appendChild(message);
 
     }
 
 
     return item;
-
   }
 
-
-  function showEmptyUploads() {
-
-    uploadsList.innerHTML = `
-      <div class="uploads-empty">
-
-        <div class="uploads-icon">
-          📂
-        </div>
-
-        <h3>
-          Nu ai trimis încă niciun fișier
-        </h3>
-
-        <p>
-          Fișierele trimise când ești logat vor apărea aici.
-        </p>
-
-      </div>
-    `;
-
-  }
-
-
-  /* =========================
-     FORMATĂRI
-  ========================= */
 
   function formatFileSize(bytes) {
 
     if (
-      !Number.isFinite(bytes) ||
-      bytes < 0
+      !Number.isFinite(bytes)
     ) {
-
       return "";
-
     }
 
 
-    if (
-      bytes < 1024
-    ) {
-
-      return (
-        bytes +
-        " B"
-      );
-
+    if (bytes < 1024) {
+      return bytes + " B";
     }
 
 
@@ -1466,36 +1572,25 @@
     ) {
 
       return (
-        (
-          bytes /
-          1024
-        ).toFixed(1) +
-        " KB"
-      );
+        bytes / 1024
+      ).toFixed(1) + " KB";
 
     }
 
 
     return (
-      (
-        bytes /
-        1024 /
-        1024
-      ).toFixed(1) +
-      " MB"
-    );
+      bytes /
+      1024 /
+      1024
+    ).toFixed(1) + " MB";
 
   }
 
 
   function formatDate(timestamp) {
 
-    if (
-      !timestamp
-    ) {
-
+    if (!timestamp) {
       return "";
-
     }
 
 
@@ -1506,17 +1601,6 @@
         "function"
           ? timestamp.toDate()
           : new Date(timestamp);
-
-
-      if (
-        Number.isNaN(
-          date.getTime()
-        )
-      ) {
-
-        return "";
-
-      }
 
 
       return new Intl.DateTimeFormat(
@@ -1533,9 +1617,7 @@
     }
 
     catch {
-
       return "";
-
     }
 
   }
@@ -1552,7 +1634,6 @@
         ""
       ).toLowerCase();
 
-
     const name =
       (
         fileName ||
@@ -1560,91 +1641,105 @@
       ).toLowerCase();
 
 
-    if (
-      mime.startsWith(
-        "image/"
-      )
-    ) {
-
+    if (mime.startsWith("image/")) {
       return "🖼️";
-
     }
 
-
-    if (
-      mime.startsWith(
-        "video/"
-      )
-    ) {
-
+    if (mime.startsWith("video/")) {
       return "🎬";
-
     }
 
-
-    if (
-      mime.startsWith(
-        "audio/"
-      )
-    ) {
-
+    if (mime.startsWith("audio/")) {
       return "🎵";
-
     }
-
 
     if (
       mime.includes("pdf") ||
       name.endsWith(".pdf")
     ) {
-
       return "📕";
-
     }
-
 
     if (
       name.endsWith(".zip") ||
       name.endsWith(".rar") ||
       name.endsWith(".7z")
     ) {
-
       return "🗜️";
-
     }
-
 
     if (
       name.endsWith(".doc") ||
       name.endsWith(".docx")
     ) {
-
       return "📘";
-
     }
-
 
     if (
       name.endsWith(".ppt") ||
       name.endsWith(".pptx")
     ) {
-
       return "📙";
-
     }
-
 
     if (
       name.endsWith(".xls") ||
       name.endsWith(".xlsx")
     ) {
-
       return "📗";
-
     }
 
 
     return "📄";
+  }
+
+
+  /* =========================
+     ERORI CONT
+  ========================= */
+
+  function getAccountError(error) {
+
+    switch (error.code) {
+
+      case "auth/requires-recent-login":
+        return "Pentru această modificare trebuie să te deloghezi, să intri din nou în cont și apoi să încerci din nou.";
+
+      case "auth/email-already-in-use":
+        return "Adresa de email este deja folosită de alt cont.";
+
+      case "auth/invalid-email":
+        return "Adresa de email nu este validă.";
+
+      case "auth/weak-password":
+        return "Parola este prea slabă.";
+
+      case "auth/network-request-failed":
+        return "Verifică conexiunea la internet și încearcă din nou.";
+
+      case "auth/too-many-requests":
+        return "Au fost făcute prea multe încercări. Încearcă din nou mai târziu.";
+
+      default:
+        return "Operația nu a putut fi realizată. Încearcă din nou.";
+
+    }
+
+  }
+
+
+  function showStatus(
+    element,
+    message,
+    type
+  ) {
+
+    element.className =
+      "status " +
+      type;
+
+    element.textContent =
+      message;
 
   }
 
@@ -1674,18 +1769,12 @@
 
       try {
 
-        if (
-          unsubscribeUploads
-        ) {
-
+        if (unsubscribeUploads) {
           unsubscribeUploads();
-
         }
 
 
-        await signOut(
-          auth
-        );
+        await signOut(auth);
 
 
         window.location.replace(
@@ -1695,35 +1784,11 @@
       }
 
       catch (error) {
-
-        console.error(
-          error
-        );
-
+        console.error(error);
       }
 
     }
   );
-
-
-  /* =========================
-     STATUS NUME
-  ========================= */
-
-  function showNameStatus(
-    message,
-    type
-  ) {
-
-    nameStatus.className =
-      "status " +
-      type;
-
-
-    nameStatus.textContent =
-      message;
-
-  }
 
 </script>
 
