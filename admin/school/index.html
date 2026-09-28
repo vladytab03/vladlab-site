@@ -144,6 +144,32 @@
       resize: vertical;
     }
 
+    input[type="file"] {
+      padding: 11px;
+      cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 9px 12px;
+      margin-right: 12px;
+      border: 1px solid #303a4e;
+      border-radius: 8px;
+      background: #151c29;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      background: #1c2535;
+    }
+
+    .file-note {
+      margin-top: 7px;
+      color: #657188;
+      font-size: 12px;
+    }
+
     .primary {
       width: 100%;
       padding: 13px;
@@ -213,6 +239,10 @@
       text-decoration: none;
     }
 
+    .material-link:hover {
+      text-decoration: underline;
+    }
+
     .delete {
       flex-shrink: 0;
       padding: 9px 13px;
@@ -222,6 +252,11 @@
       color: #ff8b8b;
       font-weight: 600;
       cursor: pointer;
+    }
+
+    .delete:disabled {
+      opacity: .5;
+      cursor: not-allowed;
     }
 
     .empty {
@@ -299,7 +334,7 @@
   <h1>🎓 Școală</h1>
 
   <p class="subtitle">
-    Gestionează materialele care vor putea fi afișate pe pagina Școală.
+    Încarcă și gestionează materialele afișate pe pagina Școală.
   </p>
 
 
@@ -330,14 +365,17 @@
       </div>
 
       <div class="field">
-        <label for="url">Link</label>
+        <label for="file">Fișier</label>
 
         <input
-          id="url"
-          type="url"
-          placeholder="https://..."
+          id="file"
+          type="file"
           required
         >
+
+        <div class="file-note">
+          Alege materialul direct de pe calculator.
+        </div>
       </div>
 
       <button
@@ -345,7 +383,7 @@
         class="primary"
         type="submit"
       >
-        + Adaugă material
+        ⬆ Încarcă material
       </button>
 
     </form>
@@ -405,24 +443,51 @@
     measurementId: "G-9XN16BVYRN"
   };
 
+
   const ADMIN_UID =
     "tSvMc97QFgc35RwSkK7VRRsEIBv2";
 
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
 
 
-  const form = document.getElementById("form");
-  const addButton = document.getElementById("addButton");
-  const materials = document.getElementById("materials");
-  const status = document.getElementById("status");
+  const MAX_FILE_SIZE =
+    10 * 1024 * 1024;
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+  const db =
+    getFirestore(app);
+
+
+  const form =
+    document.getElementById("form");
+
+  const addButton =
+    document.getElementById("addButton");
+
+  const materials =
+    document.getElementById("materials");
+
+  const status =
+    document.getElementById("status");
+
+  const fileInput =
+    document.getElementById("file");
+
 
   let ready = false;
 
 
-  /* VERIFICARE ADMIN */
+  /* =========================
+     VERIFICARE ADMIN
+  ========================= */
 
   onAuthStateChanged(auth, user => {
 
@@ -442,225 +507,498 @@
   });
 
 
-  /* ADAUGĂ */
+  /* =========================
+     FIȘIER -> BASE64
+  ========================= */
 
-  form.addEventListener("submit", async event => {
+  function fileToBase64(file) {
 
-    event.preventDefault();
+    return new Promise((resolve, reject) => {
 
-    if (!ready) return;
-
-
-    const title =
-      document.getElementById("title").value.trim();
-
-    const description =
-      document.getElementById("description").value.trim();
-
-    const url =
-      document.getElementById("url").value.trim();
+      const reader =
+        new FileReader();
 
 
-    if (!title || !url) return;
+      reader.onload = () => {
+
+        const result =
+          String(reader.result || "");
+
+        const commaIndex =
+          result.indexOf(",");
 
 
-    addButton.disabled = true;
-    addButton.textContent = "Se adaugă...";
+        if (commaIndex === -1) {
 
-
-    try {
-
-      await addDoc(
-        collection(db, "schoolMaterials"),
-        {
-          title,
-          description,
-          url,
-          createdAt: serverTimestamp()
-        }
-      );
-
-      form.reset();
-
-      showStatus(
-        "Materialul a fost adăugat.",
-        "ok"
-      );
-
-    } catch (error) {
-
-      console.error(error);
-
-      showStatus(
-        "Nu am putut adăuga materialul.",
-        "error"
-      );
-
-    } finally {
-
-      addButton.disabled = false;
-      addButton.textContent = "+ Adaugă material";
-
-    }
-
-  });
-
-
-  /* ÎNCARCĂ LISTA */
-
-  function loadMaterials() {
-
-    const q = query(
-      collection(db, "schoolMaterials"),
-      orderBy("createdAt", "desc")
-    );
-
-
-    onSnapshot(q, snapshot => {
-
-      materials.innerHTML = "";
-
-
-      if (snapshot.empty) {
-
-        materials.innerHTML =
-          '<div class="empty">Momentan nu există materiale adăugate din Admin.</div>';
-
-        return;
-      }
-
-
-      snapshot.forEach(item => {
-
-        const data = item.data();
-
-
-        const card =
-          document.createElement("div");
-
-        card.className = "material";
-
-
-        const info =
-          document.createElement("div");
-
-        info.className = "material-info";
-
-
-        const title =
-          document.createElement("div");
-
-        title.className = "material-title";
-        title.textContent =
-          data.title || "Fără titlu";
-
-
-        const description =
-          document.createElement("div");
-
-        description.className =
-          "material-description";
-
-        description.textContent =
-          data.description || "";
-
-
-        const link =
-          document.createElement("a");
-
-        link.className = "material-link";
-        link.href = data.url || "#";
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = data.url || "";
-
-
-        info.appendChild(title);
-
-        if (data.description) {
-          info.appendChild(description);
-        }
-
-        info.appendChild(link);
-
-
-        const remove =
-          document.createElement("button");
-
-        remove.className = "delete";
-        remove.type = "button";
-        remove.textContent = "Șterge";
-
-
-        remove.onclick = async () => {
-
-          if (
-            !confirm(
-              `Ștergi „${data.title || "materialul"}”?`
+          reject(
+            new Error(
+              "Fișierul nu a putut fi citit."
             )
-          ) {
-            return;
-          }
+          );
+
+          return;
+        }
 
 
-          remove.disabled = true;
-          remove.textContent = "Se șterge...";
+        resolve(
+          result.substring(commaIndex + 1)
+        );
+
+      };
 
 
-          try {
+      reader.onerror = () => {
 
-            await deleteDoc(
-              doc(
-                db,
-                "schoolMaterials",
-                item.id
-              )
-            );
+        reject(
+          new Error(
+            "Fișierul nu a putut fi citit."
+          )
+        );
 
-          } catch (error) {
-
-            console.error(error);
-
-            alert(
-              "Materialul nu a putut fi șters."
-            );
-
-            remove.disabled = false;
-            remove.textContent = "Șterge";
-
-          }
-
-        };
+      };
 
 
-        card.appendChild(info);
-        card.appendChild(remove);
-
-        materials.appendChild(card);
-
-      });
-
-    }, error => {
-
-      console.error(error);
-
-      materials.innerHTML =
-        '<div class="empty">Nu am putut încărca materialele.</div>';
+      reader.readAsDataURL(file);
 
     });
 
   }
 
 
+  /* =========================
+     UPLOAD DRIVE
+  ========================= */
+
+  async function uploadToDrive(file) {
+
+    const fileData =
+      await fileToBase64(file);
+
+
+    const payload = {
+
+      name: "VladLab Admin",
+
+      message:
+        "Fișier adăugat din Admin → Școală",
+
+      fileName:
+        file.name,
+
+      mimeType:
+        file.type ||
+        "application/octet-stream",
+
+      fileData:
+        fileData
+
+    };
+
+
+    const response =
+      await fetch(
+        SCRIPT_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Uploadul nu a reușit."
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result.success ||
+      !result.fileId
+    ) {
+
+      throw new Error(
+        result.message ||
+        "Uploadul nu a reușit."
+      );
+
+    }
+
+
+    return {
+      fileId:
+        result.fileId,
+
+      fileName:
+        result.fileName ||
+        file.name,
+
+      url:
+        result.downloadUrl ||
+        result.fileUrl
+    };
+
+  }
+
+
+  /* =========================
+     ADAUGĂ MATERIAL
+  ========================= */
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      if (!ready) return;
+
+
+      const title =
+        document
+          .getElementById("title")
+          .value
+          .trim();
+
+
+      const description =
+        document
+          .getElementById("description")
+          .value
+          .trim();
+
+
+      const file =
+        fileInput.files[0];
+
+
+      if (!title || !file) {
+
+        showStatus(
+          "Completează titlul și alege un fișier.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (file.size > MAX_FILE_SIZE) {
+
+        showStatus(
+          "Fișierul este prea mare. Maxim 10 MB.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      addButton.disabled = true;
+
+      addButton.textContent =
+        "Se încarcă în Drive...";
+
+
+      try {
+
+        const uploaded =
+          await uploadToDrive(file);
+
+
+        addButton.textContent =
+          "Se salvează...";
+
+
+        await addDoc(
+          collection(
+            db,
+            "schoolMaterials"
+          ),
+          {
+            title: title,
+            description: description,
+            url: uploaded.url,
+            driveFileId:
+              uploaded.fileId,
+            fileName:
+              uploaded.fileName,
+            createdAt:
+              serverTimestamp()
+          }
+        );
+
+
+        form.reset();
+
+
+        showStatus(
+          "Materialul a fost încărcat și adăugat.",
+          "ok"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        showStatus(
+          "Nu am putut încărca materialul.",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        addButton.disabled = false;
+
+        addButton.textContent =
+          "⬆ Încarcă material";
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     ÎNCARCĂ LISTA
+  ========================= */
+
+  function loadMaterials() {
+
+    const q =
+      query(
+        collection(
+          db,
+          "schoolMaterials"
+        ),
+        orderBy(
+          "createdAt",
+          "desc"
+        )
+      );
+
+
+    onSnapshot(
+      q,
+
+      snapshot => {
+
+        materials.innerHTML = "";
+
+
+        if (snapshot.empty) {
+
+          materials.innerHTML =
+            '<div class="empty">Momentan nu există materiale adăugate din Admin.</div>';
+
+          return;
+        }
+
+
+        snapshot.forEach(item => {
+
+          const data =
+            item.data();
+
+
+          const card =
+            document.createElement("div");
+
+          card.className =
+            "material";
+
+
+          const info =
+            document.createElement("div");
+
+          info.className =
+            "material-info";
+
+
+          const title =
+            document.createElement("div");
+
+          title.className =
+            "material-title";
+
+          title.textContent =
+            data.title ||
+            "Fără titlu";
+
+
+          const description =
+            document.createElement("div");
+
+          description.className =
+            "material-description";
+
+          description.textContent =
+            data.description || "";
+
+
+          const link =
+            document.createElement("a");
+
+          link.className =
+            "material-link";
+
+          link.href =
+            data.url || "#";
+
+          link.target =
+            "_blank";
+
+          link.rel =
+            "noopener noreferrer";
+
+          link.textContent =
+            data.fileName ||
+            data.url ||
+            "Deschide materialul";
+
+
+          info.appendChild(title);
+
+
+          if (data.description) {
+
+            info.appendChild(
+              description
+            );
+
+          }
+
+
+          info.appendChild(link);
+
+
+          const remove =
+            document.createElement(
+              "button"
+            );
+
+          remove.className =
+            "delete";
+
+          remove.type =
+            "button";
+
+          remove.textContent =
+            "Șterge";
+
+
+          remove.onclick =
+            async () => {
+
+              if (
+                !confirm(
+                  `Ștergi „${
+                    data.title ||
+                    "materialul"
+                  }”?`
+                )
+              ) {
+                return;
+              }
+
+
+              remove.disabled = true;
+
+              remove.textContent =
+                "Se șterge...";
+
+
+              try {
+
+                await deleteDoc(
+                  doc(
+                    db,
+                    "schoolMaterials",
+                    item.id
+                  )
+                );
+
+              }
+
+              catch (error) {
+
+                console.error(error);
+
+
+                alert(
+                  "Materialul nu a putut fi șters."
+                );
+
+
+                remove.disabled = false;
+
+                remove.textContent =
+                  "Șterge";
+
+              }
+
+            };
+
+
+          card.appendChild(info);
+
+          card.appendChild(remove);
+
+          materials.appendChild(card);
+
+        });
+
+      },
+
+      error => {
+
+        console.error(error);
+
+        materials.innerHTML =
+          '<div class="empty">Nu am putut încărca materialele.</div>';
+
+      }
+    );
+
+  }
+
+
+  /* =========================
+     STATUS
+  ========================= */
+
   function showStatus(text, type) {
 
     status.className = type;
+
     status.textContent = text;
 
+
     setTimeout(() => {
+
       status.className = "";
+
       status.textContent = "";
-    }, 4000);
+
+    }, 5000);
 
   }
 
