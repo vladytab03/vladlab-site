@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,13 +34,121 @@
     }
 
     /* =========================
+       ÎNCĂRCARE
+    ========================= */
+
+    #pageLoading {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #080b12;
+      color: #8995a9;
+
+      font-size: 14px;
+    }
+
+    /* =========================
+       MENTENANȚĂ
+    ========================= */
+
+    #maintenancePage {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 25px;
+
+      background: #080b12;
+    }
+
+    .maintenance-card {
+      width: min(520px, 100%);
+
+      padding: 40px 30px;
+
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 22px;
+
+      text-align: center;
+    }
+
+    .maintenance-logo {
+      width: 78px;
+      height: 78px;
+
+      object-fit: cover;
+
+      border-radius: 19px;
+
+      margin-bottom: 23px;
+    }
+
+    .maintenance-card h1 {
+      max-width: none;
+
+      font-size: clamp(30px, 6vw, 42px);
+      letter-spacing: -1px;
+
+      margin-bottom: 14px;
+    }
+
+    .maintenance-card p {
+      color: #8995a9;
+
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .maintenance-login {
+      display: inline-block;
+
+      margin-top: 25px;
+
+      padding: 11px 17px;
+
+      background: #5b8cff;
+      color: white;
+
+      border-radius: 10px;
+
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .maintenance-login:hover {
+      background: #6c98ff;
+    }
+
+    /* =========================
+       SITE
+    ========================= */
+
+    #siteContent {
+      display: none;
+    }
+
+    /* =========================
        NAVBAR
     ========================= */
 
     nav {
       height: 72px;
+
       border-bottom: 1px solid #1d2330;
+
       background: rgba(8, 11, 18, 0.94);
+
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
 
@@ -51,6 +160,7 @@
 
       position: sticky;
       top: 0;
+
       z-index: 100;
     }
 
@@ -63,6 +173,7 @@
       justify-content: center;
 
       background: #0e131d;
+
       border: 1px solid #293142;
       border-radius: 12px;
 
@@ -70,7 +181,8 @@
       font-size: 24px;
 
       cursor: pointer;
-      transition: 0.2s;
+
+      transition: .2s;
     }
 
     .menu-button:hover {
@@ -81,6 +193,7 @@
     .account {
       display: flex;
       align-items: center;
+
       gap: 10px;
     }
 
@@ -88,13 +201,16 @@
     .user-button,
     .logout-button {
       border-radius: 10px;
+
       padding: 9px 15px;
 
       font-size: 14px;
+
       text-decoration: none;
 
       cursor: pointer;
-      transition: 0.2s;
+
+      transition: .2s;
 
       white-space: nowrap;
     }
@@ -102,7 +218,9 @@
     .login-button {
       background: #5b8cff;
       color: white;
+
       border: 1px solid #5b8cff;
+
       font-weight: 700;
     }
 
@@ -114,26 +232,33 @@
       max-width: 180px;
 
       background: transparent;
+
       color: #cbd4e4;
+
       border: 1px solid #293142;
 
       overflow: hidden;
+
       text-overflow: ellipsis;
     }
 
     .user-button:hover {
       color: white;
+
       border-color: #5b8cff;
     }
 
     .logout-button {
       background: #161c27;
+
       color: white;
+
       border: 1px solid #293142;
     }
 
     .logout-button:hover {
       border-color: #5b8cff;
+
       background: #1a2230;
     }
 
@@ -142,27 +267,31 @@
       display: none;
     }
 
-
     /* =========================
        MENIU GLISANT
     ========================= */
 
     .menu-overlay {
       position: fixed;
+
       inset: 0;
 
-      background: rgba(0, 0, 0, 0.62);
+      background: rgba(0, 0, 0, .62);
 
       opacity: 0;
+
       visibility: hidden;
 
-      transition: opacity 0.25s, visibility 0.25s;
+      transition:
+        opacity .25s,
+        visibility .25s;
 
       z-index: 998;
     }
 
     .menu-overlay.active {
       opacity: 1;
+
       visibility: visible;
     }
 
@@ -174,21 +303,27 @@
 
       width: 320px;
       max-width: 86vw;
+
       height: 100vh;
       height: 100dvh;
 
       background: #0b0f17;
+
       border-right: 1px solid #202735;
 
       transform: translateX(-105%);
-      transition: transform 0.28s ease;
+
+      transition: transform .28s ease;
 
       z-index: 999;
 
       display: flex;
+
       flex-direction: column;
 
-      box-shadow: 20px 0 50px rgba(0, 0, 0, 0.35);
+      box-shadow:
+        20px 0 50px
+        rgba(0, 0, 0, .35);
     }
 
     .side-menu.active {
@@ -199,6 +334,7 @@
       height: 72px;
 
       display: flex;
+
       align-items: center;
       justify-content: space-between;
 
@@ -209,10 +345,13 @@
 
     .side-brand {
       display: flex;
+
       align-items: center;
+
       gap: 11px;
 
       font-size: 19px;
+
       font-weight: 700;
     }
 
@@ -221,6 +360,7 @@
       height: 40px;
 
       object-fit: cover;
+
       border-radius: 10px;
     }
 
@@ -229,20 +369,25 @@
       height: 40px;
 
       border-radius: 10px;
+
       border: 1px solid #293142;
 
       background: #111722;
+
       color: white;
 
       font-size: 23px;
+
       line-height: 1;
 
       cursor: pointer;
-      transition: 0.2s;
+
+      transition: .2s;
     }
 
     .close-menu:hover {
       border-color: #5b8cff;
+
       background: #161d2a;
     }
 
@@ -250,7 +395,9 @@
       padding: 20px 14px;
 
       display: flex;
+
       flex-direction: column;
+
       gap: 7px;
 
       overflow-y: auto;
@@ -260,6 +407,7 @@
       color: #596477;
 
       font-size: 11px;
+
       font-weight: 700;
 
       letter-spacing: 1.2px;
@@ -269,7 +417,9 @@
 
     .menu-link {
       display: flex;
+
       align-items: center;
+
       gap: 14px;
 
       min-height: 52px;
@@ -277,35 +427,43 @@
       padding: 12px 14px;
 
       border-radius: 12px;
+
       border: 1px solid transparent;
 
       color: #cbd4e4;
+
       text-decoration: none;
 
       font-size: 15px;
+
       font-weight: 600;
 
-      transition: 0.2s;
+      transition: .2s;
     }
 
     .menu-link:hover {
       color: white;
 
       background: #111722;
+
       border-color: #202735;
     }
 
     .menu-link.active {
       color: white;
 
-      background: rgba(91, 140, 255, 0.12);
-      border-color: rgba(91, 140, 255, 0.25);
+      background:
+        rgba(91, 140, 255, .12);
+
+      border-color:
+        rgba(91, 140, 255, .25);
     }
 
     .menu-icon {
       width: 27px;
 
       text-align: center;
+
       font-size: 20px;
     }
 
@@ -325,9 +483,9 @@
       border-top: 1px solid #1d2330;
 
       color: #596477;
+
       font-size: 12px;
     }
-
 
     /* =========================
        HOMEPAGE
@@ -335,7 +493,9 @@
 
     main {
       max-width: 1150px;
+
       margin: auto;
+
       padding: 90px 25px 80px;
     }
 
@@ -348,14 +508,18 @@
       height: 82px;
 
       border-radius: 20px;
+
       object-fit: cover;
 
       margin-bottom: 24px;
     }
 
     h1 {
-      font-size: clamp(42px, 7vw, 72px);
+      font-size:
+        clamp(42px, 7vw, 72px);
+
       line-height: 1.05;
+
       letter-spacing: -2px;
 
       max-width: 850px;
@@ -367,7 +531,9 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+
+      grid-template-columns:
+        repeat(2, 1fr);
 
       gap: 18px;
     }
@@ -376,40 +542,51 @@
       min-height: 180px;
 
       background: #0e131d;
+
       border: 1px solid #202735;
+
       border-radius: 20px;
 
       padding: 27px;
 
       text-decoration: none;
+
       color: white;
 
       display: flex;
+
       flex-direction: column;
+
       justify-content: space-between;
 
-      transition: 0.2s;
+      transition: .2s;
     }
 
     .card:hover {
       transform: translateY(-4px);
+
       border-color: #34415a;
+
       background: #111722;
     }
 
     .card-icon {
       font-size: 34px;
+
       margin-bottom: 25px;
     }
 
     .card h2 {
       font-size: 20px;
+
       margin-bottom: 8px;
     }
 
     .card p {
       color: #7f8a9e;
+
       font-size: 14px;
+
       line-height: 1.5;
     }
 
@@ -419,6 +596,7 @@
       color: #5b8cff;
 
       font-size: 14px;
+
       font-weight: 700;
     }
 
@@ -426,14 +604,15 @@
       max-width: 1150px;
 
       margin: auto;
+
       padding: 30px 25px 45px;
 
       border-top: 1px solid #171d28;
 
       color: #596477;
+
       font-size: 13px;
     }
-
 
     /* =========================
        TELEFON
@@ -477,6 +656,7 @@
 
       .card {
         min-height: 165px;
+
         padding: 23px;
       }
 
@@ -484,6 +664,7 @@
       .user-button,
       .logout-button {
         padding: 8px 10px;
+
         font-size: 13px;
       }
 
@@ -500,11 +681,11 @@
       }
     }
 
-
     @media (max-width: 380px) {
 
       .user-button {
         max-width: 105px;
+
         padding-left: 8px;
         padding-right: 8px;
       }
@@ -524,6 +705,55 @@
 
 
 <body>
+
+
+<!-- =========================
+     ÎNCĂRCARE
+========================= -->
+
+<div id="pageLoading">
+  Se încarcă...
+</div>
+
+
+<!-- =========================
+     MENTENANȚĂ
+========================= -->
+
+<section id="maintenancePage">
+
+  <div class="maintenance-card">
+
+    <img
+      src="/logo.png"
+      class="maintenance-logo"
+      id="maintenanceLogo"
+      alt="VladLab"
+    >
+
+    <h1 id="maintenanceTitle">
+      VladLab
+    </h1>
+
+    <p id="maintenanceText">
+      Site-ul este momentan în mentenanță.
+      Revino în curând.
+    </p>
+
+    <a
+      href="/login/?next=/"
+      class="maintenance-login"
+      id="maintenanceLogin"
+    >
+      Login administrator
+    </a>
+
+  </div>
+
+</section>
+
+
+<div id="siteContent">
 
 
 <!-- =========================
@@ -547,10 +777,13 @@
 
       <img
         src="/logo.png"
+        id="sideLogo"
         alt="VladLab"
       >
 
-      VladLab
+      <span id="sideBrandName">
+        VladLab
+      </span>
 
     </div>
 
@@ -569,7 +802,10 @@
 
   <div class="side-menu-content">
 
-    <div class="menu-label">
+    <div
+      class="menu-label"
+      id="menuLabel"
+    >
       VLADLAB
     </div>
 
@@ -631,6 +867,8 @@
     <div class="menu-separator"></div>
 
 
+    <!-- NOVA SMP RĂMÂNE DOAR AICI -->
+
     <a
       href="http://novasmp.space/"
       class="menu-link"
@@ -642,7 +880,10 @@
   </div>
 
 
-  <div class="side-menu-footer">
+  <div
+    class="side-menu-footer"
+    id="sideFooter"
+  >
     © 2026 VladLab
   </div>
 
@@ -722,15 +963,13 @@
 
     <img
       src="/logo.png"
+      id="heroLogo"
       alt="VladLab"
       class="hero-logo"
     >
 
-    <h1>
-      Totul într-un
-      <span class="accent">
-        singur loc.
-      </span>
+    <h1 id="heroTitle">
+      Totul într-un singur loc.
     </h1>
 
   </section>
@@ -738,6 +977,8 @@
 
   <section class="grid">
 
+
+    <!-- ȘCOALĂ -->
 
     <a
       href="/scoala/"
@@ -767,33 +1008,7 @@
     </a>
 
 
-    <a
-      href="http://novasmp.space/"
-      class="card"
-    >
-
-      <div>
-
-        <div class="card-icon">
-          ⛏️
-        </div>
-
-        <h2>
-          Minecraft
-        </h2>
-
-        <p>
-          Nova SMP.
-        </p>
-
-      </div>
-
-      <div class="arrow">
-        Deschide →
-      </div>
-
-    </a>
-
+    <!-- PROIECTE -->
 
     <a
       href="/proiecte/"
@@ -810,7 +1025,7 @@
           Proiecte
         </h2>
 
-        <p>
+        <p id="projectsCardText">
           Proiectele VladLab.
         </p>
 
@@ -822,6 +1037,8 @@
 
     </a>
 
+
+    <!-- UPLOAD -->
 
     <a
       href="/upload/"
@@ -838,7 +1055,7 @@
           Trimite fișier
         </h2>
 
-        <p>
+        <p id="uploadCardText">
           Trimite rapid un fișier prin VladLab.
         </p>
 
@@ -850,6 +1067,8 @@
 
     </a>
 
+
+    <!-- DOWNLOAD -->
 
     <a
       href="/download/"
@@ -878,14 +1097,18 @@
 
     </a>
 
+
   </section>
 
 </main>
 
 
-<footer>
+<footer id="mainFooter">
   © 2026 VladLab
 </footer>
+
+
+</div>
 
 
 <script type="module">
@@ -900,6 +1123,13 @@
     onAuthStateChanged,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
   const firebaseConfig = {
@@ -933,11 +1163,53 @@
 
 
   const app =
-    initializeApp(firebaseConfig);
+    initializeApp(
+      firebaseConfig
+    );
 
 
   const auth =
     getAuth(app);
+
+
+  const db =
+    getFirestore(app);
+
+
+  const pageLoading =
+    document.getElementById(
+      "pageLoading"
+    );
+
+
+  const siteContent =
+    document.getElementById(
+      "siteContent"
+    );
+
+
+  const maintenancePage =
+    document.getElementById(
+      "maintenancePage"
+    );
+
+
+  const maintenanceTitle =
+    document.getElementById(
+      "maintenanceTitle"
+    );
+
+
+  const maintenanceText =
+    document.getElementById(
+      "maintenanceText"
+    );
+
+
+  const maintenanceLogo =
+    document.getElementById(
+      "maintenanceLogo"
+    );
 
 
   /* =========================
@@ -945,81 +1217,386 @@
   ========================= */
 
   const loggedOut =
-    document.getElementById("loggedOut");
+    document.getElementById(
+      "loggedOut"
+    );
+
 
   const loggedIn =
-    document.getElementById("loggedIn");
+    document.getElementById(
+      "loggedIn"
+    );
+
 
   const userButton =
-    document.getElementById("userButton");
+    document.getElementById(
+      "userButton"
+    );
+
 
   const logoutButton =
-    document.getElementById("logoutButton");
+    document.getElementById(
+      "logoutButton"
+    );
 
+
+  /* =========================
+     PORNIRE
+  ========================= */
 
   onAuthStateChanged(
     auth,
+    async user => {
 
-    (user) => {
-
-      if (!user) {
-
-        loggedIn.style.display =
-          "none";
-
-        loggedOut.style.display =
-          "block";
-
-        return;
-      }
+      updateAccountUI(
+        user
+      );
 
 
-      loggedOut.style.display =
-        "none";
-
-      loggedIn.style.display =
-        "flex";
+      const settings =
+        await loadSiteSettings();
 
 
-      /* ADMIN */
+      applySiteSettings(
+        settings
+      );
+
+
+      /*
+        Dacă mentenanța este activă,
+        numai ADMINUL poate vedea
+        site-ul normal.
+      */
+
+      const maintenanceActive =
+        settings.maintenance === true;
+
+
+      const isAdmin =
+        user &&
+        user.uid === ADMIN_UID;
+
 
       if (
-        user.uid ===
-        ADMIN_UID
+        maintenanceActive &&
+        !isAdmin
       ) {
 
-        userButton.textContent =
-          "Vlad";
+        siteContent.style.display =
+          "none";
 
-        userButton.href =
-          "/admin/";
+
+        maintenancePage.style.display =
+          "flex";
+
+
+        pageLoading.style.display =
+          "none";
+
 
         return;
+
       }
 
 
-      /* UTILIZATOR NORMAL */
+      /*
+        Site normal sau admin bypass.
+      */
 
-      userButton.textContent =
-        user.displayName ||
-        user.email?.split("@")[0] ||
-        "Cont";
+      maintenancePage.style.display =
+        "none";
 
-      userButton.href =
-        "/cont/";
+
+      siteContent.style.display =
+        "block";
+
+
+      pageLoading.style.display =
+        "none";
 
     }
   );
 
 
+  /* =========================
+     SETĂRI SITE
+  ========================= */
+
+  async function loadSiteSettings() {
+
+    const defaults = {
+
+      siteName:
+        "VladLab",
+
+      heroTitle:
+        "Totul într-un singur loc.",
+
+      maintenance:
+        false,
+
+      maintenanceMessage:
+        "Site-ul este momentan în mentenanță. Revino în curând."
+
+    };
+
+
+    try {
+
+      const snapshot =
+        await getDoc(
+          doc(
+            db,
+            "settings",
+            "site"
+          )
+        );
+
+
+      if (
+        !snapshot.exists()
+      ) {
+
+        return defaults;
+
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      return {
+
+        siteName:
+          typeof data.siteName === "string" &&
+          data.siteName.trim()
+            ? data.siteName.trim()
+            : defaults.siteName,
+
+
+        heroTitle:
+          typeof data.heroTitle === "string" &&
+          data.heroTitle.trim()
+            ? data.heroTitle.trim()
+            : defaults.heroTitle,
+
+
+        maintenance:
+          data.maintenance === true,
+
+
+        maintenanceMessage:
+          typeof data.maintenanceMessage === "string" &&
+          data.maintenanceMessage.trim()
+            ? data.maintenanceMessage.trim()
+            : defaults.maintenanceMessage
+
+      };
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Nu am putut încărca setările:",
+        error
+      );
+
+
+      /*
+        Dacă Firestore are temporar o problemă,
+        nu blocăm accidental site-ul.
+      */
+
+      return defaults;
+
+    }
+
+  }
+
+
+  /* =========================
+     APLICĂ SETĂRILE
+  ========================= */
+
+  function applySiteSettings(
+    settings
+  ) {
+
+    const siteName =
+      settings.siteName;
+
+
+    /* TITLE */
+
+    document.title =
+      siteName;
+
+
+    /* MENIU */
+
+    document.getElementById(
+      "sideBrandName"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "menuLabel"
+    ).textContent =
+      siteName.toUpperCase();
+
+
+    document.getElementById(
+      "sideFooter"
+    ).textContent =
+      "© 2026 " +
+      siteName;
+
+
+    document.getElementById(
+      "sideLogo"
+    ).alt =
+      siteName;
+
+
+    /* HERO */
+
+    document.getElementById(
+      "heroLogo"
+    ).alt =
+      siteName;
+
+
+    document.getElementById(
+      "heroTitle"
+    ).textContent =
+      settings.heroTitle;
+
+
+    /* CARDURI */
+
+    document.getElementById(
+      "projectsCardText"
+    ).textContent =
+      "Proiectele " +
+      siteName +
+      ".";
+
+
+    document.getElementById(
+      "uploadCardText"
+    ).textContent =
+      "Trimite rapid un fișier prin " +
+      siteName +
+      ".";
+
+
+    /* FOOTER */
+
+    document.getElementById(
+      "mainFooter"
+    ).textContent =
+      "© 2026 " +
+      siteName;
+
+
+    /* MENTENANȚĂ */
+
+    maintenanceTitle.textContent =
+      siteName;
+
+
+    maintenanceText.textContent =
+      settings.maintenanceMessage;
+
+
+    maintenanceLogo.alt =
+      siteName;
+
+  }
+
+
+  /* =========================
+     CONT UI
+  ========================= */
+
+  function updateAccountUI(
+    user
+  ) {
+
+    if (!user) {
+
+      loggedIn.style.display =
+        "none";
+
+
+      loggedOut.style.display =
+        "block";
+
+
+      return;
+
+    }
+
+
+    loggedOut.style.display =
+      "none";
+
+
+    loggedIn.style.display =
+      "flex";
+
+
+    /* ADMIN */
+
+    if (
+      user.uid ===
+      ADMIN_UID
+    ) {
+
+      userButton.textContent =
+        "Vlad";
+
+
+      userButton.href =
+        "/admin/";
+
+
+      return;
+
+    }
+
+
+    /* UTILIZATOR NORMAL */
+
+    userButton.textContent =
+      user.displayName ||
+      user.email?.split("@")[0] ||
+      "Cont";
+
+
+    userButton.href =
+      "/cont/";
+
+  }
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
+
   logoutButton.addEventListener(
     "click",
-
     async () => {
 
       try {
 
-        await signOut(auth);
+        await signOut(
+          auth
+        );
+
 
         window.location.href =
           "/";
@@ -1028,7 +1605,9 @@
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
       }
 
@@ -1041,16 +1620,27 @@
   ========================= */
 
   const openMenuButton =
-    document.getElementById("openMenu");
+    document.getElementById(
+      "openMenu"
+    );
+
 
   const closeMenuButton =
-    document.getElementById("closeMenu");
+    document.getElementById(
+      "closeMenu"
+    );
+
 
   const sideMenu =
-    document.getElementById("sideMenu");
+    document.getElementById(
+      "sideMenu"
+    );
+
 
   const menuOverlay =
-    document.getElementById("menuOverlay");
+    document.getElementById(
+      "menuOverlay"
+    );
 
 
   function openMenu() {
@@ -1059,9 +1649,11 @@
       "active"
     );
 
+
     menuOverlay.classList.add(
       "active"
     );
+
 
     document.body.classList.add(
       "menu-open"
@@ -1076,9 +1668,11 @@
       "active"
     );
 
+
     menuOverlay.classList.remove(
       "active"
     );
+
 
     document.body.classList.remove(
       "menu-open"
@@ -1106,21 +1700,24 @@
 
 
   document
-    .querySelectorAll(".menu-link")
-    .forEach((link) => {
+    .querySelectorAll(
+      ".menu-link"
+    )
+    .forEach(
+      link => {
 
-      link.addEventListener(
-        "click",
-        closeMenu
-      );
+        link.addEventListener(
+          "click",
+          closeMenu
+        );
 
-    });
+      }
+    );
 
 
   document.addEventListener(
     "keydown",
-
-    (event) => {
+    event => {
 
       if (
         event.key ===
