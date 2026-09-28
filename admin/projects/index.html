@@ -143,6 +143,73 @@
       resize: vertical;
     }
 
+    input[type="file"] {
+      padding: 11px;
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 9px 12px;
+      margin-right: 12px;
+      border: 1px solid #303a4e;
+      border-radius: 8px;
+      background: #151c29;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .note {
+      margin-top: 7px;
+      color: #657188;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .links-box {
+      display: grid;
+      gap: 10px;
+    }
+
+    .link-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 9px;
+    }
+
+    .small-button {
+      padding: 0 15px;
+      border: 1px solid #303a4e;
+      border-radius: 10px;
+      background: #151c29;
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .small-button:hover {
+      background: #1c2535;
+    }
+
+    .remove-link {
+      color: #ff9292;
+    }
+
+    .add-link-button {
+      margin-top: 10px;
+      padding: 10px 13px;
+      border: 1px solid #303a4e;
+      border-radius: 9px;
+      background: transparent;
+      color: #aebbd0;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .add-link-button:hover {
+      color: white;
+      background: #151c29;
+    }
+
     .primary {
       width: 100%;
       padding: 13px;
@@ -176,7 +243,7 @@
     .project {
       padding: 18px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 20px;
       background: #0e131d;
@@ -186,6 +253,7 @@
 
     .project-info {
       min-width: 0;
+      flex: 1;
     }
 
     .project-title {
@@ -195,10 +263,16 @@
     }
 
     .project-description {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       color: #7f899a;
       font-size: 13px;
       line-height: 1.4;
+    }
+
+    .resource-list {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
     }
 
     .project-link {
@@ -210,6 +284,14 @@
       color: #5b8cff;
       font-size: 12px;
       text-decoration: none;
+    }
+
+    .project-link:hover {
+      text-decoration: underline;
+    }
+
+    .resource-type {
+      color: #657188;
     }
 
     .delete {
@@ -225,6 +307,11 @@
 
     .delete:hover {
       background: rgba(255, 77, 77, .14);
+    }
+
+    .delete:disabled {
+      opacity: .5;
+      cursor: not-allowed;
     }
 
     .empty {
@@ -278,6 +365,14 @@
       h1 {
         font-size: 34px;
       }
+
+      .link-row {
+        grid-template-columns: 1fr;
+      }
+
+      .small-button {
+        padding: 10px;
+      }
     }
   </style>
 </head>
@@ -302,7 +397,7 @@
   <h1>💻 Proiecte</h1>
 
   <p class="subtitle">
-    Adaugă și gestionează proiectele VladLab.
+    Creează proiecte cu mai multe fișiere și linkuri.
   </p>
 
   <div class="panel">
@@ -332,13 +427,37 @@
       </div>
 
       <div class="field">
-        <label for="url">Link proiect</label>
+        <label for="files">Fișiere</label>
 
         <input
-          id="url"
-          type="url"
-          placeholder="https://..."
+          id="files"
+          type="file"
+          multiple
         >
+
+        <div class="note">
+          Poți selecta mai multe fișiere. Maxim 10 MB pentru fiecare fișier.
+        </div>
+      </div>
+
+      <div class="field">
+
+        <label>Linkuri externe</label>
+
+        <div id="linksBox" class="links-box"></div>
+
+        <button
+          type="button"
+          id="addLinkButton"
+          class="add-link-button"
+        >
+          + Adaugă link
+        </button>
+
+        <div class="note">
+          Linkurile sunt opționale. Poți adăuga mai multe.
+        </div>
+
       </div>
 
       <button
@@ -346,7 +465,7 @@
         class="primary"
         type="submit"
       >
-        + Adaugă proiect
+        + Creează proiect
       </button>
 
     </form>
@@ -409,11 +528,22 @@
     "tSvMc97QFgc35RwSkK7VRRsEIBv2";
 
 
-  const app = initializeApp(firebaseConfig);
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
 
-  const auth = getAuth(app);
 
-  const db = getFirestore(app);
+  const MAX_FILE_SIZE =
+    10 * 1024 * 1024;
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+  const db =
+    getFirestore(app);
 
 
   const form =
@@ -428,9 +558,22 @@
   const status =
     document.getElementById("status");
 
+  const filesInput =
+    document.getElementById("files");
+
+  const linksBox =
+    document.getElementById("linksBox");
+
+  const addLinkButton =
+    document.getElementById("addLinkButton");
+
 
   let ready = false;
 
+
+  /* =========================
+     ADMIN
+  ========================= */
 
   onAuthStateChanged(auth, user => {
 
@@ -451,91 +594,431 @@
   });
 
 
-  form.addEventListener("submit", async event => {
+  /* =========================
+     LINKURI
+  ========================= */
 
-    event.preventDefault();
+  function addLinkRow() {
 
-    if (!ready) return;
+    const row =
+      document.createElement("div");
 
-
-    const title =
-      document.getElementById("title").value.trim();
-
-    const description =
-      document.getElementById("description").value.trim();
-
-    const url =
-      document.getElementById("url").value.trim();
+    row.className = "link-row";
 
 
-    if (!title) {
-      showStatus(
-        "Scrie numele proiectului.",
-        "error"
-      );
+    const input =
+      document.createElement("input");
 
-      return;
-    }
+    input.type = "url";
 
+    input.className = "external-link";
 
-    addButton.disabled = true;
-
-    addButton.textContent =
-      "Se adaugă...";
+    input.placeholder =
+      "https://...";
 
 
-    try {
+    const remove =
+      document.createElement("button");
 
-      await addDoc(
-        collection(db, "projects"),
+    remove.type = "button";
+
+    remove.className =
+      "small-button remove-link";
+
+    remove.textContent =
+      "Elimină";
+
+
+    remove.addEventListener(
+      "click",
+      () => {
+        row.remove();
+      }
+    );
+
+
+    row.appendChild(input);
+
+    row.appendChild(remove);
+
+    linksBox.appendChild(row);
+
+  }
+
+
+  addLinkButton.addEventListener(
+    "click",
+    addLinkRow
+  );
+
+
+  addLinkRow();
+
+
+  /* =========================
+     BASE64
+  ========================= */
+
+  function fileToBase64(file) {
+
+    return new Promise(
+      (resolve, reject) => {
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload = () => {
+
+          const result =
+            String(reader.result || "");
+
+          const commaIndex =
+            result.indexOf(",");
+
+
+          if (commaIndex === -1) {
+
+            reject(
+              new Error(
+                "Fișierul nu a putut fi citit."
+              )
+            );
+
+            return;
+          }
+
+
+          resolve(
+            result.substring(
+              commaIndex + 1
+            )
+          );
+
+        };
+
+
+        reader.onerror = () => {
+
+          reject(
+            new Error(
+              "Fișierul nu a putut fi citit."
+            )
+          );
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+      }
+    );
+
+  }
+
+
+  /* =========================
+     UPLOAD DRIVE
+  ========================= */
+
+  async function uploadToDrive(file) {
+
+    const fileData =
+      await fileToBase64(file);
+
+
+    const response =
+      await fetch(
+        SCRIPT_URL,
         {
-          title,
-          description,
-          url,
-          createdAt: serverTimestamp()
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify({
+              name:
+                "VladLab Admin",
+
+              message:
+                "Fișier proiect VladLab",
+
+              fileName:
+                file.name,
+
+              mimeType:
+                file.type ||
+                "application/octet-stream",
+
+              fileData:
+                fileData
+            })
         }
       );
 
 
-      form.reset();
+    if (!response.ok) {
 
-
-      showStatus(
-        "Proiectul a fost adăugat.",
-        "ok"
+      throw new Error(
+        "Uploadul nu a reușit."
       );
 
     }
 
-    catch (error) {
 
-      console.error(error);
+    const result =
+      await response.json();
 
-      showStatus(
-        "Nu am putut adăuga proiectul.",
-        "error"
+
+    if (
+      !result.success ||
+      !result.fileId
+    ) {
+
+      throw new Error(
+        result.message ||
+        "Uploadul nu a reușit."
       );
 
     }
 
-    finally {
 
-      addButton.disabled = false;
+    return {
+      type: "file",
+
+      name:
+        result.fileName ||
+        file.name,
+
+      url:
+        result.downloadUrl ||
+        result.fileUrl,
+
+      driveFileId:
+        result.fileId
+    };
+
+  }
+
+
+  /* =========================
+     CREEAZĂ PROIECT
+  ========================= */
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      if (!ready) return;
+
+
+      const title =
+        document
+          .getElementById("title")
+          .value
+          .trim();
+
+
+      const description =
+        document
+          .getElementById("description")
+          .value
+          .trim();
+
+
+      const selectedFiles =
+        Array.from(
+          filesInput.files
+        );
+
+
+      const linkInputs =
+        Array.from(
+          document.querySelectorAll(
+            ".external-link"
+          )
+        );
+
+
+      const externalLinks =
+        linkInputs
+          .map(input =>
+            input.value.trim()
+          )
+          .filter(Boolean);
+
+
+      if (!title) {
+
+        showStatus(
+          "Scrie numele proiectului.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      for (
+        const file
+        of selectedFiles
+      ) {
+
+        if (
+          file.size >
+          MAX_FILE_SIZE
+        ) {
+
+          showStatus(
+            `Fișierul „${file.name}” depășește 10 MB.`,
+            "error"
+          );
+
+          return;
+        }
+
+      }
+
+
+      addButton.disabled = true;
 
       addButton.textContent =
-        "+ Adaugă proiect";
+        "Se pregătește...";
+
+
+      try {
+
+        const resources = [];
+
+
+        for (
+          let i = 0;
+          i < selectedFiles.length;
+          i++
+        ) {
+
+          const file =
+            selectedFiles[i];
+
+
+          addButton.textContent =
+            `Se încarcă fișierul ${i + 1}/${selectedFiles.length}...`;
+
+
+          const uploaded =
+            await uploadToDrive(
+              file
+            );
+
+
+          resources.push(
+            uploaded
+          );
+
+        }
+
+
+        externalLinks.forEach(
+          url => {
+
+            resources.push({
+              type: "link",
+              name: url,
+              url: url
+            });
+
+          }
+        );
+
+
+        addButton.textContent =
+          "Se salvează proiectul...";
+
+
+        await addDoc(
+          collection(
+            db,
+            "projects"
+          ),
+          {
+            title: title,
+            description:
+              description,
+
+            resources:
+              resources,
+
+            url:
+              resources.length
+                ? resources[0].url
+                : "",
+
+            createdAt:
+              serverTimestamp()
+          }
+        );
+
+
+        form.reset();
+
+        linksBox.innerHTML = "";
+
+        addLinkRow();
+
+
+        showStatus(
+          "Proiectul a fost adăugat.",
+          "ok"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        showStatus(
+          "Nu am putut crea proiectul.",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        addButton.disabled = false;
+
+        addButton.textContent =
+          "+ Creează proiect";
+
+      }
 
     }
+  );
 
-  });
 
+  /* =========================
+     LISTĂ PROIECTE
+  ========================= */
 
   function loadProjects() {
 
     const projectsQuery =
       query(
-        collection(db, "projects"),
-        orderBy("createdAt", "desc")
+        collection(
+          db,
+          "projects"
+        ),
+        orderBy(
+          "createdAt",
+          "desc"
+        )
       );
 
 
@@ -558,77 +1041,163 @@
 
         snapshot.forEach(item => {
 
-          const data = item.data();
+          const data =
+            item.data();
 
 
           const card =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
-          card.className = "project";
+          card.className =
+            "project";
 
 
           const info =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           info.className =
             "project-info";
 
 
           const title =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           title.className =
             "project-title";
 
           title.textContent =
-            data.title || "Fără titlu";
-
-
-          const description =
-            document.createElement("div");
-
-          description.className =
-            "project-description";
-
-          description.textContent =
-            data.description || "";
+            data.title ||
+            "Fără titlu";
 
 
           info.appendChild(title);
 
 
           if (data.description) {
-            info.appendChild(description);
+
+            const description =
+              document.createElement(
+                "div"
+              );
+
+            description.className =
+              "project-description";
+
+            description.textContent =
+              data.description;
+
+            info.appendChild(
+              description
+            );
+
           }
 
 
-          if (data.url) {
+          let resources =
+            Array.isArray(
+              data.resources
+            )
+              ? data.resources
+              : [];
 
-            const link =
-              document.createElement("a");
 
-            link.className =
-              "project-link";
+          /* compatibilitate
+             cu proiectele vechi */
 
-            link.href =
-              data.url;
+          if (
+            resources.length === 0 &&
+            data.url
+          ) {
 
-            link.target =
-              "_blank";
+            resources = [{
+              type: "link",
+              name: data.url,
+              url: data.url
+            }];
 
-            link.rel =
-              "noopener noreferrer";
+          }
 
-            link.textContent =
-              data.url;
 
-            info.appendChild(link);
+          if (
+            resources.length > 0
+          ) {
+
+            const list =
+              document.createElement(
+                "div"
+              );
+
+            list.className =
+              "resource-list";
+
+
+            resources.forEach(
+              resource => {
+
+                if (
+                  !resource ||
+                  !resource.url
+                ) {
+                  return;
+                }
+
+
+                const link =
+                  document.createElement(
+                    "a"
+                  );
+
+                link.className =
+                  "project-link";
+
+                link.href =
+                  resource.url;
+
+                link.target =
+                  "_blank";
+
+                link.rel =
+                  "noopener noreferrer";
+
+
+                const prefix =
+                  resource.type ===
+                  "file"
+                    ? "📄 "
+                    : "🔗 ";
+
+
+                link.textContent =
+                  prefix +
+                  (
+                    resource.name ||
+                    resource.url
+                  );
+
+
+                list.appendChild(
+                  link
+                );
+
+              }
+            );
+
+
+            info.appendChild(list);
 
           }
 
 
           const remove =
-            document.createElement("button");
+            document.createElement(
+              "button"
+            );
 
           remove.className =
             "delete";
@@ -640,51 +1209,55 @@
             "Șterge";
 
 
-          remove.onclick = async () => {
+          remove.onclick =
+            async () => {
 
-            if (
-              !confirm(
-                `Ștergi proiectul „${data.title || "Fără titlu"}”?`
-              )
-            ) {
-              return;
-            }
-
-
-            remove.disabled = true;
-
-            remove.textContent =
-              "Se șterge...";
-
-
-            try {
-
-              await deleteDoc(
-                doc(
-                  db,
-                  "projects",
-                  item.id
+              if (
+                !confirm(
+                  `Ștergi proiectul „${
+                    data.title ||
+                    "Fără titlu"
+                  }”?`
                 )
-              );
+              ) {
+                return;
+              }
 
-            }
 
-            catch (error) {
-
-              console.error(error);
-
-              alert(
-                "Nu am putut șterge proiectul."
-              );
-
-              remove.disabled = false;
+              remove.disabled = true;
 
               remove.textContent =
-                "Șterge";
+                "Se șterge...";
 
-            }
 
-          };
+              try {
+
+                await deleteDoc(
+                  doc(
+                    db,
+                    "projects",
+                    item.id
+                  )
+                );
+
+              }
+
+              catch (error) {
+
+                console.error(error);
+
+                alert(
+                  "Nu am putut șterge proiectul."
+                );
+
+                remove.disabled = false;
+
+                remove.textContent =
+                  "Șterge";
+
+              }
+
+            };
 
 
           card.appendChild(info);
@@ -710,6 +1283,10 @@
   }
 
 
+  /* =========================
+     STATUS
+  ========================= */
+
   function showStatus(text, type) {
 
     status.className = type;
@@ -723,7 +1300,7 @@
 
       status.textContent = "";
 
-    }, 4000);
+    }, 5000);
 
   }
 
