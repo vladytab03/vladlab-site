@@ -31,8 +31,6 @@
       overflow: hidden;
     }
 
-    /* NAVBAR */
-
     nav {
       height: 72px;
       display: flex;
@@ -66,8 +64,6 @@
       background: #161c27;
       border-color: #5b8cff;
     }
-
-    /* LOGIN / USER */
 
     .account {
       display: flex;
@@ -127,8 +123,6 @@
       border-color: #5b8cff;
       background: #1a2230;
     }
-
-    /* MENIU */
 
     .menu-overlay {
       position: fixed;
@@ -265,8 +259,6 @@
       font-size: 12px;
     }
 
-    /* MAIN */
-
     main {
       flex: 1;
       width: min(1250px, 92%);
@@ -308,8 +300,6 @@
       font-size: 24px;
       margin-bottom: 18px;
     }
-
-    /* ORAR */
 
     .schedule-card {
       background: #0e131d;
@@ -422,8 +412,6 @@
       text-align: center;
     }
 
-    /* MATERIALE */
-
     #materialsList {
       display: grid;
       gap: 16px;
@@ -491,6 +479,47 @@
       line-height: 1.5;
     }
 
+    .material-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .favorite-button {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #30394a;
+      border-radius: 11px;
+      background: #111722;
+      color: #aeb8ca;
+      font-size: 24px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .favorite-button:hover {
+      border-color: #ff6f91;
+      color: #ff8eaa;
+      transform: scale(1.04);
+    }
+
+    .favorite-button.active {
+      color: #ff6f91;
+      border-color: rgba(255,111,145,.45);
+      background: rgba(255,111,145,.10);
+    }
+
+    .favorite-button:disabled {
+      opacity: .55;
+      cursor: wait;
+      transform: none;
+    }
+
     .material-button {
       flex-shrink: 0;
       display: inline-flex;
@@ -501,6 +530,7 @@
       text-decoration: none;
       border-radius: 10px;
       padding: 11px 17px;
+      min-height: 44px;
       font-size: 14px;
       font-weight: 700;
       transition: .2s;
@@ -557,8 +587,16 @@
         align-items: stretch;
       }
 
-      .material-button {
+      .material-actions {
         width: 100%;
+      }
+
+      .material-button {
+        flex: 1;
+      }
+
+      .favorite-button {
+        width: 46px;
       }
 
       .side-menu {
@@ -643,9 +681,6 @@
 
 </aside>
 
-
-<!-- NAVBAR -->
-
 <nav>
 
   <button
@@ -688,7 +723,6 @@
   </div>
 
 </nav>
-
 
 <main>
 
@@ -903,7 +937,11 @@
     collection,
     onSnapshot,
     query,
-    orderBy
+    orderBy,
+    doc,
+    setDoc,
+    deleteDoc,
+    serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
@@ -948,13 +986,35 @@
     document.getElementById("materialsList");
 
 
+  let currentUser = null;
+
+  let favoriteIds =
+    new Set();
+
+  let unsubscribeFavorites =
+    null;
+
+
   /* =========================
      CONTURI
   ========================= */
 
   onAuthStateChanged(
     auth,
-    (user) => {
+    user => {
+
+      currentUser = user;
+
+
+      if (unsubscribeFavorites) {
+        unsubscribeFavorites();
+        unsubscribeFavorites = null;
+      }
+
+
+      favoriteIds =
+        new Set();
+
 
       if (!user) {
 
@@ -963,6 +1023,8 @@
 
         loggedOut.style.display =
           "block";
+
+        updateFavoriteButtons();
 
         return;
       }
@@ -975,10 +1037,7 @@
         "flex";
 
 
-      if (
-        user.uid ===
-        ADMIN_UID
-      ) {
+      if (user.uid === ADMIN_UID) {
 
         userButton.textContent =
           "Vlad";
@@ -986,23 +1045,227 @@
         userButton.href =
           "/admin/";
 
-        return;
+      } else {
+
+        userButton.textContent =
+          user.displayName ||
+          user.email?.split("@")[0] ||
+          "Cont";
+
+        userButton.href =
+          "/cont/";
+
       }
 
 
-      userButton.textContent =
-        user.displayName ||
-        user.email?.split("@")[0] ||
-        "Cont";
-
-      userButton.href =
-        "/cont/";
+      watchFavorites(
+        user.uid
+      );
 
     }
   );
 
 
-  /* LOGOUT */
+  /* =========================
+     FAVORITE
+  ========================= */
+
+  function watchFavorites(uid) {
+
+    const favoritesRef =
+      collection(
+        db,
+        "users",
+        uid,
+        "favorites"
+      );
+
+
+    unsubscribeFavorites =
+      onSnapshot(
+        favoritesRef,
+
+        snapshot => {
+
+          const ids =
+            new Set();
+
+
+          snapshot.forEach(
+            favoriteSnapshot => {
+
+              ids.add(
+                favoriteSnapshot.id
+              );
+
+            }
+          );
+
+
+          favoriteIds =
+            ids;
+
+
+          updateFavoriteButtons();
+
+        },
+
+        error => {
+
+          console.error(
+            "Eroare favorite:",
+            error
+          );
+
+        }
+      );
+
+  }
+
+
+  function updateFavoriteButtons() {
+
+    document
+      .querySelectorAll(
+        ".favorite-button"
+      )
+      .forEach(button => {
+
+        const favoriteId =
+          button.dataset.favoriteId;
+
+
+        const active =
+          favoriteIds.has(
+            favoriteId
+          );
+
+
+        button.classList.toggle(
+          "active",
+          active
+        );
+
+
+        button.textContent =
+          active
+            ? "♥"
+            : "♡";
+
+
+        button.title =
+          active
+            ? "Elimină din Favorite"
+            : "Adaugă la Favorite";
+
+
+        button.setAttribute(
+          "aria-label",
+          button.title
+        );
+
+      });
+
+  }
+
+
+  async function toggleFavorite(
+    button,
+    materialId,
+    data
+  ) {
+
+    if (!currentUser) {
+
+      window.location.href =
+        "/login/?next=/scoala/";
+
+      return;
+    }
+
+
+    const favoriteId =
+      "school_" +
+      materialId;
+
+
+    const favoriteRef =
+      doc(
+        db,
+        "users",
+        currentUser.uid,
+        "favorites",
+        favoriteId
+      );
+
+
+    button.disabled =
+      true;
+
+
+    try {
+
+      if (
+        favoriteIds.has(
+          favoriteId
+        )
+      ) {
+
+        await deleteDoc(
+          favoriteRef
+        );
+
+      } else {
+
+        await setDoc(
+          favoriteRef,
+          {
+            type: "school",
+            sourceId: materialId,
+            title:
+              data.title ||
+              "Material",
+            description:
+              data.description ||
+              "",
+            url:
+              getSafeUrl(data.url) ||
+              "",
+            fileName:
+              data.fileName ||
+              "",
+            createdAt:
+              serverTimestamp()
+          }
+        );
+
+      }
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Nu am putut modifica Favoritele."
+      );
+
+    }
+
+    finally {
+
+      button.disabled =
+        false;
+
+    }
+
+  }
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
 
   logoutButton.addEventListener(
     "click",
@@ -1028,13 +1291,55 @@
 
 
   /* =========================
+     URL SIGUR
+  ========================= */
+
+  function getSafeUrl(value) {
+
+    if (!value) {
+      return null;
+    }
+
+
+    try {
+
+      const materialUrl =
+        new URL(value);
+
+
+      if (
+        materialUrl.protocol === "https:" ||
+        materialUrl.protocol === "http:"
+      ) {
+
+        return materialUrl.href;
+
+      }
+
+    }
+
+    catch {}
+
+
+    return null;
+
+  }
+
+
+  /* =========================
      MATERIALE DIN FIRESTORE
   ========================= */
 
   const materialsQuery =
     query(
-      collection(db, "schoolMaterials"),
-      orderBy("createdAt", "desc")
+      collection(
+        db,
+        "schoolMaterials"
+      ),
+      orderBy(
+        "createdAt",
+        "desc"
+      )
     );
 
 
@@ -1042,9 +1347,10 @@
 
     materialsQuery,
 
-    (snapshot) => {
+    snapshot => {
 
-      materialsList.innerHTML = "";
+      materialsList.innerHTML =
+        "";
 
 
       if (snapshot.empty) {
@@ -1073,43 +1379,63 @@
 
 
       snapshot.forEach(
-        (documentSnapshot) => {
+        documentSnapshot => {
 
           const data =
             documentSnapshot.data();
 
 
+          const materialId =
+            documentSnapshot.id;
+
+
+          const favoriteId =
+            "school_" +
+            materialId;
+
+
           const card =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           card.className =
             "material-card";
 
 
           const info =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           info.className =
             "material-info";
 
 
           const title =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           title.className =
             "material-title";
 
           title.textContent =
-            data.title || "Material";
+            data.title ||
+            "Material";
 
 
-          info.appendChild(title);
+          info.appendChild(
+            title
+          );
 
 
           if (data.description) {
 
             const description =
-              document.createElement("div");
+              document.createElement(
+                "div"
+              );
 
             description.className =
               "material-description";
@@ -1117,13 +1443,61 @@
             description.textContent =
               data.description;
 
-            info.appendChild(description);
+
+            info.appendChild(
+              description
+            );
 
           }
 
 
+          const actions =
+            document.createElement(
+              "div"
+            );
+
+          actions.className =
+            "material-actions";
+
+
+          const favoriteButton =
+            document.createElement(
+              "button"
+            );
+
+          favoriteButton.className =
+            "favorite-button";
+
+          favoriteButton.type =
+            "button";
+
+          favoriteButton.dataset.favoriteId =
+            favoriteId;
+
+
+          favoriteButton.addEventListener(
+            "click",
+            () => {
+
+              toggleFavorite(
+                favoriteButton,
+                materialId,
+                data
+              );
+
+            }
+          );
+
+
+          actions.appendChild(
+            favoriteButton
+          );
+
+
           const button =
-            document.createElement("a");
+            document.createElement(
+              "a"
+            );
 
           button.className =
             "material-button";
@@ -1132,42 +1506,24 @@
             "Deschide";
 
 
-          try {
+          const safeUrl =
+            getSafeUrl(
+              data.url
+            );
 
-            const materialUrl =
-              new URL(data.url);
 
+          if (safeUrl) {
 
-            if (
-              materialUrl.protocol === "https:" ||
-              materialUrl.protocol === "http:"
-            ) {
+            button.href =
+              safeUrl;
 
-              button.href =
-                materialUrl.href;
+            button.target =
+              "_blank";
 
-              button.target =
-                "_blank";
+            button.rel =
+              "noopener noreferrer";
 
-              button.rel =
-                "noopener noreferrer";
-
-            }
-
-            else {
-
-              button.removeAttribute(
-                "href"
-              );
-
-              button.textContent =
-                "Link indisponibil";
-
-            }
-
-          }
-
-          catch {
+          } else {
 
             button.removeAttribute(
               "href"
@@ -1179,9 +1535,19 @@
           }
 
 
-          card.appendChild(info);
+          actions.appendChild(
+            button
+          );
 
-          card.appendChild(button);
+
+          card.appendChild(
+            info
+          );
+
+          card.appendChild(
+            actions
+          );
+
 
           materialsList.appendChild(
             card
@@ -1190,10 +1556,13 @@
         }
       );
 
+
+      updateFavoriteButtons();
+
     },
 
 
-    (error) => {
+    error => {
 
       console.error(error);
 
@@ -1291,7 +1660,7 @@
 
   document
     .querySelectorAll(".menu-link")
-    .forEach((link) => {
+    .forEach(link => {
 
       link.addEventListener(
         "click",
@@ -1303,7 +1672,7 @@
 
   document.addEventListener(
     "keydown",
-    (event) => {
+    event => {
 
       if (
         event.key ===
