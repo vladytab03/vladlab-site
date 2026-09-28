@@ -460,12 +460,13 @@
     <div class="logo-area">
 
       <img
+        id="siteLogo"
         src="/logo.png"
         alt="VladLab"
       >
 
-      <h1>
-        Vlad<span>Lab</span>
+      <h1 id="siteNameHeading">
+        VladLab
       </h1>
 
       <p>
@@ -583,7 +584,7 @@
     </div>
 
 
-    <div class="privacy">
+    <div id="privacyText" class="privacy">
       Contul tău este folosit pentru funcțiile personale VladLab,
       precum profilul, favoritele și fișierele trimise.
     </div>
@@ -643,6 +644,99 @@
 
   const db =
     getFirestore(app);
+
+
+  /* =========================
+     SETĂRI GLOBALE SITE
+  ========================= */
+
+  async function loadSiteSettings() {
+
+    const defaults = {
+      siteName: "VladLab"
+    };
+
+
+    try {
+
+      const snapshot =
+        await getDoc(
+          doc(
+            db,
+            "settings",
+            "site"
+          )
+        );
+
+
+      if (!snapshot.exists()) {
+        return defaults;
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      return {
+        siteName:
+          typeof data.siteName === "string" &&
+          data.siteName.trim()
+            ? data.siteName.trim()
+            : defaults.siteName
+      };
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Eroare setări site:",
+        error
+      );
+
+      return defaults;
+
+    }
+
+  }
+
+
+  function applySiteSettings(settings) {
+
+    const siteName =
+      settings.siteName;
+
+
+    document.title =
+      "Login | " +
+      siteName;
+
+
+    document.getElementById(
+      "siteNameHeading"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "siteLogo"
+    ).alt =
+      siteName;
+
+
+    document.getElementById(
+      "privacyText"
+    ).textContent =
+      "Contul tău este folosit pentru funcțiile personale " +
+      siteName +
+      ", precum profilul, favoritele și fișierele trimise.";
+
+  }
+
+
+  loadSiteSettings()
+    .then(applySiteSettings);
 
 
   const googleProvider =
