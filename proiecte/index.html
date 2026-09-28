@@ -257,6 +257,7 @@
     }
 
     .project-card {
+      position: relative;
       background: #0e131d;
       border: 1px solid #202735;
       border-radius: 18px;
@@ -269,16 +270,63 @@
       transform: translateY(-2px);
     }
 
+    .project-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .project-info {
+      min-width: 0;
+      flex: 1;
+    }
+
     .project-title {
       font-size: 19px;
       font-weight: 700;
       margin-bottom: 7px;
+      padding-right: 5px;
     }
 
     .project-description {
       color: #7f899a;
       font-size: 14px;
       line-height: 1.5;
+    }
+
+    .favorite-button {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111722;
+      color: #aeb8ca;
+      border: 1px solid #30394a;
+      border-radius: 11px;
+      font-size: 24px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .favorite-button:hover {
+      color: #ff8eaa;
+      border-color: #ff6f91;
+      transform: scale(1.04);
+    }
+
+    .favorite-button.active {
+      color: #ff6f91;
+      border-color: rgba(255, 111, 145, .45);
+      background: rgba(255, 111, 145, .10);
+    }
+
+    .favorite-button:disabled {
+      opacity: .55;
+      cursor: wait;
+      transform: none;
     }
 
     .resources {
@@ -397,6 +445,15 @@
       .resource-button {
         width: 100%;
       }
+
+      .project-head {
+        gap: 12px;
+      }
+
+      .favorite-button {
+        width: 42px;
+        height: 42px;
+      }
     }
   </style>
 </head>
@@ -404,6 +461,7 @@
 <body>
 
 <nav>
+
   <button
     id="menuButton"
     class="menu-button"
@@ -438,6 +496,7 @@
     </div>
 
   </div>
+
 </nav>
 
 
@@ -551,18 +610,24 @@
     initializeApp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
+
   import {
     getAuth,
     onAuthStateChanged,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
+
   import {
     getFirestore,
     collection,
     onSnapshot,
     query,
-    orderBy
+    orderBy,
+    doc,
+    setDoc,
+    deleteDoc,
+    serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
@@ -584,8 +649,10 @@
   const app =
     initializeApp(firebaseConfig);
 
+
   const auth =
     getAuth(app);
+
 
   const db =
     getFirestore(app);
@@ -607,6 +674,15 @@
     document.getElementById("projectsList");
 
 
+  let currentUser = null;
+
+  let favoriteIds =
+    new Set();
+
+  let unsubscribeFavorites =
+    null;
+
+
   /* =========================
      MENIU
   ========================= */
@@ -625,84 +701,405 @@
 
 
   function openMenu() {
+
     sideMenu.classList.add("open");
+
     menuOverlay.classList.add("open");
+
     document.body.classList.add("menu-open");
+
   }
 
 
   function closeMenu() {
+
     sideMenu.classList.remove("open");
+
     menuOverlay.classList.remove("open");
+
     document.body.classList.remove("menu-open");
+
   }
 
 
-  menuButton.addEventListener("click", openMenu);
-  menuClose.addEventListener("click", closeMenu);
-  menuOverlay.addEventListener("click", closeMenu);
+  menuButton.addEventListener(
+    "click",
+    openMenu
+  );
+
+
+  menuClose.addEventListener(
+    "click",
+    closeMenu
+  );
+
+
+  menuOverlay.addEventListener(
+    "click",
+    closeMenu
+  );
 
 
   document
     .querySelectorAll(".menu-link")
     .forEach(link => {
-      link.addEventListener("click", closeMenu);
+
+      link.addEventListener(
+        "click",
+        closeMenu
+      );
+
     });
 
 
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-      closeMenu();
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+
     }
-  });
+  );
 
 
   /* =========================
-     LOGIN
+     LOGIN + FAVORITE
   ========================= */
 
-  onAuthStateChanged(auth, user => {
+  onAuthStateChanged(
+    auth,
+    user => {
 
-    if (!user) {
+      currentUser = user;
 
-      loggedIn.style.display = "none";
-      loggedOut.style.display = "block";
+
+      if (unsubscribeFavorites) {
+
+        unsubscribeFavorites();
+
+        unsubscribeFavorites = null;
+
+      }
+
+
+      favoriteIds =
+        new Set();
+
+
+      if (!user) {
+
+        loggedIn.style.display =
+          "none";
+
+        loggedOut.style.display =
+          "block";
+
+        updateFavoriteButtons();
+
+        return;
+      }
+
+
+      loggedOut.style.display =
+        "none";
+
+      loggedIn.style.display =
+        "flex";
+
+
+      if (user.uid === ADMIN_UID) {
+
+        userButton.textContent =
+          "Vlad";
+
+        userButton.href =
+          "/admin/";
+
+      } else {
+
+        userButton.textContent =
+          user.displayName ||
+          user.email?.split("@")[0] ||
+          "Cont";
+
+        userButton.href =
+          "/cont/";
+
+      }
+
+
+      watchFavorites(
+        user.uid
+      );
+
+    }
+  );
+
+
+  function watchFavorites(uid) {
+
+    const favoritesRef =
+      collection(
+        db,
+        "users",
+        uid,
+        "favorites"
+      );
+
+
+    unsubscribeFavorites =
+      onSnapshot(
+        favoritesRef,
+
+        snapshot => {
+
+          const ids =
+            new Set();
+
+
+          snapshot.forEach(
+            favoriteSnapshot => {
+
+              ids.add(
+                favoriteSnapshot.id
+              );
+
+            }
+          );
+
+
+          favoriteIds =
+            ids;
+
+
+          updateFavoriteButtons();
+
+        },
+
+        error => {
+
+          console.error(
+            "Eroare favorite:",
+            error
+          );
+
+        }
+      );
+
+  }
+
+
+  function updateFavoriteButtons() {
+
+    document
+      .querySelectorAll(
+        ".favorite-button"
+      )
+      .forEach(button => {
+
+        const favoriteId =
+          button.dataset.favoriteId;
+
+
+        const active =
+          favoriteIds.has(
+            favoriteId
+          );
+
+
+        button.classList.toggle(
+          "active",
+          active
+        );
+
+
+        button.textContent =
+          active
+            ? "♥"
+            : "♡";
+
+
+        button.title =
+          active
+            ? "Elimină din Favorite"
+            : "Adaugă la Favorite";
+
+
+        button.setAttribute(
+          "aria-label",
+          button.title
+        );
+
+      });
+
+  }
+
+
+  async function toggleFavorite(
+    button,
+    projectId,
+    data,
+    resources
+  ) {
+
+    if (!currentUser) {
+
+      window.location.href =
+        "/login/?next=/proiecte/";
+
       return;
     }
 
 
-    loggedOut.style.display = "none";
-    loggedIn.style.display = "flex";
+    const favoriteId =
+      "project_" +
+      projectId;
 
 
-    if (user.uid === ADMIN_UID) {
+    const favoriteRef =
+      doc(
+        db,
+        "users",
+        currentUser.uid,
+        "favorites",
+        favoriteId
+      );
 
-      userButton.textContent = "Vlad";
-      userButton.href = "/admin/";
 
-    } else {
+    button.disabled =
+      true;
 
-      userButton.textContent =
-        user.displayName ||
-        user.email?.split("@")[0] ||
-        "Cont";
 
-      userButton.href = "/cont/";
+    try {
+
+      if (
+        favoriteIds.has(
+          favoriteId
+        )
+      ) {
+
+        await deleteDoc(
+          favoriteRef
+        );
+
+      } else {
+
+        const cleanResources =
+          resources
+            .map(resource => {
+
+              const url =
+                safeUrl(
+                  resource?.url
+                );
+
+
+              if (!url) {
+                return null;
+              }
+
+
+              return {
+                type:
+                  resource.type === "file"
+                    ? "file"
+                    : "link",
+
+                name:
+                  resource.name ||
+                  "",
+
+                url,
+
+                driveFileId:
+                  resource.driveFileId ||
+                  ""
+              };
+
+            })
+            .filter(Boolean);
+
+
+        const firstUrl =
+          cleanResources.length
+            ? cleanResources[0].url
+            : "";
+
+
+        await setDoc(
+          favoriteRef,
+          {
+            type: "project",
+
+            sourceId:
+              projectId,
+
+            title:
+              data.title ||
+              "Proiect",
+
+            description:
+              data.description ||
+              "",
+
+            url:
+              firstUrl,
+
+            resources:
+              cleanResources,
+
+            createdAt:
+              serverTimestamp()
+          }
+        );
+
+      }
 
     }
 
-  });
+    catch (error) {
 
+      console.error(error);
+
+      alert(
+        "Nu am putut modifica Favoritele."
+      );
+
+    }
+
+    finally {
+
+      button.disabled =
+        false;
+
+    }
+
+  }
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
 
   logoutButton.addEventListener(
     "click",
     async () => {
 
       try {
+
         await signOut(auth);
-        window.location.href = "/";
-      } catch (error) {
+
+        window.location.href =
+          "/";
+
+      }
+
+      catch (error) {
+
         console.error(error);
+
       }
 
     }
@@ -715,21 +1112,33 @@
 
   function safeUrl(value) {
 
+    if (!value) {
+      return null;
+    }
+
+
     try {
 
       const parsed =
         new URL(value);
 
+
       if (
         parsed.protocol === "https:" ||
         parsed.protocol === "http:"
       ) {
+
         return parsed.href;
+
       }
 
-    } catch {}
+    }
+
+    catch {}
+
 
     return null;
+
   }
 
 
@@ -739,8 +1148,14 @@
 
   const projectsQuery =
     query(
-      collection(db, "projects"),
-      orderBy("createdAt", "desc")
+      collection(
+        db,
+        "projects"
+      ),
+      orderBy(
+        "createdAt",
+        "desc"
+      )
     );
 
 
@@ -749,14 +1164,18 @@
 
     snapshot => {
 
-      projectsList.innerHTML = "";
+      projectsList.innerHTML =
+        "";
 
 
       if (snapshot.empty) {
 
         projectsList.innerHTML = `
           <div class="empty">
-            <div class="empty-icon">🛠️</div>
+
+            <div class="empty-icon">
+              🛠️
+            </div>
 
             <h2>
               Momentan nu există proiecte.
@@ -765,179 +1184,322 @@
             <p>
               Proiectele vor apărea aici.
             </p>
+
           </div>
         `;
 
         return;
+
       }
 
 
-      snapshot.forEach(documentSnapshot => {
+      snapshot.forEach(
+        documentSnapshot => {
 
-        const data =
-          documentSnapshot.data();
-
-
-        const card =
-          document.createElement("div");
-
-        card.className =
-          "project-card";
+          const data =
+            documentSnapshot.data();
 
 
-        const title =
-          document.createElement("div");
-
-        title.className =
-          "project-title";
-
-        title.textContent =
-          data.title || "Proiect";
+          const projectId =
+            documentSnapshot.id;
 
 
-        card.appendChild(title);
+          const favoriteId =
+            "project_" +
+            projectId;
 
 
-        if (data.description) {
-
-          const description =
-            document.createElement("div");
-
-          description.className =
-            "project-description";
-
-          description.textContent =
-            data.description;
-
-          card.appendChild(description);
-
-        }
+          let resources =
+            Array.isArray(
+              data.resources
+            )
+              ? data.resources
+              : [];
 
 
-        let resources =
-          Array.isArray(data.resources)
-            ? data.resources
-            : [];
+          /* =====================
+             PROIECT VECHI
+          ===================== */
+
+          if (
+            resources.length === 0 &&
+            data.url
+          ) {
+
+            resources = [
+              {
+                type: "link",
+                name: "Deschide",
+                url: data.url
+              }
+            ];
+
+          }
 
 
-        /* PROIECT VECHI */
-
-        if (
-          resources.length === 0 &&
-          data.url
-        ) {
-
-          resources = [{
-            type: "link",
-            name: "Deschide",
-            url: data.url
-          }];
-
-        }
+          const validResources =
+            resources.filter(
+              resource =>
+                resource &&
+                safeUrl(
+                  resource.url
+                )
+            );
 
 
-        const validResources =
-          resources.filter(resource =>
-            resource &&
-            safeUrl(resource.url)
+          const card =
+            document.createElement(
+              "div"
+            );
+
+          card.className =
+            "project-card";
+
+
+          const projectHead =
+            document.createElement(
+              "div"
+            );
+
+          projectHead.className =
+            "project-head";
+
+
+          const projectInfo =
+            document.createElement(
+              "div"
+            );
+
+          projectInfo.className =
+            "project-info";
+
+
+          const title =
+            document.createElement(
+              "div"
+            );
+
+          title.className =
+            "project-title";
+
+          title.textContent =
+            data.title ||
+            "Proiect";
+
+
+          projectInfo.appendChild(
+            title
           );
 
 
-        if (validResources.length) {
+          if (data.description) {
 
-          const resourcesBox =
-            document.createElement("div");
+            const description =
+              document.createElement(
+                "div"
+              );
 
-          resourcesBox.className =
-            "resources";
+            description.className =
+              "project-description";
 
-
-          validResources.forEach(
-            (resource, index) => {
-
-              const url =
-                safeUrl(resource.url);
+            description.textContent =
+              data.description;
 
 
-              const button =
-                document.createElement("a");
+            projectInfo.appendChild(
+              description
+            );
 
-              button.className =
-                "resource-button";
-
-
-              if (resource.type === "file") {
-                button.classList.add("file");
-              }
+          }
 
 
-              button.href = url;
+          const favoriteButton =
+            document.createElement(
+              "button"
+            );
 
-              button.target = "_blank";
+          favoriteButton.className =
+            "favorite-button";
 
-              button.rel =
-                "noopener noreferrer";
+          favoriteButton.type =
+            "button";
 
+          favoriteButton.dataset.favoriteId =
+            favoriteId;
 
-              if (resource.type === "file") {
+          favoriteButton.title =
+            "Adaugă la Favorite";
 
-                button.textContent =
-                  "📄 " +
-                  (
-                    resource.name ||
-                    `Fișier ${index + 1}`
-                  );
-
-              } else {
-
-                const name =
-                  resource.name &&
-                  resource.name !== resource.url
-                    ? resource.name
-                    : `Link ${index + 1}`;
+          favoriteButton.setAttribute(
+            "aria-label",
+            "Adaugă la Favorite"
+          );
 
 
-                button.textContent =
-                  "🔗 " + name;
+          favoriteButton.addEventListener(
+            "click",
+            () => {
 
-              }
-
-
-              resourcesBox.appendChild(
-                button
+              toggleFavorite(
+                favoriteButton,
+                projectId,
+                data,
+                validResources
               );
 
             }
           );
 
 
-          card.appendChild(resourcesBox);
+          projectHead.appendChild(
+            projectInfo
+          );
 
-        } else {
+          projectHead.appendChild(
+            favoriteButton
+          );
 
-          const noResource =
-            document.createElement("div");
 
-          noResource.className =
-            "no-resource";
+          card.appendChild(
+            projectHead
+          );
 
-          noResource.textContent =
-            "Acest proiect nu are încă fișiere sau linkuri.";
 
-          card.appendChild(noResource);
+          /* =====================
+             RESURSE
+          ===================== */
+
+          if (
+            validResources.length
+          ) {
+
+            const resourcesBox =
+              document.createElement(
+                "div"
+              );
+
+            resourcesBox.className =
+              "resources";
+
+
+            validResources.forEach(
+              (resource, index) => {
+
+                const url =
+                  safeUrl(
+                    resource.url
+                  );
+
+
+                const button =
+                  document.createElement(
+                    "a"
+                  );
+
+                button.className =
+                  "resource-button";
+
+
+                if (
+                  resource.type ===
+                  "file"
+                ) {
+
+                  button.classList.add(
+                    "file"
+                  );
+
+                }
+
+
+                button.href =
+                  url;
+
+                button.target =
+                  "_blank";
+
+                button.rel =
+                  "noopener noreferrer";
+
+
+                if (
+                  resource.type ===
+                  "file"
+                ) {
+
+                  button.textContent =
+                    "📄 " +
+                    (
+                      resource.name ||
+                      `Fișier ${index + 1}`
+                    );
+
+                } else {
+
+                  const name =
+                    resource.name &&
+                    resource.name !==
+                      resource.url
+                      ? resource.name
+                      : `Link ${index + 1}`;
+
+
+                  button.textContent =
+                    "🔗 " +
+                    name;
+
+                }
+
+
+                resourcesBox.appendChild(
+                  button
+                );
+
+              }
+            );
+
+
+            card.appendChild(
+              resourcesBox
+            );
+
+          } else {
+
+            const noResource =
+              document.createElement(
+                "div"
+              );
+
+            noResource.className =
+              "no-resource";
+
+            noResource.textContent =
+              "Acest proiect nu are încă fișiere sau linkuri.";
+
+
+            card.appendChild(
+              noResource
+            );
+
+          }
+
+
+          projectsList.appendChild(
+            card
+          );
 
         }
+      );
 
 
-        projectsList.appendChild(card);
-
-      });
+      updateFavoriteButtons();
 
     },
 
     error => {
 
       console.error(error);
+
 
       projectsList.innerHTML = `
         <div class="empty">
