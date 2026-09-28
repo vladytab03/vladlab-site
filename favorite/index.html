@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ro">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +26,85 @@
     body.menu-open {
       overflow: hidden;
     }
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #080b12;
+      color: #9aa6ba;
+      font-size: 14px;
+      z-index: 9999;
+    }
+
+    /* =========================
+       MENTENANȚĂ
+    ========================= */
+
+    #maintenancePage {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: #080b12;
+    }
+
+    .maintenance-card {
+      width: min(520px, 100%);
+      padding: 40px 30px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 22px;
+      text-align: center;
+    }
+
+    .maintenance-logo {
+      width: 78px;
+      height: 78px;
+      object-fit: cover;
+      border-radius: 19px;
+      margin-bottom: 23px;
+    }
+
+    .maintenance-card h2 {
+      font-size: clamp(30px, 6vw, 42px);
+      margin-bottom: 14px;
+    }
+
+    .maintenance-card p {
+      color: #8995a9;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .maintenance-login {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 11px 17px;
+      background: #5b8cff;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    #siteContent {
+      display: none;
+    }
+
+    /* =========================
+       NAV
+    ========================= */
 
     nav {
       height: 72px;
@@ -106,6 +184,10 @@
       background: #1a2230;
     }
 
+    /* =========================
+       MENIU
+    ========================= */
+
     .menu-overlay {
       position: fixed;
       inset: 0;
@@ -128,6 +210,7 @@
       width: 320px;
       max-width: 86vw;
       height: 100vh;
+      height: 100dvh;
       background: #0b0f17;
       border-right: 1px solid #202735;
       transform: translateX(-105%);
@@ -135,7 +218,7 @@
       z-index: 999;
       display: flex;
       flex-direction: column;
-      box-shadow: 20px 0 60px rgba(0, 0, 0, .35);
+      box-shadow: 20px 0 60px rgba(0,0,0,.35);
     }
 
     .side-menu.open {
@@ -209,8 +292,8 @@
 
     .menu-link.active {
       color: white;
-      background: rgba(91, 140, 255, .13);
-      border-color: rgba(91, 140, 255, .28);
+      background: rgba(91,140,255,.13);
+      border-color: rgba(91,140,255,.28);
     }
 
     .menu-icon {
@@ -225,23 +308,28 @@
       margin: 13px 9px;
     }
 
-    #loading {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #080b12;
-      color: #9aa6ba;
-      font-size: 14px;
-      z-index: 9999;
-    }
+    /* =========================
+       PAGINA
+    ========================= */
 
     main {
       width: 100%;
       max-width: 1050px;
       margin: auto;
       padding: 55px 22px 80px;
+    }
+
+    .back {
+      display: inline-block;
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 27px;
+      transition: .2s;
+    }
+
+    .back:hover {
+      color: white;
     }
 
     .top {
@@ -252,8 +340,8 @@
       display: inline-block;
       padding: 7px 12px;
       margin-bottom: 16px;
-      background: rgba(255, 79, 120, .10);
-      border: 1px solid rgba(255, 79, 120, .22);
+      background: rgba(255,79,120,.10);
+      border: 1px solid rgba(255,79,120,.22);
       border-radius: 100px;
       color: #ff8eaa;
       font-size: 12px;
@@ -351,19 +439,35 @@
       margin-bottom: 9px;
     }
 
+    .favorite-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
     .favorite-link {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       max-width: 100%;
+      padding: 8px 11px;
+      background: #111722;
+      border: 1px solid #293243;
+      border-radius: 9px;
       color: #7ca2ff;
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 600;
       text-decoration: none;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      transition: .2s;
     }
 
     .favorite-link:hover {
-      text-decoration: underline;
+      color: white;
+      border-color: #5b8cff;
+      background: #151d2a;
     }
 
     .remove-favorite {
@@ -373,9 +477,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(255, 79, 120, .28);
+      border: 1px solid rgba(255,79,120,.28);
       border-radius: 11px;
-      background: rgba(255, 79, 120, .10);
+      background: rgba(255,79,120,.10);
       color: #ff7899;
       font-size: 19px;
       cursor: pointer;
@@ -383,7 +487,7 @@
     }
 
     .remove-favorite:hover {
-      background: rgba(255, 79, 120, .18);
+      background: rgba(255,79,120,.18);
       transform: scale(1.04);
     }
 
@@ -484,6 +588,36 @@
   Se verifică autentificarea...
 </div>
 
+<section id="maintenancePage">
+  <div class="maintenance-card">
+
+    <img
+      src="/logo.png"
+      id="maintenanceLogo"
+      class="maintenance-logo"
+      alt="VladLab"
+    >
+
+    <h2 id="maintenanceTitle">
+      VladLab
+    </h2>
+
+    <p id="maintenanceText">
+      Site-ul este momentan în mentenanță. Revino în curând.
+    </p>
+
+    <a
+      href="/login/?next=/favorite/"
+      class="maintenance-login"
+    >
+      Login administrator
+    </a>
+
+  </div>
+</section>
+
+<div id="siteContent">
+
 <div id="menuOverlay" class="menu-overlay"></div>
 
 <aside id="sideMenu" class="side-menu">
@@ -491,8 +625,14 @@
   <div class="menu-header">
 
     <div class="menu-brand">
-      <img src="/logo.png" alt="VladLab">
-      VladLab
+      <img
+        id="menuLogo"
+        src="/logo.png"
+        alt="VladLab"
+      >
+      <span id="menuBrandName">
+        VladLab
+      </span>
     </div>
 
     <button
@@ -589,6 +729,16 @@
 
 <main>
 
+  <!-- BUTON ÎNAPOI -->
+
+  <a
+    href="/"
+    class="back"
+    id="backButton"
+  >
+    ← Înapoi la site
+  </a>
+
   <section class="top">
 
     <div class="badge">
@@ -600,7 +750,7 @@
     </h1>
 
     <p class="description">
-      Aici găsești proiectele, materialele și fișierele pe care le-ai salvat.
+      Aici găsești proiectele, materialele, orarul și fișierele pe care le-ai salvat.
       Favoritele sunt salvate separat pentru contul tău.
     </p>
 
@@ -614,7 +764,10 @@
         Elemente salvate
       </h2>
 
-      <div id="favoriteCount" class="favorite-count">
+      <div
+        id="favoriteCount"
+        class="favorite-count"
+      >
         0
       </div>
 
@@ -632,10 +785,11 @@
 
 </main>
 
-<footer>
+<footer id="footerText">
   © 2026 VladLab · Favorite
 </footer>
 
+</div>
 
 <script type="module">
 
@@ -658,7 +812,8 @@
     deleteDoc,
     doc,
     query,
-    orderBy
+    orderBy,
+    getDoc
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
@@ -690,24 +845,53 @@
 
 
   const loading =
-    document.getElementById("loading");
+    document.getElementById(
+      "loading"
+    );
+
+
+  const siteContent =
+    document.getElementById(
+      "siteContent"
+    );
+
+
+  const maintenancePage =
+    document.getElementById(
+      "maintenancePage"
+    );
+
 
   const userButton =
-    document.getElementById("userButton");
+    document.getElementById(
+      "userButton"
+    );
+
 
   const logoutButton =
-    document.getElementById("logoutButton");
+    document.getElementById(
+      "logoutButton"
+    );
+
 
   const favoritesList =
-    document.getElementById("favoritesList");
+    document.getElementById(
+      "favoritesList"
+    );
+
 
   const favoriteCount =
-    document.getElementById("favoriteCount");
+    document.getElementById(
+      "favoriteCount"
+    );
 
 
-  let currentUser = null;
+  let currentUser =
+    null;
 
-  let unsubscribeFavorites = null;
+
+  let unsubscribeFavorites =
+    null;
 
 
   /* =========================
@@ -716,7 +900,7 @@
 
   onAuthStateChanged(
     auth,
-    user => {
+    async user => {
 
       if (!user) {
 
@@ -725,13 +909,18 @@
         );
 
         return;
+
       }
 
 
-      currentUser = user;
+      currentUser =
+        user;
 
 
-      if (user.uid === ADMIN_UID) {
+      if (
+        user.uid ===
+        ADMIN_UID
+      ) {
 
         userButton.textContent =
           "Vlad";
@@ -752,6 +941,45 @@
       }
 
 
+      const settings =
+        await loadSiteSettings();
+
+
+      applySiteSettings(
+        settings
+      );
+
+
+      if (
+        settings.maintenance === true &&
+        user.uid !== ADMIN_UID
+      ) {
+
+        siteContent.style.display =
+          "none";
+
+
+        maintenancePage.style.display =
+          "flex";
+
+
+        loading.style.display =
+          "none";
+
+
+        return;
+
+      }
+
+
+      maintenancePage.style.display =
+        "none";
+
+
+      siteContent.style.display =
+        "block";
+
+
       loading.style.display =
         "none";
 
@@ -763,12 +991,140 @@
 
 
   /* =========================
+     SETĂRI SITE
+  ========================= */
+
+  async function loadSiteSettings() {
+
+    const defaults = {
+      siteName: "VladLab",
+      maintenance: false,
+      maintenanceMessage:
+        "Site-ul este momentan în mentenanță. Revino în curând."
+    };
+
+
+    try {
+
+      const snapshot =
+        await getDoc(
+          doc(
+            db,
+            "settings",
+            "site"
+          )
+        );
+
+
+      if (!snapshot.exists()) {
+        return defaults;
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      return {
+
+        siteName:
+          typeof data.siteName === "string" &&
+          data.siteName.trim()
+            ? data.siteName.trim()
+            : defaults.siteName,
+
+
+        maintenance:
+          data.maintenance === true,
+
+
+        maintenanceMessage:
+          typeof data.maintenanceMessage === "string" &&
+          data.maintenanceMessage.trim()
+            ? data.maintenanceMessage.trim()
+            : defaults.maintenanceMessage
+
+      };
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Eroare setări site:",
+        error
+      );
+
+
+      return defaults;
+
+    }
+
+  }
+
+
+  function applySiteSettings(
+    settings
+  ) {
+
+    const siteName =
+      settings.siteName;
+
+
+    document.title =
+      "Favorite | " +
+      siteName;
+
+
+    document.getElementById(
+      "menuBrandName"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "menuLogo"
+    ).alt =
+      siteName;
+
+
+    document.getElementById(
+      "footerText"
+    ).textContent =
+      "© 2026 " +
+      siteName +
+      " · Favorite";
+
+
+    document.getElementById(
+      "maintenanceTitle"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "maintenanceText"
+    ).textContent =
+      settings.maintenanceMessage;
+
+
+    document.getElementById(
+      "maintenanceLogo"
+    ).alt =
+      siteName;
+
+  }
+
+
+  /* =========================
      FAVORITE
   ========================= */
 
   function loadFavorites() {
 
-    if (!currentUser) return;
+    if (!currentUser) {
+      return;
+    }
 
 
     if (unsubscribeFavorites) {
@@ -788,7 +1144,10 @@
     const favoritesQuery =
       query(
         favoritesRef,
-        orderBy("createdAt", "desc")
+        orderBy(
+          "createdAt",
+          "desc"
+        )
       );
 
 
@@ -798,7 +1157,9 @@
 
         snapshot => {
 
-          favoritesList.innerHTML = "";
+          favoritesList.innerHTML =
+            "";
+
 
           favoriteCount.textContent =
             snapshot.size;
@@ -809,170 +1170,15 @@
             showEmptyFavorites();
 
             return;
+
           }
 
 
           snapshot.forEach(
             favoriteDocument => {
 
-              const data =
-                favoriteDocument.data();
-
-
-              const card =
-                document.createElement("div");
-
-              card.className =
-                "favorite-card";
-
-
-              const info =
-                document.createElement("div");
-
-              info.className =
-                "favorite-info";
-
-
-              const type =
-                document.createElement("div");
-
-              type.className =
-                "favorite-type";
-
-              type.textContent =
-                getTypeName(data.type);
-
-
-              const title =
-                document.createElement("div");
-
-              title.className =
-                "favorite-title";
-
-              title.textContent =
-                data.title ||
-                "Element salvat";
-
-
-              info.appendChild(type);
-              info.appendChild(title);
-
-
-              if (data.description) {
-
-                const description =
-                  document.createElement("div");
-
-                description.className =
-                  "favorite-description";
-
-                description.textContent =
-                  data.description;
-
-                info.appendChild(
-                  description
-                );
-
-              }
-
-
-              const url =
-                safeUrl(data.url);
-
-
-              if (url) {
-
-                const link =
-                  document.createElement("a");
-
-                link.className =
-                  "favorite-link";
-
-                link.href = url;
-
-                link.target =
-                  "_blank";
-
-                link.rel =
-                  "noopener noreferrer";
-
-                link.textContent =
-                  getLinkText(data.type);
-
-                info.appendChild(link);
-
-              }
-
-
-              const removeButton =
-                document.createElement("button");
-
-              removeButton.className =
-                "remove-favorite";
-
-              removeButton.type =
-                "button";
-
-              removeButton.title =
-                "Elimină din Favorite";
-
-              removeButton.setAttribute(
-                "aria-label",
-                "Elimină din Favorite"
-              );
-
-              removeButton.textContent =
-                "♥";
-
-
-              removeButton.addEventListener(
-                "click",
-                async () => {
-
-                  removeButton.disabled =
-                    true;
-
-
-                  try {
-
-                    await deleteDoc(
-                      doc(
-                        db,
-                        "users",
-                        currentUser.uid,
-                        "favorites",
-                        favoriteDocument.id
-                      )
-                    );
-
-                  }
-
-                  catch (error) {
-
-                    console.error(error);
-
-                    alert(
-                      "Nu am putut elimina elementul din Favorite."
-                    );
-
-                    removeButton.disabled =
-                      false;
-
-                  }
-
-                }
-              );
-
-
-              card.appendChild(info);
-
-              card.appendChild(
-                removeButton
-              );
-
-
-              favoritesList.appendChild(
-                card
+              createFavoriteCard(
+                favoriteDocument
               );
 
             }
@@ -982,12 +1188,17 @@
 
         error => {
 
-          console.error(error);
+          console.error(
+            error
+          );
 
 
           favoritesList.innerHTML = `
             <div class="empty">
-              <div class="empty-icon">⚠️</div>
+
+              <div class="empty-icon">
+                ⚠️
+              </div>
 
               <h2>
                 Nu am putut încărca favoritele
@@ -996,6 +1207,7 @@
               <p>
                 Verifică conexiunea și încearcă din nou.
               </p>
+
             </div>
           `;
 
@@ -1004,6 +1216,388 @@
 
   }
 
+
+  /* =========================
+     CARD FAVORIT
+  ========================= */
+
+  function createFavoriteCard(
+    favoriteDocument
+  ) {
+
+    const data =
+      favoriteDocument.data();
+
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+
+    card.className =
+      "favorite-card";
+
+
+    const info =
+      document.createElement(
+        "div"
+      );
+
+
+    info.className =
+      "favorite-info";
+
+
+    /* TIP */
+
+    const type =
+      document.createElement(
+        "div"
+      );
+
+
+    type.className =
+      "favorite-type";
+
+
+    type.textContent =
+      getTypeName(
+        data.type
+      );
+
+
+    /* TITLU */
+
+    const title =
+      document.createElement(
+        "div"
+      );
+
+
+    title.className =
+      "favorite-title";
+
+
+    title.textContent =
+      data.title ||
+      "Element salvat";
+
+
+    info.appendChild(
+      type
+    );
+
+
+    info.appendChild(
+      title
+    );
+
+
+    /* DESCRIERE */
+
+    if (data.description) {
+
+      const description =
+        document.createElement(
+          "div"
+        );
+
+
+      description.className =
+        "favorite-description";
+
+
+      description.textContent =
+        data.description;
+
+
+      info.appendChild(
+        description
+      );
+
+    }
+
+
+    /* =========================
+       LINKURI / RESURSE
+    ========================= */
+
+    const linksContainer =
+      document.createElement(
+        "div"
+      );
+
+
+    linksContainer.className =
+      "favorite-links";
+
+
+    let linksAdded =
+      0;
+
+
+    /*
+      PROIECT:
+      afișăm TOATE resursele.
+    */
+
+    if (
+      data.type === "project" &&
+      Array.isArray(data.resources)
+    ) {
+
+      data.resources.forEach(
+        (resource, index) => {
+
+          if (!resource) {
+            return;
+          }
+
+
+          const url =
+            safeUrl(
+              resource.url
+            );
+
+
+          if (!url) {
+            return;
+          }
+
+
+          const name =
+            resource.name ||
+            resource.fileName ||
+            (
+              resource.type === "file"
+                ? "Fișier " + (index + 1)
+                : "Link " + (index + 1)
+            );
+
+
+          addLink(
+            linksContainer,
+            url,
+            name
+          );
+
+
+          linksAdded++;
+
+        }
+      );
+
+    }
+
+
+    /*
+      Dacă nu avem resources,
+      folosim URL-ul principal.
+    */
+
+    if (
+      linksAdded === 0
+    ) {
+
+      const url =
+        safeUrl(
+          data.url
+        );
+
+
+      if (url) {
+
+        addLink(
+          linksContainer,
+          url,
+          getLinkText(
+            data.type
+          )
+        );
+
+
+        linksAdded++;
+
+      }
+
+    }
+
+
+    if (linksAdded > 0) {
+
+      info.appendChild(
+        linksContainer
+      );
+
+    }
+
+
+    /* =========================
+       ȘTERGERE FAVORIT
+    ========================= */
+
+    const removeButton =
+      document.createElement(
+        "button"
+      );
+
+
+    removeButton.className =
+      "remove-favorite";
+
+
+    removeButton.type =
+      "button";
+
+
+    removeButton.title =
+      "Elimină din Favorite";
+
+
+    removeButton.setAttribute(
+      "aria-label",
+      "Elimină din Favorite"
+    );
+
+
+    removeButton.textContent =
+      "♥";
+
+
+    removeButton.addEventListener(
+      "click",
+      async () => {
+
+        removeButton.disabled =
+          true;
+
+
+        try {
+
+          await deleteDoc(
+            doc(
+              db,
+              "users",
+              currentUser.uid,
+              "favorites",
+              favoriteDocument.id
+            )
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          alert(
+            "Nu am putut elimina elementul din Favorite."
+          );
+
+
+          removeButton.disabled =
+            false;
+
+        }
+
+      }
+    );
+
+
+    card.appendChild(
+      info
+    );
+
+
+    card.appendChild(
+      removeButton
+    );
+
+
+    favoritesList.appendChild(
+      card
+    );
+
+  }
+
+
+  /* =========================
+     CREEAZĂ LINK
+  ========================= */
+
+  function addLink(
+    container,
+    url,
+    text
+  ) {
+
+    const link =
+      document.createElement(
+        "a"
+      );
+
+
+    link.className =
+      "favorite-link";
+
+
+    link.href =
+      url;
+
+
+    /*
+      Linkurile interne VladLab
+      se deschid normal.
+      Fișierele/linkurile externe
+      se deschid în tab nou.
+    */
+
+    try {
+
+      const parsed =
+        new URL(
+          url,
+          window.location.origin
+        );
+
+
+      if (
+        parsed.origin !==
+        window.location.origin
+      ) {
+
+        link.target =
+          "_blank";
+
+
+        link.rel =
+          "noopener noreferrer";
+
+      }
+
+    }
+
+    catch {}
+
+
+    link.textContent =
+      text;
+
+
+    container.appendChild(
+      link
+    );
+
+  }
+
+
+  /* =========================
+     FAVORITE GOALE
+  ========================= */
 
   function showEmptyFavorites() {
 
@@ -1020,7 +1614,8 @@
 
         <p>
           Apasă pe inimioara unui proiect,
-          material sau fișier pentru a-l salva aici.
+          material, fișier sau pe cea de la
+          orar pentru a-l salva aici.
         </p>
 
         <a
@@ -1036,18 +1631,31 @@
   }
 
 
-  function getTypeName(type) {
+  /* =========================
+     NUME TIP
+  ========================= */
+
+  function getTypeName(
+    type
+  ) {
 
     switch (type) {
 
       case "project":
         return "💻 PROIECT";
 
+
       case "school":
         return "🎓 ȘCOALĂ";
 
+
+      case "schedule":
+        return "📅 ORAR";
+
+
       case "download":
         return "📥 DESCĂRCARE";
+
 
       default:
         return "❤️ FAVORIT";
@@ -1057,18 +1665,31 @@
   }
 
 
-  function getLinkText(type) {
+  /* =========================
+     TEXT LINK
+  ========================= */
+
+  function getLinkText(
+    type
+  ) {
 
     switch (type) {
 
       case "project":
         return "Deschide proiectul →";
 
+
       case "school":
         return "Deschide materialul →";
 
+
+      case "schedule":
+        return "Deschide orarul →";
+
+
       case "download":
         return "Deschide fișierul →";
+
 
       default:
         return "Deschide →";
@@ -1078,9 +1699,17 @@
   }
 
 
-  function safeUrl(value) {
+  /* =========================
+     URL SIGUR
+  ========================= */
 
-    if (!value) return null;
+  function safeUrl(
+    value
+  ) {
+
+    if (!value) {
+      return null;
+    }
 
 
     try {
@@ -1121,15 +1750,27 @@
 
       try {
 
-        await signOut(auth);
+        if (unsubscribeFavorites) {
+          unsubscribeFavorites();
+        }
 
-        window.location.replace("/");
+
+        await signOut(
+          auth
+        );
+
+
+        window.location.replace(
+          "/"
+        );
 
       }
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
       }
 
@@ -1142,23 +1783,40 @@
   ========================= */
 
   const openMenuButton =
-    document.getElementById("openMenu");
+    document.getElementById(
+      "openMenu"
+    );
+
 
   const closeMenuButton =
-    document.getElementById("closeMenu");
+    document.getElementById(
+      "closeMenu"
+    );
+
 
   const sideMenu =
-    document.getElementById("sideMenu");
+    document.getElementById(
+      "sideMenu"
+    );
+
 
   const menuOverlay =
-    document.getElementById("menuOverlay");
+    document.getElementById(
+      "menuOverlay"
+    );
 
 
   function openMenu() {
 
-    sideMenu.classList.add("open");
+    sideMenu.classList.add(
+      "open"
+    );
 
-    menuOverlay.classList.add("open");
+
+    menuOverlay.classList.add(
+      "open"
+    );
+
 
     document.body.classList.add(
       "menu-open"
@@ -1169,9 +1827,15 @@
 
   function closeMenu() {
 
-    sideMenu.classList.remove("open");
+    sideMenu.classList.remove(
+      "open"
+    );
 
-    menuOverlay.classList.remove("open");
+
+    menuOverlay.classList.remove(
+      "open"
+    );
+
 
     document.body.classList.remove(
       "menu-open"
@@ -1199,7 +1863,9 @@
 
 
   document
-    .querySelectorAll(".menu-link")
+    .querySelectorAll(
+      ".menu-link"
+    )
     .forEach(link => {
 
       link.addEventListener(
@@ -1214,8 +1880,13 @@
     "keydown",
     event => {
 
-      if (event.key === "Escape") {
+      if (
+        event.key ===
+        "Escape"
+      ) {
+
         closeMenu();
+
       }
 
     }
