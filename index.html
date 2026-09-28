@@ -111,9 +111,14 @@
     }
 
     .user-button {
+      max-width: 180px;
+
       background: transparent;
       color: #cbd4e4;
       border: 1px solid #293142;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .user-button:hover {
@@ -482,6 +487,10 @@
         font-size: 13px;
       }
 
+      .user-button {
+        max-width: 135px;
+      }
+
       #loggedIn {
         gap: 6px;
       }
@@ -489,13 +498,13 @@
       .side-menu {
         width: 300px;
       }
-
     }
 
 
     @media (max-width: 380px) {
 
       .user-button {
+        max-width: 105px;
         padding-left: 8px;
         padding-right: 8px;
       }
@@ -509,7 +518,6 @@
         padding-left: 12px;
         padding-right: 12px;
       }
-
     }
   </style>
 </head>
@@ -611,6 +619,15 @@
     </a>
 
 
+    <a
+      href="/favorite/"
+      class="menu-link"
+    >
+      <span class="menu-icon">❤️</span>
+      Favorite
+    </a>
+
+
     <div class="menu-separator"></div>
 
 
@@ -672,10 +689,11 @@
     >
 
       <a
-        href="/admin/"
+        id="userButton"
+        href="/cont/"
         class="user-button"
       >
-        Vlad
+        Cont
       </a>
 
 
@@ -932,6 +950,9 @@
   const loggedIn =
     document.getElementById("loggedIn");
 
+  const userButton =
+    document.getElementById("userButton");
+
   const logoutButton =
     document.getElementById("logoutButton");
 
@@ -941,18 +962,7 @@
 
     (user) => {
 
-      if (
-        user &&
-        user.uid === ADMIN_UID
-      ) {
-
-        loggedOut.style.display =
-          "none";
-
-        loggedIn.style.display =
-          "flex";
-
-      } else {
+      if (!user) {
 
         loggedIn.style.display =
           "none";
@@ -960,7 +970,43 @@
         loggedOut.style.display =
           "block";
 
+        return;
       }
+
+
+      loggedOut.style.display =
+        "none";
+
+      loggedIn.style.display =
+        "flex";
+
+
+      /* ADMIN */
+
+      if (
+        user.uid ===
+        ADMIN_UID
+      ) {
+
+        userButton.textContent =
+          "Vlad";
+
+        userButton.href =
+          "/admin/";
+
+        return;
+      }
+
+
+      /* UTILIZATOR NORMAL */
+
+      userButton.textContent =
+        user.displayName ||
+        user.email?.split("@")[0] ||
+        "Cont";
+
+      userButton.href =
+        "/cont/";
 
     }
   );
@@ -971,9 +1017,20 @@
 
     async () => {
 
-      await signOut(auth);
+      try {
 
-      window.location.href = "/";
+        await signOut(auth);
+
+        window.location.href =
+          "/";
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+      }
 
     }
   );
@@ -998,22 +1055,34 @@
 
   function openMenu() {
 
-    sideMenu.classList.add("active");
+    sideMenu.classList.add(
+      "active"
+    );
 
-    menuOverlay.classList.add("active");
+    menuOverlay.classList.add(
+      "active"
+    );
 
-    document.body.classList.add("menu-open");
+    document.body.classList.add(
+      "menu-open"
+    );
 
   }
 
 
   function closeMenu() {
 
-    sideMenu.classList.remove("active");
+    sideMenu.classList.remove(
+      "active"
+    );
 
-    menuOverlay.classList.remove("active");
+    menuOverlay.classList.remove(
+      "active"
+    );
 
-    document.body.classList.remove("menu-open");
+    document.body.classList.remove(
+      "menu-open"
+    );
 
   }
 
@@ -1053,8 +1122,13 @@
 
     (event) => {
 
-      if (event.key === "Escape") {
+      if (
+        event.key ===
+        "Escape"
+      ) {
+
         closeMenu();
+
       }
 
     }
