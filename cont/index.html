@@ -26,18 +26,13 @@
 
     nav {
       height: 72px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 0 6%;
-
       border-bottom: 1px solid #1d2330;
-
       background: rgba(8, 11, 18, .94);
       backdrop-filter: blur(15px);
-
       position: sticky;
       top: 0;
       z-index: 100;
@@ -48,11 +43,8 @@
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
-
       padding: 9px 12px;
-
       border-radius: 9px;
-
       transition: .2s;
     }
 
@@ -63,17 +55,12 @@
 
     .logout {
       padding: 9px 14px;
-
       background: #161c27;
       color: white;
-
       border: 1px solid #293142;
       border-radius: 10px;
-
       font-weight: 600;
-
       cursor: pointer;
-
       transition: .2s;
     }
 
@@ -85,26 +72,19 @@
     #loading {
       position: fixed;
       inset: 0;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       background: #080b12;
-
       color: #9aa6ba;
-
       font-size: 14px;
-
       z-index: 9999;
     }
 
     main {
       width: 100%;
       max-width: 950px;
-
       margin: auto;
-
       padding: 55px 22px 80px;
     }
 
@@ -114,18 +94,12 @@
 
     .badge {
       display: inline-block;
-
       padding: 7px 12px;
-
       margin-bottom: 15px;
-
       background: rgba(91, 140, 255, .12);
-
       border: 1px solid rgba(91, 140, 255, .25);
       border-radius: 100px;
-
       color: #7ca2ff;
-
       font-size: 12px;
       font-weight: 700;
     }
@@ -133,7 +107,6 @@
     h1 {
       font-size: clamp(32px, 5vw, 46px);
       letter-spacing: -1.5px;
-
       margin-bottom: 9px;
     }
 
@@ -146,15 +119,10 @@
     .profile-header {
       display: flex;
       align-items: center;
-
       gap: 16px;
-
       margin-bottom: 25px;
-
       padding: 20px;
-
       background: #0e131d;
-
       border: 1px solid #202735;
       border-radius: 17px;
     }
@@ -162,62 +130,46 @@
     .avatar {
       width: 58px;
       height: 58px;
-
       flex-shrink: 0;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       border-radius: 50%;
-
       background: #182238;
-
       color: #7ca2ff;
-
       font-size: 24px;
       font-weight: 700;
-
       overflow: hidden;
     }
 
     .avatar img {
       width: 100%;
       height: 100%;
-
       object-fit: cover;
     }
 
     .profile-name {
       font-size: 18px;
       font-weight: 700;
-
       margin-bottom: 5px;
-
       overflow-wrap: anywhere;
     }
 
     .profile-email {
       color: #7f8a9e;
       font-size: 13px;
-
       overflow-wrap: anywhere;
     }
 
     .grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
     }
 
     .panel {
       padding: 23px;
-
       background: #0e131d;
-
       border: 1px solid #202735;
       border-radius: 17px;
     }
@@ -233,10 +185,8 @@
 
     .panel-description {
       color: #7f8a9e;
-
       font-size: 13px;
       line-height: 1.5;
-
       margin-bottom: 20px;
     }
 
@@ -246,40 +196,28 @@
 
     label {
       display: block;
-
       margin-bottom: 7px;
-
       color: #b8c2d1;
-
       font-size: 13px;
       font-weight: 600;
     }
 
     input {
       width: 100%;
-
       padding: 12px 13px;
-
       background: #090d15;
-
       border: 1px solid #293243;
       border-radius: 10px;
-
       color: white;
-
       font-family: inherit;
       font-size: 16px;
-
       outline: none;
-
       transition: .2s;
     }
 
     input:focus {
       border-color: #5b8cff;
-
-      box-shadow:
-        0 0 0 3px rgba(91, 140, 255, .10);
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, .10);
     }
 
     input:disabled {
@@ -289,21 +227,15 @@
 
     .button {
       width: 100%;
-
       padding: 12px 15px;
-
       border: 0;
       border-radius: 10px;
-
       background: #5b8cff;
       color: white;
-
       font-family: inherit;
       font-size: 14px;
       font-weight: 700;
-
       cursor: pointer;
-
       transition: .2s;
     }
 
@@ -318,7 +250,6 @@
 
     .secondary {
       background: #161c27;
-
       border: 1px solid #293142;
     }
 
@@ -329,47 +260,120 @@
 
     .status {
       display: none;
-
       margin-top: 14px;
-
       padding: 11px 13px;
-
       border-radius: 9px;
-
       font-size: 13px;
       line-height: 1.4;
     }
 
     .status.success {
       display: block;
-
       color: #75e4a4;
-
       background: rgba(67, 211, 126, .08);
-
       border: 1px solid rgba(67, 211, 126, .20);
     }
 
     .status.error {
       display: block;
-
       color: #ff9292;
-
       background: rgba(255, 80, 80, .08);
-
       border: 1px solid rgba(255, 80, 80, .20);
+    }
+
+    /* =========================
+       UPLOADURI
+    ========================= */
+
+    .uploads-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .upload-item {
+      padding: 17px;
+      background: #090d15;
+      border: 1px solid #283142;
+      border-radius: 13px;
+      transition: .2s;
+    }
+
+    .upload-item:hover {
+      border-color: #3a465d;
+    }
+
+    .upload-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .upload-file {
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .upload-file-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #151d2b;
+      border: 1px solid #263249;
+      border-radius: 10px;
+      font-size: 19px;
+    }
+
+    .upload-file-info {
+      min-width: 0;
+    }
+
+    .upload-name {
+      color: #dbe3ef;
+      font-size: 14px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .upload-meta {
+      margin-top: 5px;
+      color: #69768b;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .upload-status {
+      flex-shrink: 0;
+      padding: 6px 9px;
+      border-radius: 100px;
+      background: rgba(67, 211, 126, .09);
+      border: 1px solid rgba(67, 211, 126, .20);
+      color: #75e4a4;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .upload-message {
+      margin-top: 13px;
+      padding-top: 13px;
+      border-top: 1px solid #202735;
+      color: #8995a9;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
     }
 
     .uploads-empty {
       padding: 35px 20px;
-
       text-align: center;
-
       background: #090d15;
-
       border: 1px dashed #283142;
       border-radius: 13px;
-
       color: #758196;
     }
 
@@ -380,9 +384,7 @@
 
     .uploads-empty h3 {
       color: #c5cedb;
-
       font-size: 15px;
-
       margin-bottom: 6px;
     }
 
@@ -393,22 +395,16 @@
 
     .provider-info {
       margin-top: 12px;
-
       color: #68758a;
-
       font-size: 12px;
       line-height: 1.5;
     }
 
     footer {
       padding: 28px;
-
       border-top: 1px solid #1d2330;
-
       color: #626d7f;
-
       font-size: 13px;
-
       text-align: center;
     }
 
@@ -418,8 +414,7 @@
       }
 
       main {
-        padding:
-          38px 16px 60px;
+        padding: 38px 16px 60px;
       }
 
       .grid {
@@ -437,6 +432,14 @@
       .back {
         padding-left: 4px;
       }
+
+      .upload-top {
+        flex-direction: column;
+      }
+
+      .upload-status {
+        align-self: flex-start;
+      }
     }
   </style>
 </head>
@@ -447,13 +450,9 @@
   Se încarcă profilul...
 </div>
 
-
 <nav>
 
-  <a
-    href="/"
-    class="back"
-  >
+  <a href="/" class="back">
     ← Înapoi la site
   </a>
 
@@ -466,7 +465,6 @@
   </button>
 
 </nav>
-
 
 <main>
 
@@ -489,26 +487,17 @@
 
   <section class="profile-header">
 
-    <div
-      id="avatar"
-      class="avatar"
-    >
+    <div id="avatar" class="avatar">
       U
     </div>
 
     <div>
 
-      <div
-        id="profileName"
-        class="profile-name"
-      >
+      <div id="profileName" class="profile-name">
         Utilizator
       </div>
 
-      <div
-        id="profileEmail"
-        class="profile-email"
-      >
+      <div id="profileEmail" class="profile-email">
         —
       </div>
 
@@ -518,7 +507,6 @@
 
 
   <section class="grid">
-
 
     <!-- NUME -->
 
@@ -603,7 +591,7 @@
       </button>
 
       <div class="provider-info">
-        Modificarea emailului va fi activată după configurarea completă a profilurilor Firebase.
+        Modificarea emailului va fi activată ulterior.
       </div>
 
     </div>
@@ -633,7 +621,7 @@
         id="passwordInfo"
         class="provider-info"
       >
-        Schimbarea parolei va fi activată la configurarea completă a contului.
+        Schimbarea parolei va fi activată ulterior.
       </div>
 
     </div>
@@ -648,7 +636,7 @@
       </h2>
 
       <p class="panel-description">
-        Vezi materialele și proiectele salvate de tine.
+        Vezi materialele, proiectele și descărcările salvate de tine.
       </p>
 
       <button
@@ -671,27 +659,30 @@
       </h2>
 
       <p class="panel-description">
-        Aici vor apărea fișierele trimise de tine prin VladLab.
+        Fișierele trimise de tine prin VladLab.
       </p>
 
-      <div class="uploads-empty">
+      <div id="uploadsList" class="uploads-list">
 
-        <div class="uploads-icon">
-          📂
+        <div class="uploads-empty">
+
+          <div class="uploads-icon">
+            ⏳
+          </div>
+
+          <h3>
+            Se încarcă...
+          </h3>
+
+          <p>
+            Se verifică trimiterile contului tău.
+          </p>
+
         </div>
-
-        <h3>
-          Nicio trimitere afișată încă
-        </h3>
-
-        <p>
-          Vom conecta această secțiune la fișierele trimise după configurarea Firestore.
-        </p>
 
       </div>
 
     </div>
-
 
   </section>
 
@@ -716,6 +707,18 @@
     updateProfile,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    collection,
+    query,
+    orderBy,
+    onSnapshot,
+    doc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
   const firebaseConfig = {
@@ -756,6 +759,10 @@
     getAuth(app);
 
 
+  const db =
+    getFirestore(app);
+
+
   const loading =
     document.getElementById("loading");
 
@@ -789,8 +796,16 @@
   const favoritesButton =
     document.getElementById("favoritesButton");
 
+  const uploadsList =
+    document.getElementById("uploadsList");
 
-  let currentUser = null;
+
+  let currentUser =
+    null;
+
+
+  let unsubscribeUploads =
+    null;
 
 
   /* =========================
@@ -799,15 +814,16 @@
 
   onAuthStateChanged(
     auth,
-    (user) => {
+    user => {
 
       if (!user) {
 
         window.location.replace(
-          "/login/"
+          "/login/?next=/cont/"
         );
 
         return;
+
       }
 
 
@@ -821,12 +837,23 @@
         );
 
         return;
+
       }
 
 
-      currentUser = user;
+      currentUser =
+        user;
 
-      renderUser(user);
+
+      renderUser(
+        user
+      );
+
+
+      watchUploads(
+        user.uid
+      );
+
 
       loading.style.display =
         "none";
@@ -852,7 +879,8 @@
 
 
     profileEmail.textContent =
-      user.email || "Fără email";
+      user.email ||
+      "Fără email";
 
 
     displayNameInput.value =
@@ -860,7 +888,8 @@
 
 
     accountEmail.value =
-      user.email || "";
+      user.email ||
+      "";
 
 
     renderAvatar(
@@ -880,13 +909,18 @@
     name
   ) {
 
-    avatar.innerHTML = "";
+    avatar.innerHTML =
+      "";
 
 
-    if (user.photoURL) {
+    if (
+      user.photoURL
+    ) {
 
       const image =
-        document.createElement("img");
+        document.createElement(
+          "img"
+        );
 
 
       image.src =
@@ -907,6 +941,7 @@
 
 
       return;
+
     }
 
 
@@ -924,7 +959,7 @@
 
   nameForm.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
       event.preventDefault();
 
@@ -950,6 +985,7 @@
         );
 
         return;
+
       }
 
 
@@ -963,10 +999,49 @@
 
       try {
 
+        /*
+          1. Actualizăm numele din Firebase Authentication.
+        */
+
         await updateProfile(
           currentUser,
           {
-            displayName: newName
+            displayName:
+              newName
+          }
+        );
+
+
+        /*
+          2. Actualizăm și profilul Firestore.
+        */
+
+        await setDoc(
+          doc(
+            db,
+            "users",
+            currentUser.uid
+          ),
+          {
+            uid:
+              currentUser.uid,
+
+            name:
+              newName,
+
+            email:
+              currentUser.email ||
+              "",
+
+            photoURL:
+              currentUser.photoURL ||
+              "",
+
+            updatedAt:
+              serverTimestamp()
+          },
+          {
+            merge: true
           }
         );
 
@@ -990,7 +1065,9 @@
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
 
         showNameStatus(
@@ -1013,6 +1090,563 @@
 
     }
   );
+
+
+  /* =========================
+     CE AM TRIMIS
+  ========================= */
+
+  function watchUploads(uid) {
+
+    if (
+      unsubscribeUploads
+    ) {
+
+      unsubscribeUploads();
+
+      unsubscribeUploads =
+        null;
+
+    }
+
+
+    const uploadsQuery =
+      query(
+        collection(
+          db,
+          "users",
+          uid,
+          "uploads"
+        ),
+        orderBy(
+          "createdAt",
+          "desc"
+        )
+      );
+
+
+    unsubscribeUploads =
+      onSnapshot(
+        uploadsQuery,
+
+        snapshot => {
+
+          uploadsList.innerHTML =
+            "";
+
+
+          if (
+            snapshot.empty
+          ) {
+
+            showEmptyUploads();
+
+            return;
+
+          }
+
+
+          snapshot.forEach(
+            uploadSnapshot => {
+
+              const data =
+                uploadSnapshot.data();
+
+
+              const item =
+                createUploadItem(
+                  data
+                );
+
+
+              uploadsList.appendChild(
+                item
+              );
+
+            }
+          );
+
+        },
+
+        error => {
+
+          console.error(
+            "Eroare la încărcarea trimiterilor:",
+            error
+          );
+
+
+          uploadsList.innerHTML = `
+            <div class="uploads-empty">
+
+              <div class="uploads-icon">
+                ⚠️
+              </div>
+
+              <h3>
+                Nu am putut încărca trimiterile
+              </h3>
+
+              <p>
+                Încearcă din nou mai târziu.
+              </p>
+
+            </div>
+          `;
+
+        }
+      );
+
+  }
+
+
+  function createUploadItem(data) {
+
+    const item =
+      document.createElement(
+        "div"
+      );
+
+
+    item.className =
+      "upload-item";
+
+
+    const top =
+      document.createElement(
+        "div"
+      );
+
+
+    top.className =
+      "upload-top";
+
+
+    const fileBox =
+      document.createElement(
+        "div"
+      );
+
+
+    fileBox.className =
+      "upload-file";
+
+
+    const icon =
+      document.createElement(
+        "div"
+      );
+
+
+    icon.className =
+      "upload-file-icon";
+
+    icon.textContent =
+      getFileIcon(
+        data.mimeType,
+        data.fileName
+      );
+
+
+    const info =
+      document.createElement(
+        "div"
+      );
+
+
+    info.className =
+      "upload-file-info";
+
+
+    const name =
+      document.createElement(
+        "div"
+      );
+
+
+    name.className =
+      "upload-name";
+
+
+    name.textContent =
+      data.fileName ||
+      "Fișier";
+
+
+    const meta =
+      document.createElement(
+        "div"
+      );
+
+
+    meta.className =
+      "upload-meta";
+
+
+    const metaParts =
+      [];
+
+
+    if (
+      typeof data.fileSize ===
+      "number"
+    ) {
+
+      metaParts.push(
+        formatFileSize(
+          data.fileSize
+        )
+      );
+
+    }
+
+
+    const dateText =
+      formatDate(
+        data.createdAt
+      );
+
+
+    if (
+      dateText
+    ) {
+
+      metaParts.push(
+        dateText
+      );
+
+    }
+
+
+    meta.textContent =
+      metaParts.length
+        ? metaParts.join(" • ")
+        : "Trimitere VladLab";
+
+
+    info.appendChild(
+      name
+    );
+
+
+    info.appendChild(
+      meta
+    );
+
+
+    fileBox.appendChild(
+      icon
+    );
+
+
+    fileBox.appendChild(
+      info
+    );
+
+
+    const status =
+      document.createElement(
+        "div"
+      );
+
+
+    status.className =
+      "upload-status";
+
+
+    status.textContent =
+      data.status === "trimis"
+        ? "TRIMIS"
+        : (
+            data.status ||
+            "TRIMIS"
+          ).toUpperCase();
+
+
+    top.appendChild(
+      fileBox
+    );
+
+
+    top.appendChild(
+      status
+    );
+
+
+    item.appendChild(
+      top
+    );
+
+
+    if (
+      data.message
+    ) {
+
+      const message =
+        document.createElement(
+          "div"
+        );
+
+
+      message.className =
+        "upload-message";
+
+
+      message.textContent =
+        "Mesaj: " +
+        data.message;
+
+
+      item.appendChild(
+        message
+      );
+
+    }
+
+
+    return item;
+
+  }
+
+
+  function showEmptyUploads() {
+
+    uploadsList.innerHTML = `
+      <div class="uploads-empty">
+
+        <div class="uploads-icon">
+          📂
+        </div>
+
+        <h3>
+          Nu ai trimis încă niciun fișier
+        </h3>
+
+        <p>
+          Fișierele trimise când ești logat vor apărea aici.
+        </p>
+
+      </div>
+    `;
+
+  }
+
+
+  /* =========================
+     FORMATĂRI
+  ========================= */
+
+  function formatFileSize(bytes) {
+
+    if (
+      !Number.isFinite(bytes) ||
+      bytes < 0
+    ) {
+
+      return "";
+
+    }
+
+
+    if (
+      bytes < 1024
+    ) {
+
+      return (
+        bytes +
+        " B"
+      );
+
+    }
+
+
+    if (
+      bytes <
+      1024 * 1024
+    ) {
+
+      return (
+        (
+          bytes /
+          1024
+        ).toFixed(1) +
+        " KB"
+      );
+
+    }
+
+
+    return (
+      (
+        bytes /
+        1024 /
+        1024
+      ).toFixed(1) +
+      " MB"
+    );
+
+  }
+
+
+  function formatDate(timestamp) {
+
+    if (
+      !timestamp
+    ) {
+
+      return "";
+
+    }
+
+
+    try {
+
+      const date =
+        typeof timestamp.toDate ===
+        "function"
+          ? timestamp.toDate()
+          : new Date(timestamp);
+
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+
+        return "";
+
+      }
+
+
+      return new Intl.DateTimeFormat(
+        "ro-RO",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      ).format(date);
+
+    }
+
+    catch {
+
+      return "";
+
+    }
+
+  }
+
+
+  function getFileIcon(
+    mimeType,
+    fileName
+  ) {
+
+    const mime =
+      (
+        mimeType ||
+        ""
+      ).toLowerCase();
+
+
+    const name =
+      (
+        fileName ||
+        ""
+      ).toLowerCase();
+
+
+    if (
+      mime.startsWith(
+        "image/"
+      )
+    ) {
+
+      return "🖼️";
+
+    }
+
+
+    if (
+      mime.startsWith(
+        "video/"
+      )
+    ) {
+
+      return "🎬";
+
+    }
+
+
+    if (
+      mime.startsWith(
+        "audio/"
+      )
+    ) {
+
+      return "🎵";
+
+    }
+
+
+    if (
+      mime.includes("pdf") ||
+      name.endsWith(".pdf")
+    ) {
+
+      return "📕";
+
+    }
+
+
+    if (
+      name.endsWith(".zip") ||
+      name.endsWith(".rar") ||
+      name.endsWith(".7z")
+    ) {
+
+      return "🗜️";
+
+    }
+
+
+    if (
+      name.endsWith(".doc") ||
+      name.endsWith(".docx")
+    ) {
+
+      return "📘";
+
+    }
+
+
+    if (
+      name.endsWith(".ppt") ||
+      name.endsWith(".pptx")
+    ) {
+
+      return "📙";
+
+    }
+
+
+    if (
+      name.endsWith(".xls") ||
+      name.endsWith(".xlsx")
+    ) {
+
+      return "📗";
+
+    }
+
+
+    return "📄";
+
+  }
 
 
   /* =========================
@@ -1040,7 +1674,18 @@
 
       try {
 
-        await signOut(auth);
+        if (
+          unsubscribeUploads
+        ) {
+
+          unsubscribeUploads();
+
+        }
+
+
+        await signOut(
+          auth
+        );
 
 
         window.location.replace(
@@ -1051,7 +1696,9 @@
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
       }
 
@@ -1069,7 +1716,8 @@
   ) {
 
     nameStatus.className =
-      "status " + type;
+      "status " +
+      type;
 
 
     nameStatus.textContent =
@@ -1080,5 +1728,4 @@
 </script>
 
 </body>
-
 </html>
