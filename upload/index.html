@@ -408,6 +408,80 @@
       justify-content: space-between;
     }
 
+
+    /* =========================
+       LOADING + MENTENANȚĂ
+    ========================= */
+
+    #loading {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #080b12;
+      color: #9aa6ba;
+      font-size: 14px;
+    }
+
+    #siteContent {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    #maintenancePage {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: #080b12;
+    }
+
+    .maintenance-card {
+      width: min(520px, 100%);
+      padding: 40px 30px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 22px;
+      text-align: center;
+    }
+
+    .maintenance-logo {
+      width: 78px;
+      height: 78px;
+      object-fit: cover;
+      border-radius: 19px;
+      margin-bottom: 23px;
+    }
+
+    .maintenance-card h2 {
+      font-size: clamp(30px, 6vw, 42px);
+      margin-bottom: 14px;
+    }
+
+    .maintenance-card p {
+      color: #8995a9;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .maintenance-login {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 11px 17px;
+      background: #5b8cff;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
     @media (max-width: 750px) {
       nav {
         padding: 0 16px;
@@ -446,6 +520,21 @@
 
 <body>
 
+<div id="loading">Se încarcă...</div>
+
+<section id="maintenancePage">
+  <div class="maintenance-card">
+    <img id="maintenanceLogo" class="maintenance-logo" src="/logo.png" alt="VladLab">
+    <h2 id="maintenanceTitle">VladLab</h2>
+    <p id="maintenanceText">Site-ul este momentan în mentenanță. Revino în curând.</p>
+    <a class="maintenance-login" href="/login/?next=/upload/">
+      Login administrator
+    </a>
+  </div>
+</section>
+
+<div id="siteContent">
+
 <div id="menuOverlay" class="menu-overlay"></div>
 
 <aside id="sideMenu" class="side-menu">
@@ -453,8 +542,8 @@
   <div class="side-menu-header">
 
     <div class="side-brand">
-      <img src="/logo.png" alt="VladLab">
-      VladLab
+      <img id="sideLogo" src="/logo.png" alt="VladLab">
+      <span id="sideBrandName">VladLab</span>
     </div>
 
     <button
@@ -470,7 +559,7 @@
 
   <div class="side-menu-content">
 
-    <div class="menu-label">
+    <div id="menuLabel" class="menu-label">
       VLADLAB
     </div>
 
@@ -513,7 +602,7 @@
 
   </div>
 
-  <div class="side-menu-footer">
+  <div id="sideFooter" class="side-menu-footer">
     © 2026 VladLab
   </div>
 
@@ -566,8 +655,8 @@
 
 <main>
 
-  <a href="/" class="back">
-    ← Înapoi la VladLab
+  <a href="/" id="backButton" class="back">
+    ← Înapoi la site
   </a>
 
   <h1>
@@ -647,7 +736,7 @@
 
 <footer>
 
-  <div>
+  <div id="footerCopyright">
     © 2026 VladLab
   </div>
 
@@ -657,6 +746,8 @@
 
 </footer>
 
+
+</div>
 
 <script type="module">
 
@@ -676,7 +767,9 @@
     getFirestore,
     collection,
     addDoc,
-    serverTimestamp
+    serverTimestamp,
+    doc,
+    getDoc
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
@@ -710,6 +803,137 @@
 
 
   /* =========================
+     SETĂRI GLOBALE SITE
+  ========================= */
+
+  async function loadSiteSettings() {
+
+    const defaults = {
+      siteName: "VladLab",
+      maintenance: false,
+      maintenanceMessage:
+        "Site-ul este momentan în mentenanță. Revino în curând."
+    };
+
+
+    try {
+
+      const snapshot =
+        await getDoc(
+          doc(
+            db,
+            "settings",
+            "site"
+          )
+        );
+
+
+      if (!snapshot.exists()) {
+        return defaults;
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      return {
+        siteName:
+          typeof data.siteName === "string" &&
+          data.siteName.trim()
+            ? data.siteName.trim()
+            : defaults.siteName,
+
+        maintenance:
+          data.maintenance === true,
+
+        maintenanceMessage:
+          typeof data.maintenanceMessage === "string" &&
+          data.maintenanceMessage.trim()
+            ? data.maintenanceMessage.trim()
+            : defaults.maintenanceMessage
+      };
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Eroare setări site:",
+        error
+      );
+
+      return defaults;
+
+    }
+
+  }
+
+
+  function applySiteSettings(settings) {
+
+    const siteName =
+      settings.siteName;
+
+
+    document.title =
+      "Trimite fișier | " +
+      siteName;
+
+
+    document.getElementById(
+      "sideBrandName"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "sideLogo"
+    ).alt =
+      siteName;
+
+
+    document.getElementById(
+      "menuLabel"
+    ).textContent =
+      siteName.toUpperCase();
+
+
+    document.getElementById(
+      "sideFooter"
+    ).textContent =
+      "© 2026 " +
+      siteName;
+
+
+    document.getElementById(
+      "footerCopyright"
+    ).textContent =
+      "© 2026 " +
+      siteName;
+
+
+    document.getElementById(
+      "maintenanceTitle"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "maintenanceText"
+    ).textContent =
+      settings.maintenanceMessage;
+
+
+    document.getElementById(
+      "maintenanceLogo"
+    ).alt =
+      siteName;
+
+  }
+
+
+  /* =========================
      CONTURI
   ========================= */
 
@@ -731,10 +955,48 @@
 
   onAuthStateChanged(
     auth,
-    user => {
+    async user => {
 
       signedInUser =
         user;
+
+
+      const settings =
+        await loadSiteSettings();
+
+
+      applySiteSettings(
+        settings
+      );
+
+
+      if (
+        settings.maintenance === true &&
+        (!user || user.uid !== ADMIN_UID)
+      ) {
+
+        document.getElementById("siteContent").style.display =
+          "none";
+
+        document.getElementById("maintenancePage").style.display =
+          "flex";
+
+        document.getElementById("loading").style.display =
+          "none";
+
+        return;
+
+      }
+
+
+      document.getElementById("maintenancePage").style.display =
+        "none";
+
+      document.getElementById("siteContent").style.display =
+        "flex";
+
+      document.getElementById("loading").style.display =
+        "none";
 
 
       if (!user) {
