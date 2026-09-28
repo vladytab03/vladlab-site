@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Contul meu | VladLab</title>
+
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #080b12;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    nav {
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 6%;
+
+      border-bottom: 1px solid #1d2330;
+
+      background: rgba(8, 11, 18, .94);
+      backdrop-filter: blur(15px);
+
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .back {
+      color: #aeb8ca;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+
+      padding: 9px 12px;
+
+      border-radius: 9px;
+
+      transition: .2s;
+    }
+
+    .back:hover {
+      color: white;
+      background: #111722;
+    }
+
+    .logout {
+      padding: 9px 14px;
+
+      background: #161c27;
+      color: white;
+
+      border: 1px solid #293142;
+      border-radius: 10px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition: .2s;
+    }
+
+    .logout:hover {
+      background: #1a2230;
+      border-color: #5b8cff;
+    }
+
+    #loading {
+      position: fixed;
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #080b12;
+
+      color: #9aa6ba;
+
+      font-size: 14px;
+
+      z-index: 9999;
+    }
+
+    main {
+      width: 100%;
+      max-width: 950px;
+
+      margin: auto;
+
+      padding: 55px 22px 80px;
+    }
+
+    .top {
+      margin-bottom: 35px;
+    }
+
+    .badge {
+      display: inline-block;
+
+      padding: 7px 12px;
+
+      margin-bottom: 15px;
+
+      background: rgba(91, 140, 255, .12);
+
+      border: 1px solid rgba(91, 140, 255, .25);
+      border-radius: 100px;
+
+      color: #7ca2ff;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 46px);
+      letter-spacing: -1.5px;
+
+      margin-bottom: 9px;
+    }
+
+    .description {
+      color: #8995a9;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+
+      gap: 16px;
+
+      margin-bottom: 25px;
+
+      padding: 20px;
+
+      background: #0e131d;
+
+      border: 1px solid #202735;
+      border-radius: 17px;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: #182238;
+
+      color: #7ca2ff;
+
+      font-size: 24px;
+      font-weight: 700;
+
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: 700;
+
+      margin-bottom: 5px;
+
+      overflow-wrap: anywhere;
+    }
+
+    .profile-email {
+      color: #7f8a9e;
+      font-size: 13px;
+
+      overflow-wrap: anywhere;
+    }
+
+    .grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 23px;
+
+      background: #0e131d;
+
+      border: 1px solid #202735;
+      border-radius: 17px;
+    }
+
+    .panel.full {
+      grid-column: 1 / -1;
+    }
+
+    .panel h2 {
+      font-size: 18px;
+      margin-bottom: 7px;
+    }
+
+    .panel-description {
+      color: #7f8a9e;
+
+      font-size: 13px;
+      line-height: 1.5;
+
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #b8c2d1;
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+
+      padding: 12px 13px;
+
+      background: #090d15;
+
+      border: 1px solid #293243;
+      border-radius: 10px;
+
+      color: white;
+
+      font-family: inherit;
+      font-size: 16px;
+
+      outline: none;
+
+      transition: .2s;
+    }
+
+    input:focus {
+      border-color: #5b8cff;
+
+      box-shadow:
+        0 0 0 3px rgba(91, 140, 255, .10);
+    }
+
+    input:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .button {
+      width: 100%;
+
+      padding: 12px 15px;
+
+      border: 0;
+      border-radius: 10px;
+
+      background: #5b8cff;
+      color: white;
+
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: .2s;
+    }
+
+    .button:hover {
+      background: #6c98ff;
+    }
+
+    .button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .secondary {
+      background: #161c27;
+
+      border: 1px solid #293142;
+    }
+
+    .secondary:hover {
+      background: #1a2230;
+      border-color: #46536a;
+    }
+
+    .status {
+      display: none;
+
+      margin-top: 14px;
+
+      padding: 11px 13px;
+
+      border-radius: 9px;
+
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .status.success {
+      display: block;
+
+      color: #75e4a4;
+
+      background: rgba(67, 211, 126, .08);
+
+      border: 1px solid rgba(67, 211, 126, .20);
+    }
+
+    .status.error {
+      display: block;
+
+      color: #ff9292;
+
+      background: rgba(255, 80, 80, .08);
+
+      border: 1px solid rgba(255, 80, 80, .20);
+    }
+
+    .uploads-empty {
+      padding: 35px 20px;
+
+      text-align: center;
+
+      background: #090d15;
+
+      border: 1px dashed #283142;
+      border-radius: 13px;
+
+      color: #758196;
+    }
+
+    .uploads-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .uploads-empty h3 {
+      color: #c5cedb;
+
+      font-size: 15px;
+
+      margin-bottom: 6px;
+    }
+
+    .uploads-empty p {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .provider-info {
+      margin-top: 12px;
+
+      color: #68758a;
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    footer {
+      padding: 28px;
+
+      border-top: 1px solid #1d2330;
+
+      color: #626d7f;
+
+      font-size: 13px;
+
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 0 16px;
+      }
+
+      main {
+        padding:
+          38px 16px 60px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel.full {
+        grid-column: auto;
+      }
+
+      .profile-header {
+        padding: 17px;
+      }
+
+      .back {
+        padding-left: 4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="loading">
+  Se încarcă profilul...
+</div>
+
+
+<nav>
+
+  <a
+    href="/"
+    class="back"
+  >
+    ← Înapoi la site
+  </a>
+
+  <button
+    id="logoutButton"
+    class="logout"
+    type="button"
+  >
+    Logout
+  </button>
+
+</nav>
+
+
+<main>
+
+  <section class="top">
+
+    <div class="badge">
+      CONTUL MEU
+    </div>
+
+    <h1>
+      Profil
+    </h1>
+
+    <p class="description">
+      Vezi și gestionează informațiile contului tău VladLab.
+    </p>
+
+  </section>
+
+
+  <section class="profile-header">
+
+    <div
+      id="avatar"
+      class="avatar"
+    >
+      U
+    </div>
+
+    <div>
+
+      <div
+        id="profileName"
+        class="profile-name"
+      >
+        Utilizator
+      </div>
+
+      <div
+        id="profileEmail"
+        class="profile-email"
+      >
+        —
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="grid">
+
+
+    <!-- NUME -->
+
+    <div class="panel">
+
+      <h2>
+        👤 Nume
+      </h2>
+
+      <p class="panel-description">
+        Acest nume va apărea în contul tău VladLab.
+      </p>
+
+      <form id="nameForm">
+
+        <div class="field">
+
+          <label for="displayName">
+            Nume
+          </label>
+
+          <input
+            id="displayName"
+            type="text"
+            autocomplete="name"
+            maxlength="40"
+            required
+          >
+
+        </div>
+
+        <button
+          id="saveNameButton"
+          class="button"
+          type="submit"
+        >
+          Salvează numele
+        </button>
+
+      </form>
+
+      <div
+        id="nameStatus"
+        class="status"
+      ></div>
+
+    </div>
+
+
+    <!-- EMAIL -->
+
+    <div class="panel">
+
+      <h2>
+        ✉️ Email
+      </h2>
+
+      <p class="panel-description">
+        Adresa de email asociată contului.
+      </p>
+
+      <div class="field">
+
+        <label for="accountEmail">
+          Email
+        </label>
+
+        <input
+          id="accountEmail"
+          type="email"
+          disabled
+        >
+
+      </div>
+
+      <button
+        class="button secondary"
+        type="button"
+        disabled
+      >
+        Schimbă emailul
+      </button>
+
+      <div class="provider-info">
+        Modificarea emailului va fi activată după configurarea completă a profilurilor Firebase.
+      </div>
+
+    </div>
+
+
+    <!-- PAROLĂ -->
+
+    <div class="panel">
+
+      <h2>
+        🔒 Parolă
+      </h2>
+
+      <p class="panel-description">
+        Schimbă parola contului tău.
+      </p>
+
+      <button
+        class="button secondary"
+        type="button"
+        disabled
+      >
+        Schimbă parola
+      </button>
+
+      <div
+        id="passwordInfo"
+        class="provider-info"
+      >
+        Schimbarea parolei va fi activată la configurarea completă a contului.
+      </div>
+
+    </div>
+
+
+    <!-- FAVORITE -->
+
+    <div class="panel">
+
+      <h2>
+        ❤️ Favorite
+      </h2>
+
+      <p class="panel-description">
+        Vezi materialele și proiectele salvate de tine.
+      </p>
+
+      <button
+        id="favoritesButton"
+        class="button secondary"
+        type="button"
+      >
+        Vezi favoritele
+      </button>
+
+    </div>
+
+
+    <!-- UPLOADURI -->
+
+    <div class="panel full">
+
+      <h2>
+        📤 Ce am trimis
+      </h2>
+
+      <p class="panel-description">
+        Aici vor apărea fișierele trimise de tine prin VladLab.
+      </p>
+
+      <div class="uploads-empty">
+
+        <div class="uploads-icon">
+          📂
+        </div>
+
+        <h3>
+          Nicio trimitere afișată încă
+        </h3>
+
+        <p>
+          Vom conecta această secțiune la fișierele trimise după configurarea Firestore.
+        </p>
+
+      </div>
+
+    </div>
+
+
+  </section>
+
+</main>
+
+
+<footer>
+  © 2026 VladLab · Contul meu
+</footer>
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    updateProfile,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+
+    apiKey:
+      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+
+    authDomain:
+      "vladlab-11887.firebaseapp.com",
+
+    projectId:
+      "vladlab-11887",
+
+    storageBucket:
+      "vladlab-11887.firebasestorage.app",
+
+    messagingSenderId:
+      "741561223788",
+
+    appId:
+      "1:741561223788:web:88ad3e62db87e32551a649",
+
+    measurementId:
+      "G-9XN16BVYRN"
+
+  };
+
+
+  const ADMIN_UID =
+    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+
+  const auth =
+    getAuth(app);
+
+
+  const loading =
+    document.getElementById("loading");
+
+  const profileName =
+    document.getElementById("profileName");
+
+  const profileEmail =
+    document.getElementById("profileEmail");
+
+  const displayNameInput =
+    document.getElementById("displayName");
+
+  const accountEmail =
+    document.getElementById("accountEmail");
+
+  const avatar =
+    document.getElementById("avatar");
+
+  const nameForm =
+    document.getElementById("nameForm");
+
+  const saveNameButton =
+    document.getElementById("saveNameButton");
+
+  const nameStatus =
+    document.getElementById("nameStatus");
+
+  const logoutButton =
+    document.getElementById("logoutButton");
+
+  const favoritesButton =
+    document.getElementById("favoritesButton");
+
+
+  let currentUser = null;
+
+
+  /* =========================
+     AUTENTIFICARE
+  ========================= */
+
+  onAuthStateChanged(
+    auth,
+    (user) => {
+
+      if (!user) {
+
+        window.location.replace(
+          "/login/"
+        );
+
+        return;
+      }
+
+
+      if (
+        user.uid ===
+        ADMIN_UID
+      ) {
+
+        window.location.replace(
+          "/admin/"
+        );
+
+        return;
+      }
+
+
+      currentUser = user;
+
+      renderUser(user);
+
+      loading.style.display =
+        "none";
+
+    }
+  );
+
+
+  /* =========================
+     AFIȘARE PROFIL
+  ========================= */
+
+  function renderUser(user) {
+
+    const name =
+      user.displayName ||
+      user.email?.split("@")[0] ||
+      "Utilizator";
+
+
+    profileName.textContent =
+      name;
+
+
+    profileEmail.textContent =
+      user.email || "Fără email";
+
+
+    displayNameInput.value =
+      name;
+
+
+    accountEmail.value =
+      user.email || "";
+
+
+    renderAvatar(
+      user,
+      name
+    );
+
+  }
+
+
+  /* =========================
+     AVATAR
+  ========================= */
+
+  function renderAvatar(
+    user,
+    name
+  ) {
+
+    avatar.innerHTML = "";
+
+
+    if (user.photoURL) {
+
+      const image =
+        document.createElement("img");
+
+
+      image.src =
+        user.photoURL;
+
+
+      image.alt =
+        name;
+
+
+      image.referrerPolicy =
+        "no-referrer";
+
+
+      avatar.appendChild(
+        image
+      );
+
+
+      return;
+    }
+
+
+    avatar.textContent =
+      name
+        .charAt(0)
+        .toUpperCase();
+
+  }
+
+
+  /* =========================
+     SCHIMBĂ NUMELE
+  ========================= */
+
+  nameForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+
+      if (!currentUser) {
+        return;
+      }
+
+
+      const newName =
+        displayNameInput
+          .value
+          .trim();
+
+
+      if (
+        newName.length < 2
+      ) {
+
+        showNameStatus(
+          "Numele trebuie să aibă cel puțin 2 caractere.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      saveNameButton.disabled =
+        true;
+
+
+      saveNameButton.textContent =
+        "Se salvează...";
+
+
+      try {
+
+        await updateProfile(
+          currentUser,
+          {
+            displayName: newName
+          }
+        );
+
+
+        profileName.textContent =
+          newName;
+
+
+        renderAvatar(
+          currentUser,
+          newName
+        );
+
+
+        showNameStatus(
+          "Numele a fost actualizat.",
+          "success"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        showNameStatus(
+          "Numele nu a putut fi actualizat.",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        saveNameButton.disabled =
+          false;
+
+
+        saveNameButton.textContent =
+          "Salvează numele";
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     FAVORITE
+  ========================= */
+
+  favoritesButton.addEventListener(
+    "click",
+    () => {
+
+      window.location.href =
+        "/favorite/";
+
+    }
+  );
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
+
+  logoutButton.addEventListener(
+    "click",
+    async () => {
+
+      try {
+
+        await signOut(auth);
+
+
+        window.location.replace(
+          "/"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     STATUS NUME
+  ========================= */
+
+  function showNameStatus(
+    message,
+    type
+  ) {
+
+    nameStatus.className =
+      "status " + type;
+
+
+    nameStatus.textContent =
+      message;
+
+  }
+
+</script>
+
+</body>
+
+</html>
