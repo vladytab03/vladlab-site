@@ -26,10 +26,8 @@
       background: #080b12;
       color: white;
       min-height: 100vh;
-
       display: flex;
       flex-direction: column;
-
       overflow-x: hidden;
     }
 
@@ -37,28 +35,19 @@
       overflow: hidden;
     }
 
-
-    /* =========================
-       NAVBAR
-    ========================= */
+    /* NAVBAR */
 
     nav {
       height: 72px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 0 6%;
-
       border-bottom: 1px solid #1d2330;
-
       background: rgba(8, 11, 18, 0.94);
-
       position: sticky;
       top: 0;
       z-index: 100;
-
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
     }
@@ -66,20 +55,15 @@
     .menu-button {
       width: 44px;
       height: 44px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       background: #0e131d;
       border: 1px solid #293142;
       border-radius: 12px;
-
       color: white;
       font-size: 24px;
-
       cursor: pointer;
-
       transition: 0.2s;
     }
 
@@ -88,10 +72,7 @@
       border-color: #5b8cff;
     }
 
-
-    /* =========================
-       LOGIN / USER
-    ========================= */
+    /* LOGIN / USER */
 
     .account {
       display: flex;
@@ -108,27 +89,18 @@
     .user-button,
     .logout-button {
       border-radius: 10px;
-
       padding: 9px 15px;
-
       font-size: 14px;
-
       text-decoration: none;
-
       cursor: pointer;
-
       transition: 0.2s;
-
       white-space: nowrap;
     }
 
     .login-button {
       background: #5b8cff;
-
       color: white;
-
       border: 1px solid #5b8cff;
-
       font-weight: 700;
     }
 
@@ -137,50 +109,39 @@
     }
 
     .user-button {
+      max-width: 180px;
       background: transparent;
-
       color: #cbd4e4;
-
       border: 1px solid #293142;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .user-button:hover {
       color: white;
-
       border-color: #5b8cff;
     }
 
     .logout-button {
       background: #161c27;
-
       color: white;
-
       border: 1px solid #293142;
     }
 
     .logout-button:hover {
       background: #1a2230;
-
       border-color: #5b8cff;
     }
 
-
-    /* =========================
-       MENIU GLISANT
-    ========================= */
+    /* MENIU */
 
     .menu-overlay {
       position: fixed;
-
       inset: 0;
-
       background: rgba(0, 0, 0, 0.62);
-
       opacity: 0;
       visibility: hidden;
-
       transition: opacity 0.25s, visibility 0.25s;
-
       z-index: 998;
     }
 
@@ -191,29 +152,19 @@
 
     .side-menu {
       position: fixed;
-
       top: 0;
       left: 0;
-
       width: 320px;
       max-width: 86vw;
-
       height: 100vh;
       height: 100dvh;
-
       background: #0b0f17;
-
       border-right: 1px solid #202735;
-
       transform: translateX(-105%);
-
       transition: transform 0.28s ease;
-
       z-index: 999;
-
       display: flex;
       flex-direction: column;
-
       box-shadow: 20px 0 50px rgba(0, 0, 0, 0.35);
     }
 
@@ -223,22 +174,17 @@
 
     .side-menu-header {
       height: 72px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 0 20px;
-
       border-bottom: 1px solid #1d2330;
     }
 
     .side-brand {
       display: flex;
       align-items: center;
-
       gap: 11px;
-
       font-size: 19px;
       font-weight: 700;
     }
@@ -246,147 +192,102 @@
     .side-brand img {
       width: 40px;
       height: 40px;
-
       object-fit: cover;
-
       border-radius: 10px;
     }
 
     .close-menu {
       width: 40px;
       height: 40px;
-
       border-radius: 10px;
-
       border: 1px solid #293142;
-
       background: #111722;
-
       color: white;
-
       font-size: 23px;
-
       cursor: pointer;
-
       transition: 0.2s;
     }
 
     .close-menu:hover {
       border-color: #5b8cff;
-
       background: #161d2a;
     }
 
     .side-menu-content {
       padding: 20px 14px;
-
       display: flex;
       flex-direction: column;
-
       gap: 7px;
-
       overflow-y: auto;
     }
 
     .menu-label {
       color: #596477;
-
       font-size: 11px;
       font-weight: 700;
-
       letter-spacing: 1.2px;
-
       padding: 6px 12px 10px;
     }
 
     .menu-link {
       display: flex;
       align-items: center;
-
       gap: 14px;
-
       min-height: 52px;
-
       padding: 12px 14px;
-
       border-radius: 12px;
-
       border: 1px solid transparent;
-
       color: #cbd4e4;
-
       text-decoration: none;
-
       font-size: 15px;
       font-weight: 600;
-
       transition: 0.2s;
     }
 
     .menu-link:hover {
       color: white;
-
       background: #111722;
-
       border-color: #202735;
     }
 
     .menu-link.active {
       color: white;
-
       background: rgba(91, 140, 255, 0.12);
-
       border-color: rgba(91, 140, 255, 0.25);
     }
 
     .menu-icon {
       width: 27px;
-
       text-align: center;
-
       font-size: 20px;
     }
 
     .menu-separator {
       height: 1px;
-
       background: #1d2330;
-
       margin: 12px 8px;
     }
 
     .side-menu-footer {
       margin-top: auto;
-
       padding: 18px 20px;
-
       border-top: 1px solid #1d2330;
-
       color: #596477;
-
       font-size: 12px;
     }
 
-
-    /* =========================
-       MAIN
-    ========================= */
+    /* MAIN */
 
     main {
       flex: 1;
-
       width: min(1100px, 90%);
-
       margin: auto;
-
       padding: 80px 0;
     }
 
     .back {
       color: #71809a;
-
       text-decoration: none;
-
       font-size: 14px;
     }
 
@@ -396,9 +297,7 @@
 
     h1 {
       font-size: clamp(48px, 7vw, 72px);
-
       letter-spacing: -3px;
-
       margin-top: 25px;
     }
 
@@ -406,88 +305,62 @@
       color: #5b8cff;
     }
 
-
-    /* =========================
-       DOWNLOADS
-    ========================= */
+    /* DOWNLOADS */
 
     #downloadsList {
       margin-top: 45px;
-
       display: grid;
-
       gap: 16px;
     }
 
     .download-card {
       background: #0e131d;
-
       border: 1px solid #202735;
-
       border-radius: 18px;
-
       padding: 22px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       gap: 25px;
-
       transition: 0.2s;
     }
 
     .download-card:hover {
       border-color: #303b50;
-
       transform: translateY(-2px);
     }
 
     .download-info {
       min-width: 0;
+      flex: 1;
     }
 
     .download-title {
       font-size: 18px;
-
       font-weight: 700;
-
       margin-bottom: 7px;
-
       overflow-wrap: anywhere;
     }
 
     .download-description {
       color: #7f899a;
-
       font-size: 14px;
-
       line-height: 1.5;
-
       overflow-wrap: anywhere;
     }
 
     .download-button {
       flex-shrink: 0;
-
       display: inline-flex;
       align-items: center;
       justify-content: center;
-
       padding: 11px 17px;
-
       border-radius: 10px;
-
       background: #5b8cff;
-
       color: white;
-
       text-decoration: none;
-
       font-size: 14px;
-
       font-weight: 700;
-
       transition: 0.2s;
     }
 
@@ -495,72 +368,43 @@
       background: #6c98ff;
     }
 
-
-    /* =========================
-       EMPTY
-    ========================= */
+    /* EMPTY */
 
     .empty {
       min-height: 250px;
-
       border: 1px dashed #293243;
-
       border-radius: 18px;
-
       display: flex;
-
       flex-direction: column;
-
       align-items: center;
-
       justify-content: center;
-
       text-align: center;
-
       padding: 30px;
     }
 
     .empty-icon {
       font-size: 38px;
-
       margin-bottom: 18px;
     }
 
     .empty h2 {
       font-size: 19px;
-
       margin-bottom: 8px;
     }
 
     .empty p {
       color: #657188;
-
       font-size: 14px;
     }
 
-
-    /* =========================
-       FOOTER
-    ========================= */
-
     footer {
       border-top: 1px solid #1d2330;
-
       padding: 30px 8%;
-
       color: #626d7f;
-
       font-size: 13px;
-
       display: flex;
-
       justify-content: space-between;
     }
-
-
-    /* =========================
-       TELEFON
-    ========================= */
 
     @media (max-width: 750px) {
 
@@ -571,28 +415,23 @@
       .menu-button {
         width: 42px;
         height: 42px;
-
         font-size: 22px;
       }
 
       main {
         width: calc(100% - 36px);
-
         padding-top: 55px;
         padding-bottom: 60px;
       }
 
       h1 {
         font-size: clamp(40px, 12vw, 58px);
-
         letter-spacing: -2px;
       }
 
       footer {
         flex-direction: column;
-
         gap: 10px;
-
         padding-left: 18px;
         padding-right: 18px;
       }
@@ -601,8 +440,11 @@
       .user-button,
       .logout-button {
         padding: 8px 10px;
-
         font-size: 13px;
+      }
+
+      .user-button {
+        max-width: 135px;
       }
 
       #loggedIn {
@@ -611,7 +453,6 @@
 
       .download-card {
         flex-direction: column;
-
         align-items: stretch;
       }
 
@@ -622,61 +463,24 @@
       .side-menu {
         width: 300px;
       }
-
     }
-
-
-    @media (max-width: 380px) {
-
-      nav {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-
-      .user-button,
-      .logout-button {
-        padding-left: 8px;
-        padding-right: 8px;
-      }
-
-    }
-
   </style>
-
 </head>
 
 
 <body>
 
-
-<!-- =========================
-     MENIU GLISANT
-========================= -->
-
-<div
-  id="menuOverlay"
-  class="menu-overlay"
-></div>
+<div id="menuOverlay" class="menu-overlay"></div>
 
 
-<aside
-  id="sideMenu"
-  class="side-menu"
->
+<aside id="sideMenu" class="side-menu">
 
   <div class="side-menu-header">
 
     <div class="side-brand">
-
-      <img
-        src="/logo.png"
-        alt="VladLab"
-      >
-
+      <img src="/logo.png" alt="VladLab">
       VladLab
-
     </div>
-
 
     <button
       id="closeMenu"
@@ -696,79 +500,41 @@
       VLADLAB
     </div>
 
-
     <a href="/" class="menu-link">
-
-      <span class="menu-icon">
-        🏠
-      </span>
-
+      <span class="menu-icon">🏠</span>
       Acasă
-
     </a>
-
 
     <a href="/scoala/" class="menu-link">
-
-      <span class="menu-icon">
-        🎓
-      </span>
-
+      <span class="menu-icon">🎓</span>
       Școală
-
     </a>
-
 
     <a href="/proiecte/" class="menu-link">
-
-      <span class="menu-icon">
-        💻
-      </span>
-
+      <span class="menu-icon">💻</span>
       Proiecte
-
     </a>
-
 
     <a href="/upload/" class="menu-link">
-
-      <span class="menu-icon">
-        📤
-      </span>
-
+      <span class="menu-icon">📤</span>
       Trimite fișier
-
     </a>
 
-
-    <a
-      href="/download/"
-      class="menu-link active"
-    >
-
-      <span class="menu-icon">
-        📥
-      </span>
-
+    <a href="/download/" class="menu-link active">
+      <span class="menu-icon">📥</span>
       Descărcări
-
     </a>
 
+    <a href="/favorite/" class="menu-link">
+      <span class="menu-icon">❤️</span>
+      Favorite
+    </a>
 
     <div class="menu-separator"></div>
 
-
-    <a
-      href="http://novasmp.space/"
-      class="menu-link"
-    >
-
-      <span class="menu-icon">
-        ⛏️
-      </span>
-
+    <a href="http://novasmp.space/" class="menu-link">
+      <span class="menu-icon">⛏️</span>
       Nova SMP
-
     </a>
 
   </div>
@@ -780,10 +546,6 @@
 
 </aside>
 
-
-<!-- =========================
-     NAVBAR
-========================= -->
 
 <nav>
 
@@ -799,35 +561,24 @@
 
   <div class="account">
 
-
-    <!-- NELOGAT -->
-
     <div id="loggedOut">
 
-      <a
-        href="/login/"
-        class="login-button"
-      >
+      <a href="/login/" class="login-button">
         Login
       </a>
 
     </div>
 
 
-    <!-- LOGAT -->
-
-    <div
-      id="loggedIn"
-      class="account"
-    >
+    <div id="loggedIn" class="account">
 
       <a
-        href="/admin/"
+        id="userButton"
+        href="/cont/"
         class="user-button"
       >
-        Vlad
+        Cont
       </a>
-
 
       <button
         id="logoutButton"
@@ -844,19 +595,11 @@
 </nav>
 
 
-<!-- =========================
-     MAIN
-========================= -->
-
 <main>
 
-  <a
-    href="/"
-    class="back"
-  >
+  <a href="/" class="back">
     ← Înapoi la VladLab
   </a>
-
 
   <h1>
     📥 <span>Descărcări</span>
@@ -885,10 +628,6 @@
 
 </main>
 
-
-<!-- =========================
-     FOOTER
-========================= -->
 
 <footer>
 
@@ -927,28 +666,13 @@
 
 
   const firebaseConfig = {
-
-    apiKey:
-      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-
-    authDomain:
-      "vladlab-11887.firebaseapp.com",
-
-    projectId:
-      "vladlab-11887",
-
-    storageBucket:
-      "vladlab-11887.firebasestorage.app",
-
-    messagingSenderId:
-      "741561223788",
-
-    appId:
-      "1:741561223788:web:88ad3e62db87e32551a649",
-
-    measurementId:
-      "G-9XN16BVYRN"
-
+    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+    authDomain: "vladlab-11887.firebaseapp.com",
+    projectId: "vladlab-11887",
+    storageBucket: "vladlab-11887.firebasestorage.app",
+    messagingSenderId: "741561223788",
+    appId: "1:741561223788:web:88ad3e62db87e32551a649",
+    measurementId: "G-9XN16BVYRN"
   };
 
 
@@ -968,15 +692,16 @@
     getFirestore(app);
 
 
-  /* =========================
-     LOGIN / LOGOUT
-  ========================= */
+  /* CONTURI */
 
   const loggedOut =
     document.getElementById("loggedOut");
 
   const loggedIn =
     document.getElementById("loggedIn");
+
+  const userButton =
+    document.getElementById("userButton");
 
   const logoutButton =
     document.getElementById("logoutButton");
@@ -987,20 +712,7 @@
 
     (user) => {
 
-      if (
-        user &&
-        user.uid === ADMIN_UID
-      ) {
-
-        loggedOut.style.display =
-          "none";
-
-        loggedIn.style.display =
-          "flex";
-
-      }
-
-      else {
+      if (!user) {
 
         loggedIn.style.display =
           "none";
@@ -1008,7 +720,39 @@
         loggedOut.style.display =
           "block";
 
+        return;
       }
+
+
+      loggedOut.style.display =
+        "none";
+
+      loggedIn.style.display =
+        "flex";
+
+
+      if (
+        user.uid ===
+        ADMIN_UID
+      ) {
+
+        userButton.textContent =
+          "Vlad";
+
+        userButton.href =
+          "/admin/";
+
+        return;
+      }
+
+
+      userButton.textContent =
+        user.displayName ||
+        user.email?.split("@")[0] ||
+        "Cont";
+
+      userButton.href =
+        "/cont/";
 
     }
   );
@@ -1019,17 +763,26 @@
 
     async () => {
 
-      await signOut(auth);
+      try {
 
-      window.location.reload();
+        await signOut(auth);
+
+        window.location.href =
+          "/";
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+      }
 
     }
   );
 
 
-  /* =========================
-     MENIU GLISANT
-  ========================= */
+  /* MENIU */
 
   const openMenuButton =
     document.getElementById("openMenu");
@@ -1109,9 +862,7 @@
   );
 
 
-  /* =========================
-     DESCĂRCĂRI DIN FIRESTORE
-  ========================= */
+  /* DESCĂRCĂRI FIRESTORE */
 
   const downloadsList =
     document.getElementById("downloadsList");
@@ -1132,8 +883,6 @@
 
       downloadsList.innerHTML = "";
 
-
-      /* NICIUN FIȘIER */
 
       if (snapshot.empty) {
 
@@ -1159,8 +908,6 @@
 
       }
 
-
-      /* AFIȘARE FIȘIERE */
 
       snapshot.forEach(
         (documentSnapshot) => {
@@ -1222,12 +969,11 @@
             "Descarcă";
 
 
-          /* ACCEPTĂ DOAR HTTP / HTTPS */
-
           try {
 
             const fileUrl =
               new URL(data.url);
+
 
             if (
               fileUrl.protocol === "https:" ||
@@ -1247,9 +993,7 @@
 
             else {
 
-              button.removeAttribute(
-                "href"
-              );
+              button.removeAttribute("href");
 
               button.textContent =
                 "Link indisponibil";
@@ -1260,9 +1004,7 @@
 
           catch {
 
-            button.removeAttribute(
-              "href"
-            );
+            button.removeAttribute("href");
 
             button.textContent =
               "Link indisponibil";
