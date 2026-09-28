@@ -2,9 +2,7 @@
 <html lang="ro">
 
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Proiecte | VladLab</title>
@@ -13,7 +11,6 @@
   <link rel="apple-touch-icon" href="/logo.png">
 
   <style>
-
     * {
       margin: 0;
       padding: 0;
@@ -28,7 +25,17 @@
 
       display: flex;
       flex-direction: column;
+
+      overflow-x: hidden;
     }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
 
     nav {
       height: 72px;
@@ -37,49 +44,50 @@
       align-items: center;
       justify-content: space-between;
 
-      padding: 0 8%;
+      padding: 0 6%;
 
       border-bottom: 1px solid #1d2330;
 
-      background: rgba(8, 11, 18, 0.92);
+      background: rgba(8, 11, 18, 0.94);
 
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
 
       backdrop-filter: blur(12px);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-
-      text-decoration: none;
-      color: white;
-    }
-
-    .logo img {
+    .menu-button {
       width: 44px;
       height: 44px;
 
-      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      object-fit: cover;
-    }
+      background: #0e131d;
 
-    .logo-text {
+      border: 1px solid #293142;
+      border-radius: 12px;
+
+      color: white;
+
       font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -1px;
+
+      cursor: pointer;
+
+      transition: 0.2s;
     }
 
-    .logo-text span {
-      color: #5b8cff;
+    .menu-button:hover {
+      background: #161c27;
+      border-color: #5b8cff;
     }
 
 
-    /* LOGIN / USER */
+    /* =========================
+       LOGIN / USER
+    ========================= */
 
     .account {
       display: flex;
@@ -106,6 +114,8 @@
       cursor: pointer;
 
       transition: 0.2s;
+
+      white-space: nowrap;
     }
 
     .login-button {
@@ -123,11 +133,16 @@
     }
 
     .user-button {
+      max-width: 180px;
+
       background: transparent;
 
       color: #cbd4e4;
 
       border: 1px solid #293142;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .user-button:hover {
@@ -151,7 +166,206 @@
     }
 
 
-    /* MAIN */
+    /* =========================
+       MENIU GLISANT
+    ========================= */
+
+    .menu-overlay {
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(0, 0, 0, 0.62);
+
+      opacity: 0;
+      visibility: hidden;
+
+      transition: 0.25s;
+
+      z-index: 998;
+    }
+
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-menu {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 320px;
+      max-width: 86vw;
+
+      height: 100vh;
+      height: 100dvh;
+
+      background: #0b0f17;
+
+      border-right: 1px solid #202735;
+
+      transform: translateX(-105%);
+
+      transition: transform 0.28s ease;
+
+      z-index: 999;
+
+      display: flex;
+      flex-direction: column;
+
+      box-shadow:
+        20px 0 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .side-menu.active {
+      transform: translateX(0);
+    }
+
+    .side-menu-header {
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 20px;
+
+      border-bottom: 1px solid #1d2330;
+    }
+
+    .side-brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .side-brand img {
+      width: 40px;
+      height: 40px;
+
+      object-fit: cover;
+
+      border-radius: 10px;
+    }
+
+    .close-menu {
+      width: 40px;
+      height: 40px;
+
+      border-radius: 10px;
+
+      border: 1px solid #293142;
+
+      background: #111722;
+
+      color: white;
+
+      font-size: 23px;
+
+      cursor: pointer;
+    }
+
+    .side-menu-content {
+      padding: 20px 14px;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 7px;
+
+      overflow-y: auto;
+    }
+
+    .menu-label {
+      color: #596477;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      letter-spacing: 1.2px;
+
+      padding: 6px 12px 10px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+
+      gap: 14px;
+
+      min-height: 52px;
+
+      padding: 12px 14px;
+
+      border-radius: 12px;
+
+      border: 1px solid transparent;
+
+      color: #cbd4e4;
+
+      text-decoration: none;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      transition: 0.2s;
+    }
+
+    .menu-link:hover {
+      color: white;
+
+      background: #111722;
+
+      border-color: #202735;
+    }
+
+    .menu-link.active {
+      color: white;
+
+      background:
+        rgba(91, 140, 255, 0.12);
+
+      border-color:
+        rgba(91, 140, 255, 0.25);
+    }
+
+    .menu-icon {
+      width: 27px;
+
+      text-align: center;
+
+      font-size: 20px;
+    }
+
+    .menu-separator {
+      height: 1px;
+
+      background: #1d2330;
+
+      margin: 12px 8px;
+    }
+
+    .side-menu-footer {
+      margin-top: auto;
+
+      padding: 18px 20px;
+
+      border-top: 1px solid #1d2330;
+
+      color: #596477;
+
+      font-size: 12px;
+    }
+
+
+    /* =========================
+       MAIN
+    ========================= */
 
     main {
       flex: 1;
@@ -188,7 +402,9 @@
     }
 
 
-    /* PROJECTS */
+    /* =========================
+       PROJECTS
+    ========================= */
 
     #projectsList {
       margin-top: 45px;
@@ -224,6 +440,8 @@
 
     .project-info {
       min-width: 0;
+
+      flex: 1;
     }
 
     .project-title {
@@ -271,7 +489,9 @@
     }
 
 
-    /* EMPTY */
+    /* =========================
+       EMPTY
+    ========================= */
 
     .empty {
       min-height: 250px;
@@ -312,7 +532,9 @@
     }
 
 
-    /* FOOTER */
+    /* =========================
+       FOOTER
+    ========================= */
 
     footer {
       border-top: 1px solid #1d2330;
@@ -329,12 +551,14 @@
     }
 
 
-    /* MOBILE */
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 750px) {
 
       nav {
-        padding: 0 5%;
+        padding: 0 16px;
       }
 
       main {
@@ -350,7 +574,13 @@
       .login-button,
       .user-button,
       .logout-button {
-        padding: 8px 11px;
+        padding: 8px 10px;
+
+        font-size: 13px;
+      }
+
+      .user-button {
+        max-width: 135px;
       }
 
       .project-card {
@@ -363,6 +593,9 @@
         width: 100%;
       }
 
+      .side-menu {
+        width: 300px;
+      }
     }
 
   </style>
@@ -373,35 +606,172 @@
 <body>
 
 
-<nav>
+<!-- =========================
+     MENIU
+========================= -->
 
-  <a href="/" class="logo">
+<div
+  id="menuOverlay"
+  class="menu-overlay"
+></div>
 
-    <img src="/logo.png" alt="VladLab">
 
-    <div class="logo-text">
-      Vlad<span>Lab</span>
+<aside
+  id="sideMenu"
+  class="side-menu"
+>
+
+  <div class="side-menu-header">
+
+    <div class="side-brand">
+
+      <img
+        src="/logo.png"
+        alt="VladLab"
+      >
+
+      VladLab
+
     </div>
 
-  </a>
+
+    <button
+      id="closeMenu"
+      class="close-menu"
+      type="button"
+      aria-label="Închide meniul"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="side-menu-content">
+
+    <div class="menu-label">
+      VLADLAB
+    </div>
+
+
+    <a
+      href="/"
+      class="menu-link"
+    >
+      <span class="menu-icon">🏠</span>
+      Acasă
+    </a>
+
+
+    <a
+      href="/scoala/"
+      class="menu-link"
+    >
+      <span class="menu-icon">🎓</span>
+      Școală
+    </a>
+
+
+    <a
+      href="/proiecte/"
+      class="menu-link active"
+    >
+      <span class="menu-icon">💻</span>
+      Proiecte
+    </a>
+
+
+    <a
+      href="/upload/"
+      class="menu-link"
+    >
+      <span class="menu-icon">📤</span>
+      Trimite fișier
+    </a>
+
+
+    <a
+      href="/download/"
+      class="menu-link"
+    >
+      <span class="menu-icon">📥</span>
+      Descărcări
+    </a>
+
+
+    <a
+      href="/favorite/"
+      class="menu-link"
+    >
+      <span class="menu-icon">❤️</span>
+      Favorite
+    </a>
+
+
+    <div class="menu-separator"></div>
+
+
+    <a
+      href="http://novasmp.space/"
+      class="menu-link"
+    >
+      <span class="menu-icon">⛏️</span>
+      Nova SMP
+    </a>
+
+  </div>
+
+
+  <div class="side-menu-footer">
+    © 2026 VladLab
+  </div>
+
+</aside>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav>
+
+  <button
+    id="openMenu"
+    class="menu-button"
+    type="button"
+    aria-label="Deschide meniul"
+  >
+    ☰
+  </button>
 
 
   <div class="account">
 
     <div id="loggedOut">
 
-      <a href="/login/" class="login-button">
+      <a
+        href="/login/"
+        class="login-button"
+      >
         Login
       </a>
 
     </div>
 
 
-    <div id="loggedIn" class="account">
+    <div
+      id="loggedIn"
+      class="account"
+    >
 
-      <a href="/admin/" class="user-button">
-        Vlad
+      <a
+        id="userButton"
+        href="/cont/"
+        class="user-button"
+      >
+        Cont
       </a>
+
 
       <button
         id="logoutButton"
@@ -418,11 +788,19 @@
 </nav>
 
 
+<!-- =========================
+     PAGINA
+========================= -->
+
 <main>
 
-  <a href="/" class="back">
+  <a
+    href="/"
+    class="back"
+  >
     ← Înapoi la VladLab
   </a>
+
 
   <h1>
     💻 <span>Proiecte</span>
@@ -536,6 +914,9 @@
   const loggedIn =
     document.getElementById("loggedIn");
 
+  const userButton =
+    document.getElementById("userButton");
+
   const logoutButton =
     document.getElementById("logoutButton");
 
@@ -544,15 +925,25 @@
 
 
   /* =========================
-     LOGIN / LOGOUT
+     CONTURI
   ========================= */
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(
+    auth,
 
-    if (
-      user &&
-      user.uid === ADMIN_UID
-    ) {
+    (user) => {
+
+      if (!user) {
+
+        loggedIn.style.display =
+          "none";
+
+        loggedOut.style.display =
+          "block";
+
+        return;
+      }
+
 
       loggedOut.style.display =
         "none";
@@ -560,30 +951,63 @@
       loggedIn.style.display =
         "flex";
 
-    } else {
 
-      loggedIn.style.display =
-        "none";
+      /* ADMIN */
 
-      loggedOut.style.display =
-        "block";
+      if (
+        user.uid ===
+        ADMIN_UID
+      ) {
+
+        userButton.textContent =
+          "Vlad";
+
+        userButton.href =
+          "/admin/";
+
+        return;
+      }
+
+
+      /* UTILIZATOR NORMAL */
+
+      userButton.textContent =
+        user.displayName ||
+        user.email?.split("@")[0] ||
+        "Cont";
+
+      userButton.href =
+        "/cont/";
 
     }
+  );
 
-  });
 
+  /* =========================
+     LOGOUT
+  ========================= */
 
   logoutButton.addEventListener(
     "click",
 
     async () => {
 
-      await signOut(auth);
+      try {
 
-      window.location.reload();
+        await signOut(auth);
+
+        window.location.href =
+          "/";
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+      }
 
     }
-
   );
 
 
@@ -606,8 +1030,6 @@
 
       projectsList.innerHTML = "";
 
-
-      /* NICIUN PROIECT */
 
       if (snapshot.empty) {
 
@@ -634,114 +1056,123 @@
       }
 
 
-      /* AFIȘARE PROIECTE */
+      snapshot.forEach(
+        (documentSnapshot) => {
 
-      snapshot.forEach((documentSnapshot) => {
-
-        const data =
-          documentSnapshot.data();
-
-
-        const card =
-          document.createElement("div");
-
-        card.className =
-          "project-card";
+          const data =
+            documentSnapshot.data();
 
 
-        const info =
-          document.createElement("div");
-
-        info.className =
-          "project-info";
-
-
-        const title =
-          document.createElement("div");
-
-        title.className =
-          "project-title";
-
-        title.textContent =
-          data.title || "Proiect";
-
-
-        info.appendChild(title);
-
-
-        if (data.description) {
-
-          const description =
+          const card =
             document.createElement("div");
 
-          description.className =
-            "project-description";
-
-          description.textContent =
-            data.description;
-
-          info.appendChild(description);
-
-        }
+          card.className =
+            "project-card";
 
 
-        const button =
-          document.createElement("a");
+          const info =
+            document.createElement("div");
 
-        button.className =
-          "project-button";
-
-        button.textContent =
-          "Deschide";
+          info.className =
+            "project-info";
 
 
-        /* VERIFICARE LINK */
+          const title =
+            document.createElement("div");
 
-        try {
+          title.className =
+            "project-title";
 
-          const projectUrl =
-            new URL(data.url);
+          title.textContent =
+            data.title || "Proiect";
 
-          if (
-            projectUrl.protocol === "https:" ||
-            projectUrl.protocol === "http:"
-          ) {
 
-            button.href =
-              projectUrl.href;
+          info.appendChild(title);
 
-            button.target =
-              "_blank";
 
-            button.rel =
-              "noopener noreferrer";
+          if (data.description) {
 
-          } else {
+            const description =
+              document.createElement("div");
 
-            button.removeAttribute("href");
+            description.className =
+              "project-description";
+
+            description.textContent =
+              data.description;
+
+            info.appendChild(description);
+
+          }
+
+
+          const button =
+            document.createElement("a");
+
+          button.className =
+            "project-button";
+
+          button.textContent =
+            "Deschide";
+
+
+          try {
+
+            const projectUrl =
+              new URL(data.url);
+
+
+            if (
+              projectUrl.protocol === "https:" ||
+              projectUrl.protocol === "http:"
+            ) {
+
+              button.href =
+                projectUrl.href;
+
+              button.target =
+                "_blank";
+
+              button.rel =
+                "noopener noreferrer";
+
+            }
+
+            else {
+
+              button.removeAttribute(
+                "href"
+              );
+
+              button.textContent =
+                "Link indisponibil";
+
+            }
+
+          }
+
+          catch {
+
+            button.removeAttribute(
+              "href"
+            );
 
             button.textContent =
               "Link indisponibil";
 
           }
 
-        } catch {
 
-          button.removeAttribute("href");
+          card.appendChild(info);
 
-          button.textContent =
-            "Link indisponibil";
+          card.appendChild(button);
+
+          projectsList.appendChild(
+            card
+          );
 
         }
-
-
-        card.appendChild(info);
-
-        card.appendChild(button);
-
-        projectsList.appendChild(card);
-
-      });
+      );
 
     },
 
@@ -749,6 +1180,7 @@
     (error) => {
 
       console.error(error);
+
 
       projectsList.innerHTML = `
         <div class="empty">
@@ -770,6 +1202,107 @@
 
     }
 
+  );
+
+
+  /* =========================
+     MENIU
+  ========================= */
+
+  const openMenuButton =
+    document.getElementById("openMenu");
+
+  const closeMenuButton =
+    document.getElementById("closeMenu");
+
+  const sideMenu =
+    document.getElementById("sideMenu");
+
+  const menuOverlay =
+    document.getElementById("menuOverlay");
+
+
+  function openMenu() {
+
+    sideMenu.classList.add(
+      "active"
+    );
+
+    menuOverlay.classList.add(
+      "active"
+    );
+
+    document.body.classList.add(
+      "menu-open"
+    );
+
+  }
+
+
+  function closeMenu() {
+
+    sideMenu.classList.remove(
+      "active"
+    );
+
+    menuOverlay.classList.remove(
+      "active"
+    );
+
+    document.body.classList.remove(
+      "menu-open"
+    );
+
+  }
+
+
+  openMenuButton.addEventListener(
+    "click",
+    openMenu
+  );
+
+
+  closeMenuButton.addEventListener(
+    "click",
+    closeMenu
+  );
+
+
+  menuOverlay.addEventListener(
+    "click",
+    closeMenu
+  );
+
+
+  document
+    .querySelectorAll(".menu-link")
+    .forEach(
+      (link) => {
+
+        link.addEventListener(
+          "click",
+          closeMenu
+        );
+
+      }
+    );
+
+
+  document.addEventListener(
+    "keydown",
+
+    (event) => {
+
+      if (
+        event.key ===
+        "Escape"
+      ) {
+
+        closeMenu();
+
+      }
+
+    }
   );
 
 </script>
