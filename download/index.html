@@ -35,6 +35,76 @@
       overflow: hidden;
     }
 
+
+    #pageLoading {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: #080b12;
+      color: #8995a9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    #maintenancePage {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: #080b12;
+    }
+
+    .maintenance-card {
+      width: min(520px, 100%);
+      padding: 40px 30px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 22px;
+      text-align: center;
+    }
+
+    .maintenance-logo {
+      width: 78px;
+      height: 78px;
+      object-fit: cover;
+      border-radius: 19px;
+      margin-bottom: 23px;
+    }
+
+    .maintenance-card h2 {
+      font-size: clamp(30px, 6vw, 42px);
+      margin-bottom: 14px;
+    }
+
+    .maintenance-card p {
+      color: #8995a9;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .maintenance-login {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 11px 17px;
+      background: #5b8cff;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    #siteContent {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
     nav {
       height: 72px;
       display: flex;
@@ -507,6 +577,20 @@
 
 <body>
 
+<div id="pageLoading">Se încarcă...</div>
+
+<section id="maintenancePage">
+  <div class="maintenance-card">
+    <img src="/logo.png" id="maintenanceLogo" class="maintenance-logo" alt="VladLab">
+    <h2 id="maintenanceTitle">VladLab</h2>
+    <p id="maintenanceText">Site-ul este momentan în mentenanță. Revino în curând.</p>
+    <a href="/login/?next=/download/" class="maintenance-login">Login administrator</a>
+  </div>
+</section>
+
+<div id="siteContent">
+
+
 <div id="menuOverlay" class="menu-overlay"></div>
 
 <aside id="sideMenu" class="side-menu">
@@ -514,8 +598,8 @@
   <div class="side-menu-header">
 
     <div class="side-brand">
-      <img src="/logo.png" alt="VladLab">
-      VladLab
+      <img id="sideLogo" src="/logo.png" alt="VladLab">
+      <span id="sideBrandName">VladLab</span>
     </div>
 
     <button
@@ -531,7 +615,7 @@
 
   <div class="side-menu-content">
 
-    <div class="menu-label">
+    <div class="menu-label" id="menuLabel">
       VLADLAB
     </div>
 
@@ -574,7 +658,7 @@
 
   </div>
 
-  <div class="side-menu-footer">
+  <div class="side-menu-footer" id="sideFooter">
     © 2026 VladLab
   </div>
 
@@ -627,7 +711,7 @@
 
 <main>
 
-  <a href="/" class="back">
+  <a href="/" class="back" id="backButton">
     ← Înapoi la VladLab
   </a>
 
@@ -659,7 +743,7 @@
 
 <footer>
 
-  <div>
+  <div id="footerBrand">
     © 2026 VladLab
   </div>
 
@@ -669,6 +753,8 @@
 
 </footer>
 
+
+</div>
 
 <script type="module">
 
@@ -693,7 +779,8 @@
     doc,
     setDoc,
     deleteDoc,
-    serverTimestamp
+    serverTimestamp,
+    getDoc
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
@@ -745,6 +832,15 @@
   const logoutButton =
     document.getElementById("logoutButton");
 
+  const pageLoading =
+    document.getElementById("pageLoading");
+
+  const siteContent =
+    document.getElementById("siteContent");
+
+  const maintenancePage =
+    document.getElementById("maintenancePage");
+
 
   /* =========================
      CONTURI
@@ -753,71 +849,109 @@
   onAuthStateChanged(
     auth,
 
-    user => {
+    async user => {
 
       currentUser = user;
 
-
       if (unsubscribeFavorites) {
-
         unsubscribeFavorites();
-
-        unsubscribeFavorites =
-          null;
-
+        unsubscribeFavorites = null;
       }
 
-
-      favoriteIds =
-        new Set();
-
+      favoriteIds = new Set();
 
       if (!user) {
+        loggedIn.style.display = "none";
+        loggedOut.style.display = "block";
+      } else {
+        loggedOut.style.display = "none";
+        loggedIn.style.display = "flex";
 
-        loggedIn.style.display =
-          "none";
+        if (user.uid === ADMIN_UID) {
+          userButton.textContent = "Vlad";
+          userButton.href = "/admin/";
+        } else {
+          userButton.textContent =
+            user.displayName ||
+            user.email?.split("@")[0] ||
+            "Cont";
+          userButton.href = "/cont/";
+        }
 
-        loggedOut.style.display =
-          "block";
+        watchFavorites(user.uid);
+      }
 
-        updateFavoriteButtons();
+      updateFavoriteButtons();
 
+      const settings = await loadSiteSettings();
+      applySiteSettings(settings);
+
+      if (
+        settings.maintenance === true &&
+        (!user || user.uid !== ADMIN_UID)
+      ) {
+        siteContent.style.display = "none";
+        maintenancePage.style.display = "flex";
+        pageLoading.style.display = "none";
         return;
       }
 
-
-      loggedOut.style.display =
-        "none";
-
-      loggedIn.style.display =
-        "flex";
-
-
-      if (user.uid === ADMIN_UID) {
-
-        userButton.textContent =
-          "Vlad";
-
-        userButton.href =
-          "/admin/";
-
-      } else {
-
-        userButton.textContent =
-          user.displayName ||
-          user.email?.split("@")[0] ||
-          "Cont";
-
-        userButton.href =
-          "/cont/";
-
-      }
-
-
-      watchFavorites(user.uid);
-
+      maintenancePage.style.display = "none";
+      siteContent.style.display = "flex";
+      pageLoading.style.display = "none";
     }
   );
+
+  async function loadSiteSettings() {
+    const defaults = {
+      siteName: "VladLab",
+      maintenance: false,
+      maintenanceMessage:
+        "Site-ul este momentan în mentenanță. Revino în curând."
+    };
+
+    try {
+      const snapshot = await getDoc(
+        doc(db, "settings", "site")
+      );
+
+      if (!snapshot.exists()) return defaults;
+
+      const data = snapshot.data();
+
+      return {
+        siteName:
+          typeof data.siteName === "string" && data.siteName.trim()
+            ? data.siteName.trim()
+            : defaults.siteName,
+        maintenance: data.maintenance === true,
+        maintenanceMessage:
+          typeof data.maintenanceMessage === "string" &&
+          data.maintenanceMessage.trim()
+            ? data.maintenanceMessage.trim()
+            : defaults.maintenanceMessage
+      };
+    } catch (error) {
+      console.error("Eroare setări site:", error);
+      return defaults;
+    }
+  }
+
+  function applySiteSettings(settings) {
+    const siteName = settings.siteName;
+
+    document.title = "Descărcări | " + siteName;
+    document.getElementById("sideBrandName").textContent = siteName;
+    document.getElementById("sideLogo").alt = siteName;
+    document.getElementById("menuLabel").textContent = siteName.toUpperCase();
+    document.getElementById("sideFooter").textContent = "© 2026 " + siteName;
+    document.getElementById("backButton").textContent = "← Înapoi la " + siteName;
+    document.getElementById("footerBrand").textContent = "© 2026 " + siteName;
+    document.getElementById("maintenanceTitle").textContent = siteName;
+    document.getElementById("maintenanceText").textContent =
+      settings.maintenanceMessage;
+    document.getElementById("maintenanceLogo").alt = siteName;
+  }
 
 
   /* =========================
