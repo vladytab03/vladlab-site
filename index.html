@@ -16,18 +16,32 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       min-height: 100vh;
       background: #080b12;
       color: #ffffff;
       font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
     }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
 
     nav {
       height: 72px;
       border-bottom: 1px solid #1d2330;
       background: rgba(8, 11, 18, 0.94);
       backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
 
       display: flex;
       align-items: center;
@@ -40,23 +54,28 @@
       z-index: 100;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      color: white;
-      text-decoration: none;
-
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .brand img {
+    .menu-button {
       width: 44px;
       height: 44px;
-      border-radius: 11px;
-      object-fit: cover;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #0e131d;
+      border: 1px solid #293142;
+      border-radius: 12px;
+
+      color: white;
+      font-size: 24px;
+
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .menu-button:hover {
+      background: #161c27;
+      border-color: #5b8cff;
     }
 
     .account {
@@ -76,6 +95,8 @@
 
       cursor: pointer;
       transition: 0.2s;
+
+      white-space: nowrap;
     }
 
     .login-button {
@@ -116,6 +137,197 @@
       display: none;
     }
 
+
+    /* =========================
+       MENIU GLISANT
+    ========================= */
+
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+
+      background: rgba(0, 0, 0, 0.62);
+
+      opacity: 0;
+      visibility: hidden;
+
+      transition: opacity 0.25s, visibility 0.25s;
+
+      z-index: 998;
+    }
+
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-menu {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 320px;
+      max-width: 86vw;
+      height: 100vh;
+      height: 100dvh;
+
+      background: #0b0f17;
+      border-right: 1px solid #202735;
+
+      transform: translateX(-105%);
+      transition: transform 0.28s ease;
+
+      z-index: 999;
+
+      display: flex;
+      flex-direction: column;
+
+      box-shadow: 20px 0 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .side-menu.active {
+      transform: translateX(0);
+    }
+
+    .side-menu-header {
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 20px;
+
+      border-bottom: 1px solid #1d2330;
+    }
+
+    .side-brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .side-brand img {
+      width: 40px;
+      height: 40px;
+
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .close-menu {
+      width: 40px;
+      height: 40px;
+
+      border-radius: 10px;
+      border: 1px solid #293142;
+
+      background: #111722;
+      color: white;
+
+      font-size: 23px;
+      line-height: 1;
+
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .close-menu:hover {
+      border-color: #5b8cff;
+      background: #161d2a;
+    }
+
+    .side-menu-content {
+      padding: 20px 14px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+
+      overflow-y: auto;
+    }
+
+    .menu-label {
+      color: #596477;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      letter-spacing: 1.2px;
+
+      padding: 6px 12px 10px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      min-height: 52px;
+
+      padding: 12px 14px;
+
+      border-radius: 12px;
+      border: 1px solid transparent;
+
+      color: #cbd4e4;
+      text-decoration: none;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      transition: 0.2s;
+    }
+
+    .menu-link:hover {
+      color: white;
+
+      background: #111722;
+      border-color: #202735;
+    }
+
+    .menu-link.active {
+      color: white;
+
+      background: rgba(91, 140, 255, 0.12);
+      border-color: rgba(91, 140, 255, 0.25);
+    }
+
+    .menu-icon {
+      width: 27px;
+
+      text-align: center;
+      font-size: 20px;
+    }
+
+    .menu-separator {
+      height: 1px;
+
+      background: #1d2330;
+
+      margin: 12px 8px;
+    }
+
+    .side-menu-footer {
+      margin-top: auto;
+
+      padding: 18px 20px;
+
+      border-top: 1px solid #1d2330;
+
+      color: #596477;
+      font-size: 12px;
+    }
+
+
+    /* =========================
+       HOMEPAGE
+    ========================= */
+
     main {
       max-width: 1150px;
       margin: auto;
@@ -129,8 +341,10 @@
     .hero-logo {
       width: 82px;
       height: 82px;
+
       border-radius: 20px;
       object-fit: cover;
+
       margin-bottom: 24px;
     }
 
@@ -138,6 +352,7 @@
       font-size: clamp(42px, 7vw, 72px);
       line-height: 1.05;
       letter-spacing: -2px;
+
       max-width: 850px;
     }
 
@@ -148,6 +363,7 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
+
       gap: 18px;
     }
 
@@ -194,7 +410,9 @@
 
     .arrow {
       margin-top: 20px;
+
       color: #5b8cff;
+
       font-size: 14px;
       font-weight: 700;
     }
@@ -211,13 +429,37 @@
       font-size: 13px;
     }
 
+
+    /* =========================
+       TELEFON
+    ========================= */
+
     @media (max-width: 700px) {
+
       nav {
-        padding: 0 18px;
+        padding: 0 16px;
+      }
+
+      .menu-button {
+        width: 42px;
+        height: 42px;
+
+        font-size: 22px;
       }
 
       main {
-        padding-top: 60px;
+        padding: 55px 18px 65px;
+      }
+
+      .hero {
+        margin-bottom: 45px;
+      }
+
+      .hero-logo {
+        width: 70px;
+        height: 70px;
+
+        border-radius: 17px;
       }
 
       .grid {
@@ -228,39 +470,214 @@
         letter-spacing: -1px;
       }
 
-      .user-button,
-      .logout-button,
-      .login-button {
-        padding: 8px 11px;
+      .card {
+        min-height: 165px;
+        padding: 23px;
       }
+
+      .login-button,
+      .user-button,
+      .logout-button {
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      #loggedIn {
+        gap: 6px;
+      }
+
+      .side-menu {
+        width: 300px;
+      }
+
+    }
+
+
+    @media (max-width: 380px) {
+
+      .user-button {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .logout-button {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      nav {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
     }
   </style>
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     MENIU GLISANT
+========================= -->
+
+<div
+  id="menuOverlay"
+  class="menu-overlay"
+></div>
+
+
+<aside
+  id="sideMenu"
+  class="side-menu"
+>
+
+  <div class="side-menu-header">
+
+    <div class="side-brand">
+
+      <img
+        src="/logo.png"
+        alt="VladLab"
+      >
+
+      VladLab
+
+    </div>
+
+
+    <button
+      id="closeMenu"
+      class="close-menu"
+      type="button"
+      aria-label="Închide meniul"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="side-menu-content">
+
+    <div class="menu-label">
+      VLADLAB
+    </div>
+
+
+    <a
+      href="/"
+      class="menu-link active"
+    >
+      <span class="menu-icon">🏠</span>
+      Acasă
+    </a>
+
+
+    <a
+      href="/scoala/"
+      class="menu-link"
+    >
+      <span class="menu-icon">🎓</span>
+      Școală
+    </a>
+
+
+    <a
+      href="/proiecte/"
+      class="menu-link"
+    >
+      <span class="menu-icon">💻</span>
+      Proiecte
+    </a>
+
+
+    <a
+      href="/upload/"
+      class="menu-link"
+    >
+      <span class="menu-icon">📤</span>
+      Trimite fișier
+    </a>
+
+
+    <a
+      href="/download/"
+      class="menu-link"
+    >
+      <span class="menu-icon">📥</span>
+      Descărcări
+    </a>
+
+
+    <div class="menu-separator"></div>
+
+
+    <a
+      href="http://novasmp.space/"
+      class="menu-link"
+    >
+      <span class="menu-icon">⛏️</span>
+      Nova SMP
+    </a>
+
+  </div>
+
+
+  <div class="side-menu-footer">
+    © 2026 VladLab
+  </div>
+
+</aside>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
 
 <nav>
 
-  <a href="/" class="brand">
-    <img src="/logo.png" alt="VladLab">
-    VladLab
-  </a>
+  <button
+    id="openMenu"
+    class="menu-button"
+    type="button"
+    aria-label="Deschide meniul"
+  >
+    ☰
+  </button>
+
 
   <div class="account">
 
     <!-- NELOGAT -->
+
     <div id="loggedOut">
-      <a href="/login/" class="login-button">
+
+      <a
+        href="/login/"
+        class="login-button"
+      >
         Login
       </a>
+
     </div>
 
-    <!-- LOGAT -->
-    <div id="loggedIn" class="account">
 
-      <a href="/admin/" class="user-button">
+    <!-- LOGAT -->
+
+    <div
+      id="loggedIn"
+      class="account"
+    >
+
+      <a
+        href="/admin/"
+        class="user-button"
+      >
         Vlad
       </a>
+
 
       <button
         id="logoutButton"
@@ -277,6 +694,10 @@
 </nav>
 
 
+<!-- =========================
+     PAGINA
+========================= -->
+
 <main>
 
   <section class="hero">
@@ -289,7 +710,9 @@
 
     <h1>
       Totul într-un
-      <span class="accent">singur loc.</span>
+      <span class="accent">
+        singur loc.
+      </span>
     </h1>
 
   </section>
@@ -297,16 +720,26 @@
 
   <section class="grid">
 
-    <a href="/scoala/" class="card">
+
+    <a
+      href="/scoala/"
+      class="card"
+    >
 
       <div>
-        <div class="card-icon">🎓</div>
 
-        <h2>Școală</h2>
+        <div class="card-icon">
+          🎓
+        </div>
+
+        <h2>
+          Școală
+        </h2>
 
         <p>
           Orar, materiale și proiecte pentru școală.
         </p>
+
       </div>
 
       <div class="arrow">
@@ -322,13 +755,19 @@
     >
 
       <div>
-        <div class="card-icon">⛏️</div>
 
-        <h2>Minecraft</h2>
+        <div class="card-icon">
+          ⛏️
+        </div>
+
+        <h2>
+          Minecraft
+        </h2>
 
         <p>
           Nova SMP.
         </p>
+
       </div>
 
       <div class="arrow">
@@ -338,16 +777,25 @@
     </a>
 
 
-    <a href="/proiecte/" class="card">
+    <a
+      href="/proiecte/"
+      class="card"
+    >
 
       <div>
-        <div class="card-icon">💻</div>
 
-        <h2>Proiecte</h2>
+        <div class="card-icon">
+          💻
+        </div>
+
+        <h2>
+          Proiecte
+        </h2>
 
         <p>
           Proiectele VladLab.
         </p>
+
       </div>
 
       <div class="arrow">
@@ -357,16 +805,25 @@
     </a>
 
 
-    <a href="/upload/" class="card">
+    <a
+      href="/upload/"
+      class="card"
+    >
 
       <div>
-        <div class="card-icon">📤</div>
 
-        <h2>Trimite fișier</h2>
+        <div class="card-icon">
+          📤
+        </div>
+
+        <h2>
+          Trimite fișier
+        </h2>
 
         <p>
           Trimite rapid un fișier prin VladLab.
         </p>
+
       </div>
 
       <div class="arrow">
@@ -376,16 +833,25 @@
     </a>
 
 
-    <a href="/download/" class="card">
+    <a
+      href="/download/"
+      class="card"
+    >
 
       <div>
-        <div class="card-icon">📥</div>
 
-        <h2>Descărcări</h2>
+        <div class="card-icon">
+          📥
+        </div>
+
+        <h2>
+          Descărcări
+        </h2>
 
         <p>
           Fișiere disponibile pentru descărcare.
         </p>
+
       </div>
 
       <div class="arrow">
@@ -410,6 +876,7 @@
     initializeApp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
+
   import {
     getAuth,
     onAuthStateChanged,
@@ -418,13 +885,28 @@
 
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-    authDomain: "vladlab-11887.firebaseapp.com",
-    projectId: "vladlab-11887",
-    storageBucket: "vladlab-11887.firebasestorage.app",
-    messagingSenderId: "741561223788",
-    appId: "1:741561223788:web:88ad3e62db87e32551a649",
-    measurementId: "G-9XN16BVYRN"
+
+    apiKey:
+      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+
+    authDomain:
+      "vladlab-11887.firebaseapp.com",
+
+    projectId:
+      "vladlab-11887",
+
+    storageBucket:
+      "vladlab-11887.firebasestorage.app",
+
+    messagingSenderId:
+      "741561223788",
+
+    appId:
+      "1:741561223788:web:88ad3e62db87e32551a649",
+
+    measurementId:
+      "G-9XN16BVYRN"
+
   };
 
 
@@ -435,9 +917,14 @@
   const app =
     initializeApp(firebaseConfig);
 
+
   const auth =
     getAuth(app);
 
+
+  /* =========================
+     CONTURI
+  ========================= */
 
   const loggedOut =
     document.getElementById("loggedOut");
@@ -449,21 +936,34 @@
     document.getElementById("logoutButton");
 
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(
+    auth,
 
-    if (user && user.uid === ADMIN_UID) {
+    (user) => {
 
-      loggedOut.style.display = "none";
-      loggedIn.style.display = "flex";
+      if (
+        user &&
+        user.uid === ADMIN_UID
+      ) {
 
-    } else {
+        loggedOut.style.display =
+          "none";
 
-      loggedIn.style.display = "none";
-      loggedOut.style.display = "block";
+        loggedIn.style.display =
+          "flex";
+
+      } else {
+
+        loggedIn.style.display =
+          "none";
+
+        loggedOut.style.display =
+          "block";
+
+      }
 
     }
-
-  });
+  );
 
 
   logoutButton.addEventListener(
@@ -476,7 +976,88 @@
       window.location.href = "/";
 
     }
+  );
 
+
+  /* =========================
+     MENIU GLISANT
+  ========================= */
+
+  const openMenuButton =
+    document.getElementById("openMenu");
+
+  const closeMenuButton =
+    document.getElementById("closeMenu");
+
+  const sideMenu =
+    document.getElementById("sideMenu");
+
+  const menuOverlay =
+    document.getElementById("menuOverlay");
+
+
+  function openMenu() {
+
+    sideMenu.classList.add("active");
+
+    menuOverlay.classList.add("active");
+
+    document.body.classList.add("menu-open");
+
+  }
+
+
+  function closeMenu() {
+
+    sideMenu.classList.remove("active");
+
+    menuOverlay.classList.remove("active");
+
+    document.body.classList.remove("menu-open");
+
+  }
+
+
+  openMenuButton.addEventListener(
+    "click",
+    openMenu
+  );
+
+
+  closeMenuButton.addEventListener(
+    "click",
+    closeMenu
+  );
+
+
+  menuOverlay.addEventListener(
+    "click",
+    closeMenu
+  );
+
+
+  document
+    .querySelectorAll(".menu-link")
+    .forEach((link) => {
+
+      link.addEventListener(
+        "click",
+        closeMenu
+      );
+
+    });
+
+
+  document.addEventListener(
+    "keydown",
+
+    (event) => {
+
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+
+    }
   );
 
 </script>
