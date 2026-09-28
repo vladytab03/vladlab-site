@@ -146,6 +146,32 @@
       resize: vertical;
     }
 
+    input[type="file"] {
+      padding: 11px;
+      cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button {
+      background: #151c29;
+      color: white;
+      border: 1px solid #303a4e;
+      border-radius: 8px;
+      padding: 9px 12px;
+      margin-right: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      background: #1c2535;
+    }
+
+    .file-note {
+      color: #657188;
+      font-size: 12px;
+      margin-top: 7px;
+    }
+
     .add-button {
       width: 100%;
       background: #5b8cff;
@@ -205,7 +231,6 @@
       border: 1px solid #202735;
       border-radius: 14px;
       padding: 18px;
-
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -259,6 +284,11 @@
       background: rgba(255, 77, 77, 0.14);
     }
 
+    .delete-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     .empty {
       border: 1px dashed #293243;
       border-radius: 14px;
@@ -302,7 +332,6 @@
   </style>
 </head>
 
-
 <body>
 
 <nav>
@@ -333,7 +362,7 @@
   <h1>📥 Descărcări</h1>
 
   <p class="subtitle">
-    Adaugă și gestionează fișierele afișate în pagina publică de descărcări.
+    Încarcă direct fișiere și gestionează ce apare în pagina publică de descărcări.
   </p>
 
 
@@ -375,16 +404,19 @@
 
       <div class="field">
 
-        <label for="url">
-          Link fișier
+        <label for="file">
+          Fișier
         </label>
 
         <input
-          type="url"
-          id="url"
-          placeholder="https://..."
+          type="file"
+          id="file"
           required
         >
+
+        <div class="file-note">
+          Alege fișierul direct de pe calculator.
+        </div>
 
       </div>
 
@@ -394,7 +426,7 @@
         id="addButton"
         type="submit"
       >
-        + Adaugă fișier
+        ⬆ Încarcă și adaugă
       </button>
 
     </form>
@@ -465,6 +497,14 @@
     "tSvMc97QFgc35RwSkK7VRRsEIBv2";
 
 
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
+
+
+  const MAX_FILE_SIZE =
+    10 * 1024 * 1024;
+
+
   const app =
     initializeApp(firebaseConfig);
 
@@ -486,6 +526,9 @@
 
   const message =
     document.getElementById("message");
+
+  const fileInput =
+    document.getElementById("file");
 
 
   let adminReady = false;
@@ -521,6 +564,160 @@
 
 
   /* =========================
+     FIȘIER -> BASE64
+  ========================= */
+
+  function fileToBase64(file) {
+
+    return new Promise(
+      (resolve, reject) => {
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload = () => {
+
+          const result =
+            String(reader.result || "");
+
+          const commaIndex =
+            result.indexOf(",");
+
+
+          if (commaIndex === -1) {
+
+            reject(
+              new Error(
+                "Fișierul nu a putut fi citit."
+              )
+            );
+
+            return;
+
+          }
+
+
+          resolve(
+            result.substring(
+              commaIndex + 1
+            )
+          );
+
+        };
+
+
+        reader.onerror = () => {
+
+          reject(
+            new Error(
+              "Fișierul nu a putut fi citit."
+            )
+          );
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+      }
+    );
+
+  }
+
+
+  /* =========================
+     UPLOAD GOOGLE DRIVE
+  ========================= */
+
+  async function uploadToDrive(file) {
+
+    const fileData =
+      await fileToBase64(file);
+
+
+    const payload = {
+
+      name: "VladLab Admin",
+
+      message:
+        "Fișier adăugat din Admin → Descărcări",
+
+      fileName:
+        file.name,
+
+      mimeType:
+        file.type ||
+        "application/octet-stream",
+
+      fileData:
+        fileData
+
+    };
+
+
+    const response =
+      await fetch(
+        SCRIPT_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Uploadul nu a reușit."
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result.success ||
+      !result.fileId
+    ) {
+
+      throw new Error(
+        result.message ||
+        "Uploadul nu a reușit."
+      );
+
+    }
+
+
+    return {
+
+      fileId:
+        result.fileId,
+
+      fileName:
+        result.fileName ||
+        file.name,
+
+      url:
+        result.downloadUrl ||
+        result.fileUrl
+
+    };
+
+  }
+
+
+  /* =========================
      ADAUGĂ FIȘIER
   ========================= */
 
@@ -550,39 +747,62 @@
           .trim();
 
 
-      const url =
-        document
-          .getElementById("url")
-          .value
-          .trim();
+      const file =
+        fileInput.files[0];
 
 
-      if (!title || !url) {
+      if (!title || !file) {
 
         showMessage(
-          "Completează titlul și linkul.",
+          "Completează titlul și alege un fișier.",
           "error"
         );
 
         return;
+
+      }
+
+
+      if (file.size > MAX_FILE_SIZE) {
+
+        showMessage(
+          "Fișierul este prea mare. Maxim 10 MB.",
+          "error"
+        );
+
+        return;
+
       }
 
 
       addButton.disabled = true;
 
       addButton.textContent =
-        "Se adaugă...";
+        "Se încarcă în Drive...";
 
 
       try {
+
+        const uploaded =
+          await uploadToDrive(file);
+
+
+        addButton.textContent =
+          "Se salvează...";
+
 
         await addDoc(
           collection(db, "downloads"),
           {
             title: title,
             description: description,
-            url: url,
-            createdAt: serverTimestamp()
+            url: uploaded.url,
+            driveFileId:
+              uploaded.fileId,
+            fileName:
+              uploaded.fileName,
+            createdAt:
+              serverTimestamp()
           }
         );
 
@@ -591,7 +811,7 @@
 
 
         showMessage(
-          "Fișierul a fost adăugat.",
+          "Fișierul a fost încărcat și adăugat.",
           "success"
         );
 
@@ -603,7 +823,7 @@
 
 
         showMessage(
-          "Nu am putut adăuga fișierul.",
+          "Nu am putut încărca fișierul. Verifică deployment-ul Apps Script.",
           "error"
         );
 
@@ -614,7 +834,7 @@
         addButton.disabled = false;
 
         addButton.textContent =
-          "+ Adaugă fișier";
+          "⬆ Încarcă și adaugă";
 
       }
 
@@ -653,154 +873,175 @@
             `;
 
           return;
+
         }
 
 
-        snapshot.forEach((documentSnapshot) => {
+        snapshot.forEach(
+          (documentSnapshot) => {
 
-          const data =
-            documentSnapshot.data();
-
-
-          const card =
-            document.createElement("div");
-
-          card.className =
-            "file-card";
+            const data =
+              documentSnapshot.data();
 
 
-          const info =
-            document.createElement("div");
+            const card =
+              document.createElement("div");
 
-          info.className =
-            "file-info";
-
-
-          const title =
-            document.createElement("div");
-
-          title.className =
-            "file-title";
-
-          title.textContent =
-            data.title || "Fără titlu";
+            card.className =
+              "file-card";
 
 
-          const description =
-            document.createElement("div");
+            const info =
+              document.createElement("div");
 
-          description.className =
-            "file-description";
-
-          description.textContent =
-            data.description || "";
+            info.className =
+              "file-info";
 
 
-          const link =
-            document.createElement("a");
+            const title =
+              document.createElement("div");
 
-          link.className =
-            "file-link";
+            title.className =
+              "file-title";
 
-          link.href =
-            data.url || "#";
-
-          link.target =
-            "_blank";
-
-          link.rel =
-            "noopener noreferrer";
-
-          link.textContent =
-            data.url || "";
+            title.textContent =
+              data.title ||
+              "Fără titlu";
 
 
-          info.appendChild(title);
+            const description =
+              document.createElement("div");
 
-          if (data.description) {
-            info.appendChild(description);
-          }
+            description.className =
+              "file-description";
 
-          info.appendChild(link);
-
-
-          const deleteButton =
-            document.createElement("button");
-
-          deleteButton.className =
-            "delete-button";
-
-          deleteButton.type =
-            "button";
-
-          deleteButton.textContent =
-            "Șterge";
+            description.textContent =
+              data.description || "";
 
 
-          deleteButton.addEventListener(
-            "click",
-            async () => {
+            const link =
+              document.createElement("a");
 
-              const confirmed =
-                confirm(
-                  `Ștergi „${data.title || "acest fișier"}”?`
-                );
+            link.className =
+              "file-link";
+
+            link.href =
+              data.url || "#";
+
+            link.target =
+              "_blank";
+
+            link.rel =
+              "noopener noreferrer";
+
+            link.textContent =
+              data.fileName ||
+              data.url ||
+              "Deschide fișierul";
 
 
-              if (!confirmed) {
-                return;
-              }
+            info.appendChild(title);
 
 
-              deleteButton.disabled = true;
+            if (data.description) {
 
-              deleteButton.textContent =
-                "Se șterge...";
+              info.appendChild(
+                description
+              );
+
+            }
 
 
-              try {
+            info.appendChild(link);
 
-                await deleteDoc(
-                  doc(
-                    db,
-                    "downloads",
-                    documentSnapshot.id
-                  )
-                );
 
-              }
+            const deleteButton =
+              document.createElement(
+                "button"
+              );
 
-              catch (error) {
+            deleteButton.className =
+              "delete-button";
 
-                console.error(error);
+            deleteButton.type =
+              "button";
 
-                alert(
-                  "Nu am putut șterge fișierul."
-                );
+            deleteButton.textContent =
+              "Șterge";
+
+
+            deleteButton.addEventListener(
+              "click",
+              async () => {
+
+                const confirmed =
+                  confirm(
+                    `Ștergi „${
+                      data.title ||
+                      "acest fișier"
+                    }”?`
+                  );
+
+
+                if (!confirmed) {
+                  return;
+                }
 
 
                 deleteButton.disabled =
-                  false;
+                  true;
 
                 deleteButton.textContent =
-                  "Șterge";
+                  "Se șterge...";
+
+
+                try {
+
+                  await deleteDoc(
+                    doc(
+                      db,
+                      "downloads",
+                      documentSnapshot.id
+                    )
+                  );
+
+                }
+
+                catch (error) {
+
+                  console.error(error);
+
+
+                  alert(
+                    "Nu am putut șterge fișierul."
+                  );
+
+
+                  deleteButton.disabled =
+                    false;
+
+                  deleteButton.textContent =
+                    "Șterge";
+
+                }
 
               }
-
-            }
-          );
+            );
 
 
-          card.appendChild(info);
+            card.appendChild(info);
 
-          card.appendChild(
-            deleteButton
-          );
+            card.appendChild(
+              deleteButton
+            );
 
 
-          filesList.appendChild(card);
+            filesList.appendChild(
+              card
+            );
 
-        });
+          }
+        );
 
       },
 
@@ -822,6 +1063,10 @@
   }
 
 
+  /* =========================
+     MESAJ
+  ========================= */
+
   function showMessage(text, type) {
 
     message.className = type;
@@ -835,7 +1080,7 @@
 
       message.textContent = "";
 
-    }, 4000);
+    }, 5000);
 
   }
 
