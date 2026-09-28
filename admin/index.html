@@ -226,8 +226,15 @@
 <nav>
 
   <a href="/" class="brand">
-    <img src="/logo.png" alt="VladLab">
-    VladLab
+    <img
+      src="/logo.png"
+      id="brandLogo"
+      alt="VladLab"
+    >
+
+    <span id="brandName">
+      VladLab
+    </span>
   </a>
 
   <div class="account">
@@ -239,6 +246,7 @@
     <button
       class="logout"
       id="logoutButton"
+      type="button"
     >
       Logout
     </button>
@@ -246,6 +254,7 @@
   </div>
 
 </nav>
+
 
 <main>
 
@@ -259,7 +268,10 @@
       Admin Panel
     </h1>
 
-    <p class="description">
+    <p
+      class="description"
+      id="adminDescription"
+    >
       Administrează conținutul VladLab direct din site.
     </p>
 
@@ -271,7 +283,10 @@
 
     <!-- DESCĂRCĂRI -->
 
-    <a class="card" href="/admin/downloads/">
+    <a
+      class="card"
+      href="/admin/downloads/"
+    >
 
       <div>
 
@@ -299,7 +314,10 @@
 
     <!-- ȘCOALĂ -->
 
-    <a class="card" href="/admin/school/">
+    <a
+      class="card"
+      href="/admin/school/"
+    >
 
       <div>
 
@@ -327,7 +345,10 @@
 
     <!-- PROIECTE -->
 
-    <a class="card" href="/admin/projects/">
+    <a
+      class="card"
+      href="/admin/projects/"
+    >
 
       <div>
 
@@ -339,7 +360,7 @@
           Proiecte
         </h2>
 
-        <p>
+        <p id="projectsDescription">
           Creează și modifică proiectele
           afișate pe VladLab.
         </p>
@@ -355,7 +376,10 @@
 
     <!-- SITE -->
 
-    <a class="card" href="/admin/site/">
+    <a
+      class="card"
+      href="/admin/site/"
+    >
 
       <div>
 
@@ -367,7 +391,7 @@
           Site
         </h2>
 
-        <p>
+        <p id="siteDescription">
           Setări și conținut general
           pentru VladLab.
         </p>
@@ -383,7 +407,10 @@
 
     <!-- SITE PUBLIC -->
 
-    <a class="card" href="/">
+    <a
+      class="card"
+      href="/"
+    >
 
       <div>
 
@@ -395,7 +422,7 @@
           Vezi site-ul
         </h2>
 
-        <p>
+        <p id="publicSiteDescription">
           Deschide pagina publică VladLab.
         </p>
 
@@ -425,6 +452,13 @@
     onAuthStateChanged,
     signOut
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
   const firebaseConfig = {
@@ -458,15 +492,59 @@
 
 
   const app =
-    initializeApp(firebaseConfig);
+    initializeApp(
+      firebaseConfig
+    );
 
 
   const auth =
     getAuth(app);
 
 
+  const db =
+    getFirestore(app);
+
+
   const loading =
-    document.getElementById("loading");
+    document.getElementById(
+      "loading"
+    );
+
+
+  const brandName =
+    document.getElementById(
+      "brandName"
+    );
+
+
+  const brandLogo =
+    document.getElementById(
+      "brandLogo"
+    );
+
+
+  const adminDescription =
+    document.getElementById(
+      "adminDescription"
+    );
+
+
+  const projectsDescription =
+    document.getElementById(
+      "projectsDescription"
+    );
+
+
+  const siteDescription =
+    document.getElementById(
+      "siteDescription"
+    );
+
+
+  const publicSiteDescription =
+    document.getElementById(
+      "publicSiteDescription"
+    );
 
 
   /* =========================
@@ -475,13 +553,12 @@
 
   onAuthStateChanged(
     auth,
-
-    async (user) => {
+    async user => {
 
       if (!user) {
 
         window.location.replace(
-          "/login/"
+          "/login/?next=/admin/"
         );
 
         return;
@@ -489,17 +566,30 @@
       }
 
 
-      if (user.uid !== ADMIN_UID) {
+      /*
+        IMPORTANT:
+        dacă este un utilizator normal,
+        NU îl delogăm.
 
-        await signOut(auth);
+        Îl trimitem pur și simplu
+        în contul lui.
+      */
+
+      if (
+        user.uid !==
+        ADMIN_UID
+      ) {
 
         window.location.replace(
-          "/login/"
+          "/cont/"
         );
 
         return;
 
       }
+
+
+      await loadSiteSettings();
 
 
       loading.style.display =
@@ -510,21 +600,145 @@
 
 
   /* =========================
+     SETĂRI GLOBALE
+  ========================= */
+
+  async function loadSiteSettings() {
+
+    try {
+
+      const snapshot =
+        await getDoc(
+          doc(
+            db,
+            "settings",
+            "site"
+          )
+        );
+
+
+      if (
+        !snapshot.exists()
+      ) {
+
+        return;
+
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      const siteName =
+        typeof data.siteName === "string" &&
+        data.siteName.trim()
+          ? data.siteName.trim()
+          : "VladLab";
+
+
+      applySiteName(
+        siteName
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Nu am putut încărca setările site-ului:",
+        error
+      );
+
+      /*
+        Admin Panel rămâne utilizabil
+        chiar dacă setările nu se încarcă.
+      */
+
+    }
+
+  }
+
+
+  /* =========================
+     APLICĂ NUMELE SITE-ULUI
+  ========================= */
+
+  function applySiteName(
+    siteName
+  ) {
+
+    brandName.textContent =
+      siteName;
+
+
+    brandLogo.alt =
+      siteName;
+
+
+    document.title =
+      "Admin Panel | " +
+      siteName;
+
+
+    adminDescription.textContent =
+      "Administrează conținutul " +
+      siteName +
+      " direct din site.";
+
+
+    projectsDescription.textContent =
+      "Creează și modifică proiectele afișate pe " +
+      siteName +
+      ".";
+
+
+    siteDescription.textContent =
+      "Setări și conținut general pentru " +
+      siteName +
+      ".";
+
+
+    publicSiteDescription.textContent =
+      "Deschide pagina publică " +
+      siteName +
+      ".";
+
+  }
+
+
+  /* =========================
      LOGOUT
   ========================= */
 
   document
-    .getElementById("logoutButton")
+    .getElementById(
+      "logoutButton"
+    )
     .addEventListener(
       "click",
-
       async () => {
 
-        await signOut(auth);
+        try {
 
-        window.location.replace(
-          "/login/"
-        );
+          await signOut(
+            auth
+          );
+
+
+          window.location.replace(
+            "/login/"
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            error
+          );
+
+        }
 
       }
     );
