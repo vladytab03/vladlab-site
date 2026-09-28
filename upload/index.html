@@ -31,8 +31,6 @@
       overflow: hidden;
     }
 
-    /* NAVBAR */
-
     nav {
       height: 72px;
       display: flex;
@@ -59,15 +57,13 @@
       color: white;
       font-size: 24px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: .2s;
     }
 
     .menu-button:hover {
       background: #161c27;
       border-color: #5b8cff;
     }
-
-    /* ACCOUNT */
 
     .account {
       display: flex;
@@ -88,7 +84,7 @@
       font-size: 14px;
       text-decoration: none;
       cursor: pointer;
-      transition: 0.2s;
+      transition: .2s;
       white-space: nowrap;
     }
 
@@ -128,15 +124,13 @@
       border-color: #5b8cff;
     }
 
-    /* MENIU */
-
     .menu-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.62);
+      background: rgba(0, 0, 0, .62);
       opacity: 0;
       visibility: hidden;
-      transition: 0.25s;
+      transition: .25s;
       z-index: 998;
     }
 
@@ -156,11 +150,11 @@
       background: #0b0f17;
       border-right: 1px solid #202735;
       transform: translateX(-105%);
-      transition: transform 0.28s ease;
+      transition: transform .28s ease;
       z-index: 999;
       display: flex;
       flex-direction: column;
-      box-shadow: 20px 0 50px rgba(0, 0, 0, 0.35);
+      box-shadow: 20px 0 50px rgba(0, 0, 0, .35);
     }
 
     .side-menu.active {
@@ -230,7 +224,7 @@
       text-decoration: none;
       font-size: 15px;
       font-weight: 600;
-      transition: 0.2s;
+      transition: .2s;
     }
 
     .menu-link:hover {
@@ -241,8 +235,8 @@
 
     .menu-link.active {
       color: white;
-      background: rgba(91, 140, 255, 0.12);
-      border-color: rgba(91, 140, 255, 0.25);
+      background: rgba(91, 140, 255, .12);
+      border-color: rgba(91, 140, 255, .25);
     }
 
     .menu-icon {
@@ -264,8 +258,6 @@
       color: #596477;
       font-size: 12px;
     }
-
-    /* MAIN */
 
     main {
       flex: 1;
@@ -300,8 +292,6 @@
       font-size: 15px;
     }
 
-    /* UPLOAD */
-
     .upload-box {
       margin-top: 45px;
       background: #0e131d;
@@ -333,13 +323,13 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 14px;
       outline: none;
-      transition: 0.2s;
+      transition: .2s;
     }
 
     input:focus,
     textarea:focus {
       border-color: #5b8cff;
-      box-shadow: 0 0 0 3px rgba(91, 140, 255, 0.10);
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, .10);
     }
 
     textarea {
@@ -367,7 +357,7 @@
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      transition: 0.2s;
+      transition: .2s;
     }
 
     .send-button:hover {
@@ -375,7 +365,7 @@
     }
 
     .send-button:disabled {
-      opacity: 0.55;
+      opacity: .55;
       cursor: not-allowed;
     }
 
@@ -385,26 +375,27 @@
       padding: 14px 16px;
       border-radius: 11px;
       font-size: 14px;
+      line-height: 1.5;
     }
 
     #status.loading {
       display: block;
-      background: rgba(91, 140, 255, 0.08);
-      border: 1px solid rgba(91, 140, 255, 0.22);
+      background: rgba(91, 140, 255, .08);
+      border: 1px solid rgba(91, 140, 255, .22);
       color: #9bb7ff;
     }
 
     #status.success {
       display: block;
-      background: rgba(58, 210, 120, 0.08);
-      border: 1px solid rgba(58, 210, 120, 0.22);
+      background: rgba(58, 210, 120, .08);
+      border: 1px solid rgba(58, 210, 120, .22);
       color: #72e7a4;
     }
 
     #status.error {
       display: block;
-      background: rgba(255, 75, 75, 0.08);
-      border: 1px solid rgba(255, 75, 75, 0.22);
+      background: rgba(255, 75, 75, .08);
+      border: 1px solid rgba(255, 75, 75, .22);
       color: #ff9292;
     }
 
@@ -418,7 +409,6 @@
     }
 
     @media (max-width: 750px) {
-
       nav {
         padding: 0 16px;
       }
@@ -456,9 +446,7 @@
 
 <body>
 
-
 <div id="menuOverlay" class="menu-overlay"></div>
-
 
 <aside id="sideMenu" class="side-menu">
 
@@ -479,7 +467,6 @@
     </button>
 
   </div>
-
 
   <div class="side-menu-content">
 
@@ -526,7 +513,6 @@
 
   </div>
 
-
   <div class="side-menu-footer">
     © 2026 VladLab
   </div>
@@ -545,17 +531,13 @@
     ☰
   </button>
 
-
   <div class="account">
 
     <div id="loggedOut">
-
       <a href="/login/" class="login-button">
         Login
       </a>
-
     </div>
-
 
     <div id="loggedIn" class="account">
 
@@ -596,7 +578,6 @@
     Trimite un fișier către VladLab.
   </p>
 
-
   <div class="upload-box">
 
     <form id="uploadForm">
@@ -616,7 +597,6 @@
 
       </div>
 
-
       <div class="field">
 
         <label for="message">
@@ -629,7 +609,6 @@
         ></textarea>
 
       </div>
-
 
       <div class="field">
 
@@ -649,7 +628,6 @@
 
       </div>
 
-
       <button
         id="sendButton"
         class="send-button"
@@ -659,7 +637,6 @@
       </button>
 
     </form>
-
 
     <div id="status"></div>
 
@@ -695,6 +672,14 @@
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+
   const firebaseConfig = {
     apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
     authDomain: "vladlab-11887.firebaseapp.com",
@@ -713,12 +698,20 @@
   const app =
     initializeApp(firebaseConfig);
 
-
   const auth =
     getAuth(app);
 
+  const db =
+    getFirestore(app);
 
-  /* CONTURI */
+
+  let signedInUser =
+    null;
+
+
+  /* =========================
+     CONTURI
+  ========================= */
 
   const loggedOut =
     document.getElementById("loggedOut");
@@ -738,8 +731,11 @@
 
   onAuthStateChanged(
     auth,
+    user => {
 
-    (user) => {
+      signedInUser =
+        user;
+
 
       if (!user) {
 
@@ -799,7 +795,6 @@
 
   logoutButton.addEventListener(
     "click",
-
     async () => {
 
       try {
@@ -821,7 +816,9 @@
   );
 
 
-  /* MENIU */
+  /* =========================
+     MENIU
+  ========================= */
 
   const openMenuButton =
     document.getElementById("openMenu");
@@ -838,22 +835,34 @@
 
   function openMenu() {
 
-    sideMenu.classList.add("active");
+    sideMenu.classList.add(
+      "active"
+    );
 
-    menuOverlay.classList.add("active");
+    menuOverlay.classList.add(
+      "active"
+    );
 
-    document.body.classList.add("menu-open");
+    document.body.classList.add(
+      "menu-open"
+    );
 
   }
 
 
   function closeMenu() {
 
-    sideMenu.classList.remove("active");
+    sideMenu.classList.remove(
+      "active"
+    );
 
-    menuOverlay.classList.remove("active");
+    menuOverlay.classList.remove(
+      "active"
+    );
 
-    document.body.classList.remove("menu-open");
+    document.body.classList.remove(
+      "menu-open"
+    );
 
   }
 
@@ -878,7 +887,7 @@
 
   document
     .querySelectorAll(".menu-link")
-    .forEach((link) => {
+    .forEach(link => {
 
       link.addEventListener(
         "click",
@@ -890,18 +899,24 @@
 
   document.addEventListener(
     "keydown",
+    event => {
 
-    (event) => {
+      if (
+        event.key ===
+        "Escape"
+      ) {
 
-      if (event.key === "Escape") {
         closeMenu();
+
       }
 
     }
   );
 
 
-  /* GOOGLE DRIVE UPLOAD */
+  /* =========================
+     GOOGLE DRIVE UPLOAD
+  ========================= */
 
   const SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbycRg6W15NRwev2sNSr6lnTw8Lq9LVgwAIdUGrQxasXAQtl3jy7xuLbLI-rH109g9UQ9g/exec";
@@ -919,8 +934,7 @@
 
   form.addEventListener(
     "submit",
-
-    async (event) => {
+    async event => {
 
       event.preventDefault();
 
@@ -952,6 +966,7 @@
         );
 
         return;
+
       }
 
 
@@ -965,6 +980,7 @@
         );
 
         return;
+
       }
 
 
@@ -989,10 +1005,8 @@
 
 
         const payload = {
-
-          name: name,
-
-          message: message,
+          name,
+          message,
 
           fileName:
             file.name,
@@ -1001,11 +1015,15 @@
             file.type ||
             "application/octet-stream",
 
-          fileData:
-            fileData
-
+          fileData
         };
 
+
+        /*
+          Păstrăm no-cors deoarece acesta este
+          sistemul care trimite deja fișierele
+          către Apps Script / Google Drive.
+        */
 
         await fetch(
           SCRIPT_URL,
@@ -1025,25 +1043,73 @@
         );
 
 
+        /*
+          Dacă utilizatorul este logat,
+          înregistrăm trimiterea în contul lui.
+        */
+
+        if (signedInUser) {
+
+          await addDoc(
+            collection(
+              db,
+              "users",
+              signedInUser.uid,
+              "uploads"
+            ),
+            {
+              fileName:
+                file.name,
+
+              fileSize:
+                file.size,
+
+              mimeType:
+                file.type ||
+                "application/octet-stream",
+
+              message:
+                message,
+
+              senderName:
+                name,
+
+              status:
+                "trimis",
+
+              createdAt:
+                serverTimestamp()
+            }
+          );
+
+        }
+
+
         statusBox.className =
           "success";
 
-        statusBox.textContent =
-          "Fișierul a fost trimis!";
+
+        if (signedInUser) {
+
+          statusBox.textContent =
+            "Fișierul a fost trimis și a fost salvat în istoricul contului tău!";
+
+        } else {
+
+          statusBox.textContent =
+            "Fișierul a fost trimis!";
+
+        }
 
 
         form.reset();
 
 
-        const currentUser =
-          auth.currentUser;
-
-
-        if (currentUser) {
+        if (signedInUser) {
 
           nameInput.value =
-            currentUser.displayName ||
-            currentUser.email?.split("@")[0] ||
+            signedInUser.displayName ||
+            signedInUser.email?.split("@")[0] ||
             "";
 
         }
@@ -1075,6 +1141,10 @@
   );
 
 
+  /* =========================
+     FIȘIER -> BASE64
+  ========================= */
+
   function fileToBase64(file) {
 
     return new Promise(
@@ -1088,9 +1158,12 @@
           () => {
 
             const base64 =
-              reader.result.split(",")[1];
+              reader.result
+                .split(",")[1];
 
-            resolve(base64);
+            resolve(
+              base64
+            );
 
           };
 
@@ -1099,13 +1172,19 @@
           reject;
 
 
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(
+          file
+        );
 
       }
     );
 
   }
 
+
+  /* =========================
+     EROARE
+  ========================= */
 
   function showError(message) {
 
