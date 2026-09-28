@@ -392,6 +392,62 @@
       text-align: center;
     }
 
+
+    #siteContent {
+      display: none;
+    }
+
+    #maintenancePage {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: #080b12;
+    }
+
+    .maintenance-card {
+      width: min(520px, 100%);
+      padding: 40px 30px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 22px;
+      text-align: center;
+    }
+
+    .maintenance-logo {
+      width: 78px;
+      height: 78px;
+      object-fit: cover;
+      border-radius: 19px;
+      margin-bottom: 23px;
+    }
+
+    .maintenance-card h2 {
+      font-size: clamp(30px, 6vw, 42px);
+      margin-bottom: 14px;
+    }
+
+    .maintenance-card p {
+      color: #8995a9;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .maintenance-login {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 11px 17px;
+      background: #5b8cff;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
     @media (max-width: 700px) {
       nav {
         padding: 0 16px;
@@ -426,6 +482,19 @@
   Se încarcă profilul...
 </div>
 
+<section id="maintenancePage">
+  <div class="maintenance-card">
+    <img id="maintenanceLogo" class="maintenance-logo" src="/logo.png" alt="VladLab">
+    <h2 id="maintenanceTitle">VladLab</h2>
+    <p id="maintenanceText">Site-ul este momentan în mentenanță. Revino în curând.</p>
+    <a class="maintenance-login" href="/login/?next=/cont/">
+      Login
+    </a>
+  </div>
+</section>
+
+<div id="siteContent">
+
 <nav>
 
   <a href="/" class="back">
@@ -446,7 +515,7 @@
     <h1>Profil</h1>
 
     <p class="description">
-      Vezi și gestionează informațiile contului tău VladLab.
+      <span id="profileDescription">Vezi și gestionează informațiile contului tău VladLab.</span>
     </p>
   </section>
 
@@ -479,7 +548,7 @@
       <h2>👤 Nume</h2>
 
       <p class="panel-description">
-        Acest nume va apărea în contul tău VladLab.
+        <span id="nameDescription">Acest nume va apărea în contul tău VladLab.</span>
       </p>
 
       <form id="nameForm">
@@ -638,7 +707,7 @@
       <h2>📤 Ce am trimis</h2>
 
       <p class="panel-description">
-        Fișierele trimise de tine prin VladLab.
+        <span id="uploadsDescription">Fișierele trimise de tine prin VladLab.</span>
       </p>
 
       <div id="uploadsList" class="uploads-list">
@@ -658,10 +727,12 @@
 </main>
 
 
-<footer>
+<footer id="siteFooter">
   © 2026 VladLab · Contul meu
 </footer>
 
+
+</div>
 
 <script type="module">
 
@@ -688,7 +759,8 @@
     onSnapshot,
     doc,
     setDoc,
-    serverTimestamp
+    serverTimestamp,
+    getDoc
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 
@@ -796,12 +868,175 @@
 
 
   /* =========================
+     SETĂRI GLOBALE SITE
+  ========================= */
+
+  async function loadSiteSettings() {
+
+    const defaults = {
+      siteName: "VladLab",
+      maintenance: false,
+      maintenanceMessage:
+        "Site-ul este momentan în mentenanță. Revino în curând."
+    };
+
+
+    try {
+
+      const snapshot =
+        await getDoc(
+          doc(
+            db,
+            "settings",
+            "site"
+          )
+        );
+
+
+      if (!snapshot.exists()) {
+        return defaults;
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      return {
+        siteName:
+          typeof data.siteName === "string" &&
+          data.siteName.trim()
+            ? data.siteName.trim()
+            : defaults.siteName,
+
+        maintenance:
+          data.maintenance === true,
+
+        maintenanceMessage:
+          typeof data.maintenanceMessage === "string" &&
+          data.maintenanceMessage.trim()
+            ? data.maintenanceMessage.trim()
+            : defaults.maintenanceMessage
+      };
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Eroare setări site:",
+        error
+      );
+
+      return defaults;
+
+    }
+
+  }
+
+
+  function applySiteSettings(settings) {
+
+    const siteName =
+      settings.siteName;
+
+
+    document.title =
+      "Contul meu | " +
+      siteName;
+
+
+    document.getElementById(
+      "profileDescription"
+    ).textContent =
+      "Vezi și gestionează informațiile contului tău " +
+      siteName +
+      ".";
+
+
+    document.getElementById(
+      "nameDescription"
+    ).textContent =
+      "Acest nume va apărea în contul tău " +
+      siteName +
+      ".";
+
+
+    document.getElementById(
+      "uploadsDescription"
+    ).textContent =
+      "Fișierele trimise de tine prin " +
+      siteName +
+      ".";
+
+
+    document.getElementById(
+      "siteFooter"
+    ).textContent =
+      "© 2026 " +
+      siteName +
+      " · Contul meu";
+
+
+    document.getElementById(
+      "maintenanceTitle"
+    ).textContent =
+      siteName;
+
+
+    document.getElementById(
+      "maintenanceText"
+    ).textContent =
+      settings.maintenanceMessage;
+
+
+    document.getElementById(
+      "maintenanceLogo"
+    ).alt =
+      siteName;
+
+  }
+
+
+  /* =========================
      AUTENTIFICARE
   ========================= */
 
   onAuthStateChanged(
     auth,
-    user => {
+    async user => {
+
+      const settings =
+        await loadSiteSettings();
+
+
+      applySiteSettings(
+        settings
+      );
+
+
+      if (
+        settings.maintenance === true &&
+        (!user || user.uid !== ADMIN_UID)
+      ) {
+
+        document.getElementById("siteContent").style.display =
+          "none";
+
+        document.getElementById("maintenancePage").style.display =
+          "flex";
+
+        loading.style.display =
+          "none";
+
+        return;
+
+      }
+
+
+      document.getElementById("maintenancePage").style.display =
+        "none";
+
 
       if (!user) {
 
@@ -824,6 +1059,10 @@
 
         return;
       }
+
+
+      document.getElementById("siteContent").style.display =
+        "block";
 
 
       currentUser =
