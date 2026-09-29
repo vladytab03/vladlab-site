@@ -22,669 +22,463 @@
       background: #080b12;
       color: white;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
     }
 
     body.menu-open {
       overflow: hidden;
     }
 
-    #pageLoading {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      background: #080b12;
-      color: #8995a9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-    }
-
-    #maintenancePage {
-      position: fixed;
-      inset: 0;
-      z-index: 9000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 25px;
-      background: #080b12;
-    }
-
-    .maintenance-card {
-      width: min(520px, 100%);
-      padding: 40px 30px;
-      background: #0e131d;
-      border: 1px solid #202735;
-      border-radius: 22px;
-      text-align: center;
-    }
-
-    .maintenance-logo {
-      width: 78px;
-      height: 78px;
-      object-fit: cover;
-      border-radius: 19px;
-      margin-bottom: 23px;
-    }
-
-    .maintenance-card h2 {
-      font-size: clamp(30px, 6vw, 42px);
-      margin-bottom: 14px;
-    }
-
-    .maintenance-card p {
-      color: #8995a9;
-      font-size: 15px;
-      line-height: 1.65;
-    }
-
-    .maintenance-login {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 11px 17px;
-      background: #5b8cff;
-      color: white;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    #siteContent {
-      display: none;
-      min-height: 100vh;
-      flex-direction: column;
-    }
-
     nav {
       height: 72px;
+      padding: 0 7%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 6%;
       border-bottom: 1px solid #1d2330;
-      background: rgba(8, 11, 18, 0.94);
+      background: rgba(8, 11, 18, .94);
       position: sticky;
       top: 0;
       z-index: 100;
       backdrop-filter: blur(12px);
     }
 
+    .nav-left,
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .menu-button {
       width: 44px;
       height: 44px;
+      border: 1px solid #293142;
+      border-radius: 11px;
+      background: #0e131d;
+      color: #fff;
+      font-size: 21px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #0e131d;
-      border: 1px solid #293142;
-      border-radius: 12px;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      transition: 0.2s;
     }
 
     .menu-button:hover {
-      background: #161c27;
       border-color: #5b8cff;
+      background: #111824;
     }
 
-    .account {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #loggedOut,
-    #loggedIn {
-      display: none;
-    }
-
-    .login-button,
-    .user-button,
-    .logout-button {
-      border-radius: 10px;
-      padding: 9px 15px;
-      font-size: 14px;
+    .auth-link {
+      color: #c7d0df;
       text-decoration: none;
-      cursor: pointer;
-      transition: 0.2s;
-      white-space: nowrap;
-    }
-
-    .login-button {
-      background: #5b8cff;
-      color: white;
-      border: 1px solid #5b8cff;
-      font-weight: 700;
-    }
-
-    .login-button:hover {
-      background: #6c98ff;
-    }
-
-    .user-button {
-      max-width: 180px;
-      background: transparent;
-      color: #cbd4e4;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 9px 12px;
       border: 1px solid #293142;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      border-radius: 9px;
+      background: #0e131d;
     }
 
-    .user-button:hover {
-      color: white;
+    .auth-link:hover {
+      color: #fff;
       border-color: #5b8cff;
-    }
-
-    .logout-button {
-      background: #161c27;
-      color: white;
-      border: 1px solid #293142;
-    }
-
-    .logout-button:hover {
-      border-color: #5b8cff;
-      background: #1a2230;
     }
 
     .menu-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.62);
+      background: rgba(0, 0, 0, .62);
+      z-index: 190;
       opacity: 0;
-      visibility: hidden;
-      transition: 0.25s;
-      z-index: 998;
+      pointer-events: none;
+      transition: .22s ease;
     }
 
-    .menu-overlay.active {
+    .menu-overlay.show {
       opacity: 1;
-      visibility: visible;
+      pointer-events: auto;
     }
 
     .side-menu {
       position: fixed;
       top: 0;
-      left: 0;
-      width: 320px;
-      max-width: 86vw;
+      left: -320px;
+      width: min(300px, 86vw);
       height: 100vh;
-      height: 100dvh;
-      background: #0b0f17;
+      background: #0b1018;
       border-right: 1px solid #202735;
-      transform: translateX(-105%);
-      transition: transform 0.28s ease;
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 20px 0 50px rgba(0,0,0,.35);
-    }
-
-    .side-menu.active {
-      transform: translateX(0);
-    }
-
-    .side-menu-header {
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      border-bottom: 1px solid #1d2330;
-    }
-
-    .side-brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      font-size: 19px;
-      font-weight: 700;
-    }
-
-    .side-brand img {
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .close-menu {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      border: 1px solid #293142;
-      background: #111722;
-      color: white;
-      font-size: 23px;
-      cursor: pointer;
-    }
-
-    .side-menu-content {
-      padding: 20px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
+      z-index: 200;
+      padding: 20px;
+      transition: left .25s ease;
       overflow-y: auto;
     }
 
-    .menu-label {
-      color: #596477;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      padding: 6px 12px 10px;
+    .side-menu.show {
+      left: 0;
+    }
+
+    .side-menu-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .side-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .side-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    .side-logo span span {
+      color: #5b8cff;
+    }
+
+    .close-menu {
+      width: 38px;
+      height: 38px;
+      border: 1px solid #293142;
+      border-radius: 9px;
+      background: #111722;
+      color: #fff;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .menu-links {
+      display: grid;
+      gap: 7px;
     }
 
     .menu-link {
       display: flex;
       align-items: center;
-      gap: 14px;
-      min-height: 52px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid transparent;
-      color: #cbd4e4;
+      gap: 11px;
+      padding: 12px 13px;
+      color: #aab4c5;
       text-decoration: none;
-      font-size: 15px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-size: 14px;
       font-weight: 600;
-      transition: .2s;
     }
 
-    .menu-link:hover {
-      color: white;
-      background: #111722;
-      border-color: #202735;
+    .menu-link:hover,
+    .menu-link.active {
+      color: #fff;
+      background: #111824;
+      border-color: #273247;
     }
 
     .menu-link.active {
-      color: white;
-      background: rgba(91,140,255,.12);
-      border-color: rgba(91,140,255,.25);
-    }
-
-    .menu-icon {
-      width: 27px;
-      text-align: center;
-      font-size: 20px;
+      color: #8fb0ff;
     }
 
     .menu-separator {
       height: 1px;
-      background: #1d2330;
-      margin: 12px 8px;
-    }
-
-    .side-menu-footer {
-      margin-top: auto;
-      padding: 18px 20px;
-      border-top: 1px solid #1d2330;
-      color: #596477;
-      font-size: 12px;
+      background: #202735;
+      margin: 12px 0;
     }
 
     main {
-      flex: 1;
-      width: min(1250px, 92%);
+      width: min(1180px, 92%);
       margin: auto;
-      padding: 70px 0 100px;
+      padding: 55px 0 80px;
     }
 
-    .back {
-      color: #71809a;
-      text-decoration: none;
-      font-size: 14px;
+    .hero {
+      margin-bottom: 35px;
     }
 
-    .back:hover {
-      color: white;
-    }
-
-    h1 {
-      font-size: clamp(48px, 7vw, 72px);
+    .hero h1 {
+      font-size: clamp(38px, 7vw, 64px);
       letter-spacing: -3px;
-      margin-top: 25px;
+      line-height: 1;
     }
 
-    h1 span {
+    .hero h1 span {
       color: #5b8cff;
     }
 
-    .subtitle {
-      margin-top: 10px;
-      color: #7f899a;
-      font-size: 15px;
+    .hero p {
+      margin-top: 15px;
+      max-width: 720px;
+      color: #818c9e;
+      line-height: 1.6;
     }
 
     .section {
-      margin-top: 55px;
+      margin-top: 35px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 17px;
     }
 
     .section-title {
-      font-size: 24px;
-      margin-bottom: 18px;
+      font-size: 23px;
+      letter-spacing: -.5px;
+    }
+
+    .favorite-button {
+      flex-shrink: 0;
+      padding: 9px 12px;
+      border: 1px solid #30394b;
+      border-radius: 9px;
+      background: #101620;
+      color: #aab4c5;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .favorite-button:hover {
+      border-color: #5b8cff;
+      color: #fff;
+    }
+
+    .favorite-button.active {
+      color: #ff7c9c;
+      border-color: rgba(255, 91, 132, .4);
+      background: rgba(255, 91, 132, .08);
     }
 
     .schedule-card {
       background: #0e131d;
       border: 1px solid #202735;
-      border-radius: 20px;
-      padding: 22px;
+      border-radius: 18px;
       overflow: hidden;
     }
 
-    .schedule-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      gap: 15px;
-    }
-
-    .schedule-header h2 {
-      font-size: 20px;
-    }
-
-    .schedule-header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .class-badge {
-      background: #17233c;
-      color: #7da3ff;
-      border: 1px solid #2a426d;
-      padding: 7px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .table-wrapper {
+    .schedule-scroll {
       overflow-x: auto;
-      border-radius: 13px;
     }
 
-    table {
+    .schedule-table {
       width: 100%;
       min-width: 1050px;
-      border-collapse: separate;
-      border-spacing: 0;
-      overflow: hidden;
+      border-collapse: collapse;
     }
 
-    th,
-    td {
-      border-right: 1px solid #252e3d;
-      border-bottom: 1px solid #252e3d;
+    .schedule-table th,
+    .schedule-table td {
       padding: 15px 12px;
+      border-right: 1px solid #202735;
+      border-bottom: 1px solid #202735;
       text-align: center;
+      vertical-align: middle;
     }
 
-    th:first-child,
-    td:first-child {
-      border-left: 1px solid #252e3d;
+    .schedule-table th:last-child,
+    .schedule-table td:last-child {
+      border-right: 0;
     }
 
-    thead th {
-      border-top: 1px solid #252e3d;
+    .schedule-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .schedule-table thead th {
       background: #111824;
-      color: #8d9aaf;
+      color: #8f9aae;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    .day {
-      background: #111824;
-      color: #8eb0ff;
-      font-size: 13px;
-      font-weight: 700;
-      text-align: left;
+    .schedule-table thead th:first-child {
       min-width: 100px;
     }
 
-    .subject {
-      background: #0b1018;
-      min-width: 125px;
-      height: 82px;
-      transition: .2s;
+    .schedule-table .time {
+      display: block;
+      margin-top: 4px;
+      color: #5f6a7c;
+      font-size: 10px;
+      font-weight: 500;
     }
 
-    .subject:hover {
-      background: #121a28;
+    .schedule-table .day {
+      background: #111824;
+      color: #82a6ff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .schedule-table .subject {
+      min-width: 125px;
     }
 
     .subject-name {
-      font-size: 13px;
+      font-size: 12px;
+      line-height: 1.35;
+      color: #d6dce7;
       font-weight: 600;
-      line-height: 1.3;
     }
 
     .empty-cell {
-      background: #090d14;
-      color: #343d4d;
+      color: #485264;
     }
 
-    .time {
-      display: block;
-      color: #657188;
-      font-size: 10px;
-      margin-top: 4px;
-      font-weight: normal;
-    }
-
-    .mobile-tip {
-      display: none;
-      color: #657188;
-      font-size: 12px;
-      margin-top: 14px;
-      text-align: center;
-    }
-
-    #materialsList {
+    .materials-grid {
       display: grid;
-      gap: 16px;
-    }
-
-    .materials {
-      border: 1px dashed #293243;
-      border-radius: 18px;
-      min-height: 190px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #657188;
-      text-align: center;
-      padding: 30px;
-    }
-
-    .materials-icon {
-      font-size: 36px;
-      margin-bottom: 15px;
-    }
-
-    .materials h3 {
-      font-size: 18px;
-      margin-bottom: 7px;
-    }
-
-    .materials p {
-      color: #657188;
-      font-size: 13px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
     }
 
     .material-card {
+      padding: 20px;
       background: #0e131d;
       border: 1px solid #202735;
-      border-radius: 18px;
-      padding: 22px;
+      border-radius: 15px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-      transition: .2s;
-    }
-
-    .material-card:hover {
-      border-color: #303b50;
-      transform: translateY(-2px);
-    }
-
-    .material-info {
-      min-width: 0;
-      flex: 1;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .material-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 7px;
+      font-size: 17px;
+      font-weight: 800;
     }
 
     .material-description {
       color: #7f899a;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.5;
+      flex: 1;
     }
 
     .material-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
+      gap: 9px;
+      flex-wrap: wrap;
     }
 
-    .favorite-button {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      border: 1px solid #30394a;
-      border-radius: 11px;
-      background: #111722;
-      color: #aeb8ca;
-      font-size: 24px;
-      cursor: pointer;
-      transition: .2s;
-    }
-
-    .favorite-button:hover {
-      border-color: #ff6f91;
-      color: #ff8eaa;
-      transform: scale(1.04);
-    }
-
-    .favorite-button.active {
-      color: #ff6f91;
-      border-color: rgba(255,111,145,.45);
-      background: rgba(255,111,145,.10);
-    }
-
-    .favorite-button:disabled {
-      opacity: .55;
-      cursor: wait;
-      transform: none;
-    }
-
-    .material-button {
-      flex-shrink: 0;
+    .material-open {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      padding: 9px 12px;
+      border-radius: 9px;
       background: #5b8cff;
-      color: white;
+      color: #fff;
       text-decoration: none;
-      border-radius: 10px;
-      padding: 11px 17px;
-      min-height: 44px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      transition: .2s;
     }
 
-    .material-button:hover {
+    .material-open:hover {
       background: #6c98ff;
     }
 
-    footer {
-      border-top: 1px solid #1d2330;
-      padding: 30px 8%;
-      color: #626d7f;
-      font-size: 13px;
-      display: flex;
-      justify-content: space-between;
+    .material-favorite {
+      padding: 9px 11px;
+      border: 1px solid #30394b;
+      border-radius: 9px;
+      background: #111722;
+      color: #aab4c5;
+      cursor: pointer;
+      font-weight: 700;
     }
 
-    @media (max-width: 750px) {
+    .material-favorite.active {
+      color: #ff7c9c;
+      border-color: rgba(255, 91, 132, .4);
+      background: rgba(255, 91, 132, .08);
+    }
+
+    .empty {
+      padding: 42px 20px;
+      border: 1px dashed #293243;
+      border-radius: 14px;
+      color: #657188;
+      text-align: center;
+    }
+
+    footer {
+      padding: 28px;
+      border-top: 1px solid #1d2330;
+      color: #626d7f;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .maintenance-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: #080b12;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+    }
+
+    .maintenance-screen.show {
+      display: flex;
+    }
+
+    .maintenance-box {
+      width: min(620px, 100%);
+      padding: 40px 30px;
+      background: #0e131d;
+      border: 1px solid #202735;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .maintenance-box img {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .maintenance-box h2 {
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .maintenance-box p {
+      color: #818c9e;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 760px) {
       nav {
-        padding: 0 16px;
+        padding: 0 4%;
       }
 
       main {
-        padding-top: 50px;
+        width: 92%;
+        padding-top: 40px;
       }
 
-      .schedule-card {
-        padding: 16px;
+      .materials-grid {
+        grid-template-columns: 1fr;
       }
 
-      .schedule-header {
+      .section-header {
         align-items: flex-start;
-      }
-
-      .schedule-header-actions {
-        flex-wrap: wrap;
-        justify-content: flex-end;
-      }
-
-      .mobile-tip {
-        display: block;
-      }
-
-      footer {
         flex-direction: column;
-        gap: 10px;
-      }
-
-      .login-button,
-      .user-button,
-      .logout-button {
-        padding: 8px 10px;
-        font-size: 13px;
-      }
-
-      .user-button {
-        max-width: 135px;
-      }
-
-      .material-card {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .material-actions {
-        width: 100%;
-      }
-
-      .material-button {
-        flex: 1;
       }
 
       .favorite-button {
-        width: 46px;
-      }
-
-      .side-menu {
-        width: 300px;
+        width: 100%;
       }
     }
   </style>
@@ -692,882 +486,972 @@
 
 <body>
 
-<div id="pageLoading">
-  Se încarcă...
-</div>
-
-<section id="maintenancePage">
-  <div class="maintenance-card">
-
-    <img
-      src="/logo.png"
-      class="maintenance-logo"
-      id="maintenanceLogo"
-      alt="VladLab"
-    >
-
-    <h2 id="maintenanceTitle">
-      VladLab
-    </h2>
-
-    <p id="maintenanceText">
-      Site-ul este momentan în mentenanță. Revino în curând.
-    </p>
-
-    <a
-      href="/login/?next=/scoala/"
-      class="maintenance-login"
-    >
-      Login administrator
-    </a>
-
-  </div>
-</section>
-
-<div id="siteContent">
-
-<div id="menuOverlay" class="menu-overlay"></div>
-
-<aside id="sideMenu" class="side-menu">
-
-  <div class="side-menu-header">
-
-    <div class="side-brand">
-      <img
-        id="sideLogo"
-        src="/logo.png"
-        alt="VladLab"
-      >
-      <span id="sideBrandName">
-        VladLab
-      </span>
+  <div id="maintenanceScreen" class="maintenance-screen">
+    <div class="maintenance-box">
+      <img src="/logo.png" alt="VladLab">
+      <h2>VladLab este în mentenanță</h2>
+      <p id="maintenanceMessage">
+        Revenim în curând.
+      </p>
     </div>
-
-    <button
-      id="closeMenu"
-      class="close-menu"
-      type="button"
-      aria-label="Închide meniul"
-    >
-      ×
-    </button>
-
   </div>
 
-  <div class="side-menu-content">
+  <div id="menuOverlay" class="menu-overlay"></div>
 
-    <div
-      class="menu-label"
-      id="menuLabel"
-    >
-      VLADLAB
-    </div>
+  <aside id="sideMenu" class="side-menu">
 
-    <a href="/" class="menu-link">
-      <span class="menu-icon">🏠</span>
-      Acasă
-    </a>
+    <div class="side-menu-top">
 
-    <a href="/scoala/" class="menu-link active">
-      <span class="menu-icon">🎓</span>
-      Școală
-    </a>
-
-    <a href="/proiecte/" class="menu-link">
-      <span class="menu-icon">💻</span>
-      Proiecte
-    </a>
-
-    <a href="/upload/" class="menu-link">
-      <span class="menu-icon">📤</span>
-      Trimite fișier
-    </a>
-
-    <a href="/download/" class="menu-link">
-      <span class="menu-icon">📥</span>
-      Descărcări
-    </a>
-
-    <a href="/favorite/" class="menu-link">
-      <span class="menu-icon">❤️</span>
-      Favorite
-    </a>
-
-    <div class="menu-separator"></div>
-
-    <a
-      href="http://novasmp.space/"
-      class="menu-link"
-    >
-      <span class="menu-icon">⛏️</span>
-      Nova SMP
-    </a>
-
-  </div>
-
-  <div
-    class="side-menu-footer"
-    id="sideFooter"
-  >
-    © 2026 VladLab
-  </div>
-
-</aside>
-
-<nav>
-
-  <button
-    id="openMenu"
-    class="menu-button"
-    type="button"
-    aria-label="Deschide meniul"
-  >
-    ☰
-  </button>
-
-  <div class="account">
-
-    <div id="loggedOut">
-      <a href="/login/" class="login-button">
-        Login
-      </a>
-    </div>
-
-    <div id="loggedIn" class="account">
-
-      <a
-        id="userButton"
-        href="/cont/"
-        class="user-button"
-      >
-        Cont
+      <a class="side-logo" href="/">
+        <img src="/logo.png" alt="VladLab">
+        <span>Vlad<span>Lab</span></span>
       </a>
 
       <button
-        id="logoutButton"
-        class="logout-button"
+        id="closeMenu"
+        class="close-menu"
         type="button"
+        aria-label="Închide meniul"
       >
-        Logout
+        ×
       </button>
 
     </div>
 
-  </div>
+    <div class="menu-links">
 
-</nav>
+      <a class="menu-link" href="/">
+        🏠 Acasă
+      </a>
 
-<main>
+      <a class="menu-link active" href="/scoala/">
+        🎓 Școală
+      </a>
 
-  <a
-    href="/"
-    class="back"
-    id="backButton"
-  >
-    ← Înapoi la VladLab
-  </a>
+      <a class="menu-link" href="/proiecte/">
+        💻 Proiecte
+      </a>
 
-  <h1>
-    🎓 <span>Școală</span>
-  </h1>
+      <a class="menu-link" href="/upload/">
+        📤 Trimite fișier
+      </a>
 
-  <p class="subtitle">
-    Orar, materiale și proiecte școlare.
-  </p>
+      <a class="menu-link" href="/download/">
+        📥 Descărcări
+      </a>
 
-  <section class="section">
+      <a class="menu-link" href="/favorite/">
+        ❤️ Favorite
+      </a>
 
-    <div class="schedule-card">
+      <div class="menu-separator"></div>
 
-      <div class="schedule-header">
+      <a
+        class="menu-link"
+        href="http://novasmp.space/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ⛏️ Nova SMP
+      </a>
 
-        <h2>📅 Orar</h2>
+    </div>
 
-        <div class="schedule-header-actions">
+  </aside>
 
-          <button
-            id="scheduleFavoriteButton"
-            class="favorite-button"
-            data-favorite-id="school_schedule_7d"
-            type="button"
-            title="Adaugă la Favorite"
-            aria-label="Adaugă la Favorite"
-          >
-            ♡
-          </button>
+  <nav>
 
-          <div class="class-badge">
-            CLASA 7D
-          </div>
+    <div class="nav-left">
+
+      <button
+        id="openMenu"
+        class="menu-button"
+        type="button"
+        aria-label="Deschide meniul"
+      >
+        ☰
+      </button>
+
+    </div>
+
+    <div class="nav-right">
+      <a
+        id="authLink"
+        class="auth-link"
+        href="/login/?next=/scoala/"
+      >
+        Login
+      </a>
+    </div>
+
+  </nav>
+
+  <main>
+
+    <section class="hero">
+
+      <h1>
+        🎓 <span>Școală</span>
+      </h1>
+
+      <p>
+        Orarul clasei și materialele pentru școală, toate într-un singur loc.
+      </p>
+
+    </section>
+
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <h2 class="section-title">
+          📅 Orar · Clasa 7D
+        </h2>
+
+        <button
+          id="scheduleFavoriteButton"
+          class="favorite-button"
+          type="button"
+        >
+          ♡ Adaugă la favorite
+        </button>
+
+      </div>
+
+      <div class="schedule-card">
+
+        <div class="schedule-scroll">
+
+          <table class="schedule-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  ZI
+                </th>
+
+                <th>
+                  Ora 0
+                  <span class="time">
+                    12:00 – 12:50
+                  </span>
+                </th>
+
+                <th>
+                  Ora 1
+                  <span class="time">
+                    13:00 – 13:50
+                  </span>
+                </th>
+
+                <th>
+                  Ora 2
+                  <span class="time">
+                    14:00 – 14:50
+                  </span>
+                </th>
+
+                <th>
+                  Ora 3
+                  <span class="time">
+                    15:00 – 15:50
+                  </span>
+                </th>
+
+                <th>
+                  Ora 4
+                  <span class="time">
+                    16:00 – 16:50
+                  </span>
+                </th>
+
+                <th>
+                  Ora 5
+                  <span class="time">
+                    17:00 – 17:50
+                  </span>
+                </th>
+
+                <th>
+                  Ora 6
+                  <span class="time">
+                    18:00 – 18:50
+                  </span>
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="scheduleBody">
+
+              <tr>
+                <td class="day">LUNI</td>
+                <td class="subject"><div class="subject-name">Istorie</div></td>
+                <td class="subject"><div class="subject-name">Limba engleză</div></td>
+                <td class="subject"><div class="subject-name">Chimie</div></td>
+                <td class="subject"><div class="subject-name">Matematică</div></td>
+                <td class="subject"><div class="subject-name">Limba română</div></td>
+                <td class="subject"><div class="subject-name">Consiliere și orientare</div></td>
+                <td class="empty-cell">—</td>
+              </tr>
+
+              <tr>
+                <td class="day">MARȚI</td>
+                <td class="subject"><div class="subject-name">Limba franceză</div></td>
+                <td class="subject"><div class="subject-name">Geografie</div></td>
+                <td class="subject"><div class="subject-name">Informatică și TIC</div></td>
+                <td class="subject"><div class="subject-name">Educație tehnologică</div></td>
+                <td class="subject"><div class="subject-name">Biologie</div></td>
+                <td class="subject"><div class="subject-name">Educație fizică și sport</div></td>
+                <td class="subject"><div class="subject-name">Educație muzicală</div></td>
+              </tr>
+
+              <tr>
+                <td class="day">MIERCURI</td>
+                <td class="subject"><div class="subject-name">Limba română</div></td>
+                <td class="subject"><div class="subject-name">Matematică</div></td>
+                <td class="subject"><div class="subject-name">Educație pentru cetățenie democratică</div></td>
+                <td class="subject"><div class="subject-name">Limba franceză</div></td>
+                <td class="subject"><div class="subject-name">Educație fizică și sport</div></td>
+                <td class="subject"><div class="subject-name">Fizică</div></td>
+                <td class="empty-cell">—</td>
+              </tr>
+
+              <tr>
+                <td class="day">JOI</td>
+                <td class="empty-cell">—</td>
+                <td class="subject"><div class="subject-name">Matematică</div></td>
+                <td class="subject"><div class="subject-name">CDS Ed. tehnologică</div></td>
+                <td class="subject"><div class="subject-name">Limba română</div></td>
+                <td class="subject"><div class="subject-name">Chimie</div></td>
+                <td class="subject"><div class="subject-name">Limba engleză</div></td>
+                <td class="subject"><div class="subject-name">Religie</div></td>
+              </tr>
+
+              <tr>
+                <td class="day">VINERI</td>
+                <td class="subject"><div class="subject-name">Biologie</div></td>
+                <td class="subject"><div class="subject-name">Matematică</div></td>
+                <td class="subject"><div class="subject-name">Limba română</div></td>
+                <td class="subject"><div class="subject-name">Fizică</div></td>
+                <td class="subject"><div class="subject-name">Educație plastică</div></td>
+                <td class="subject"><div class="subject-name">Limba latină</div></td>
+                <td class="empty-cell">—</td>
+              </tr>
+
+            </tbody>
+
+          </table>
 
         </div>
 
       </div>
 
-      <div class="table-wrapper">
+    </section>
 
-        <table>
 
-          <thead>
+    <section class="section">
 
-            <tr>
+      <div class="section-header">
 
-              <th>ZI</th>
-
-              <th>
-                Ora 0
-                <span class="time">
-                  12:00 – 12:50
-                </span>
-              </th>
-
-              <th>
-                Ora 1
-                <span class="time">
-                  13:00 – 13:50
-                </span>
-              </th>
-
-              <th>
-                Ora 2
-                <span class="time">
-                  14:00 – 14:50
-                </span>
-              </th>
-
-              <th>
-                Ora 3
-                <span class="time">
-                  15:00 – 15:50
-                </span>
-              </th>
-
-              <th>
-                Ora 4
-                <span class="time">
-                  16:00 – 16:50
-                </span>
-              </th>
-
-              <th>
-                Ora 5
-                <span class="time">
-                  17:00 – 17:50
-                </span>
-              </th>
-
-              <th>
-                Ora 6
-                <span class="time">
-                  18:00 – 18:50
-                </span>
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            <tr>
-              <td class="day">LUNI</td>
-              <td class="subject"><div class="subject-name">Istorie</div></td>
-              <td class="subject"><div class="subject-name">Limba engleză</div></td>
-              <td class="subject"><div class="subject-name">Chimie</div></td>
-              <td class="subject"><div class="subject-name">Matematică</div></td>
-              <td class="subject"><div class="subject-name">Limba română</div></td>
-              <td class="subject"><div class="subject-name">Consiliere și orientare</div></td>
-              <td class="empty-cell">—</td>
-            </tr>
-
-            <tr>
-              <td class="day">MARȚI</td>
-              <td class="subject"><div class="subject-name">Limba franceză</div></td>
-              <td class="subject"><div class="subject-name">Geografie</div></td>
-              <td class="subject"><div class="subject-name">Informatică și TIC</div></td>
-              <td class="subject"><div class="subject-name">Educație tehnologică</div></td>
-              <td class="subject"><div class="subject-name">Biologie</div></td>
-              <td class="subject"><div class="subject-name">Educație fizică și sport</div></td>
-              <td class="subject"><div class="subject-name">Educație muzicală</div></td>
-            </tr>
-
-            <tr>
-              <td class="day">MIERCURI</td>
-              <td class="subject"><div class="subject-name">Limba română</div></td>
-              <td class="subject"><div class="subject-name">Matematică</div></td>
-              <td class="subject"><div class="subject-name">Educație pentru cetățenie democratică</div></td>
-              <td class="subject"><div class="subject-name">Limba franceză</div></td>
-              <td class="subject"><div class="subject-name">Educație fizică și sport</div></td>
-              <td class="subject"><div class="subject-name">Fizică</div></td>
-              <td class="empty-cell">—</td>
-            </tr>
-
-            <tr>
-              <td class="day">JOI</td>
-              <td class="empty-cell">—</td>
-              <td class="subject"><div class="subject-name">Matematică</div></td>
-              <td class="subject"><div class="subject-name">CDS Ed. tehnologică</div></td>
-              <td class="subject"><div class="subject-name">Limba română</div></td>
-              <td class="subject"><div class="subject-name">Chimie</div></td>
-              <td class="subject"><div class="subject-name">Limba engleză</div></td>
-              <td class="subject"><div class="subject-name">Religie</div></td>
-            </tr>
-
-            <tr>
-              <td class="day">VINERI</td>
-              <td class="subject"><div class="subject-name">Biologie</div></td>
-              <td class="subject"><div class="subject-name">Matematică</div></td>
-              <td class="subject"><div class="subject-name">Limba română</div></td>
-              <td class="subject"><div class="subject-name">Fizică</div></td>
-              <td class="subject"><div class="subject-name">Educație plastică</div></td>
-              <td class="subject"><div class="subject-name">Limba latină</div></td>
-              <td class="empty-cell">—</td>
-            </tr>
-
-          </tbody>
-
-        </table>
+        <h2 class="section-title">
+          📚 Materiale
+        </h2>
 
       </div>
 
-      <div class="mobile-tip">
-        ← Glisează tabelul pentru a vedea tot orarul →
-      </div>
-
-    </div>
-
-  </section>
-
-  <section class="section">
-
-    <h2 class="section-title">
-      📚 Materiale și proiecte
-    </h2>
-
-    <div id="materialsList">
-
-      <div class="materials">
-
-        <div class="materials-icon">
-          ⏳
+      <div
+        id="materials"
+        class="materials-grid"
+      >
+        <div class="empty">
+          Se încarcă materialele...
         </div>
-
-        <h3>
-          Se încarcă...
-        </h3>
-
-        <p>
-          Se verifică materialele disponibile.
-        </p>
-
       </div>
 
-    </div>
+    </section>
 
-  </section>
+  </main>
 
-</main>
-
-<footer>
-
-  <div id="footerBrand">
+  <footer>
     © 2026 VladLab
-  </div>
+  </footer>
 
-  <div>
-    Școală • 7D
-  </div>
+  <script type="module">
 
-</footer>
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
-</div>
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
-<script type="module">
+    import {
+      getFirestore,
+      collection,
+      doc,
+      getDoc,
+      setDoc,
+      deleteDoc,
+      onSnapshot,
+      serverTimestamp,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
-  import {
-    initializeApp
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    const firebaseConfig = {
 
-  import {
-    getFirestore,
-    collection,
-    onSnapshot,
-    query,
-    orderBy,
-    doc,
-    setDoc,
-    deleteDoc,
-    serverTimestamp,
-    getDoc
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+      apiKey:
+        "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
 
+      authDomain:
+        "vladlab-11887.firebaseapp.com",
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-    authDomain: "vladlab-11887.firebaseapp.com",
-    projectId: "vladlab-11887",
-    storageBucket: "vladlab-11887.firebasestorage.app",
-    messagingSenderId: "741561223788",
-    appId: "1:741561223788:web:88ad3e62db87e32551a649",
-    measurementId: "G-9XN16BVYRN"
-  };
+      projectId:
+        "vladlab-11887",
 
+      storageBucket:
+        "vladlab-11887.firebasestorage.app",
 
-  const ADMIN_UID =
-    "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+      messagingSenderId:
+        "741561223788",
 
+      appId:
+        "1:741561223788:web:88ad3e62db87e32551a649",
 
-  const app =
-    initializeApp(firebaseConfig);
+      measurementId:
+        "G-9XN16BVYRN"
 
-  const auth =
-    getAuth(app);
-
-  const db =
-    getFirestore(app);
-
-
-  const loggedOut =
-    document.getElementById("loggedOut");
-
-  const loggedIn =
-    document.getElementById("loggedIn");
-
-  const userButton =
-    document.getElementById("userButton");
-
-  const logoutButton =
-    document.getElementById("logoutButton");
-
-  const materialsList =
-    document.getElementById("materialsList");
-
-  const scheduleFavoriteButton =
-    document.getElementById(
-      "scheduleFavoriteButton"
-    );
-
-  const pageLoading =
-    document.getElementById(
-      "pageLoading"
-    );
-
-  const siteContent =
-    document.getElementById(
-      "siteContent"
-    );
-
-  const maintenancePage =
-    document.getElementById(
-      "maintenancePage"
-    );
-
-
-  let currentUser = null;
-
-  let favoriteIds =
-    new Set();
-
-  let unsubscribeFavorites =
-    null;
-
-
-  /* =========================
-     CONTURI + SETĂRI
-  ========================= */
-
-  onAuthStateChanged(
-    auth,
-    async user => {
-
-      currentUser = user;
-
-
-      if (unsubscribeFavorites) {
-        unsubscribeFavorites();
-        unsubscribeFavorites = null;
-      }
-
-
-      favoriteIds =
-        new Set();
-
-
-      if (!user) {
-
-        loggedIn.style.display =
-          "none";
-
-        loggedOut.style.display =
-          "block";
-
-      } else {
-
-        loggedOut.style.display =
-          "none";
-
-        loggedIn.style.display =
-          "flex";
-
-
-        if (user.uid === ADMIN_UID) {
-
-          userButton.textContent =
-            "Vlad";
-
-          userButton.href =
-            "/admin/";
-
-        } else {
-
-          userButton.textContent =
-            user.displayName ||
-            user.email?.split("@")[0] ||
-            "Cont";
-
-          userButton.href =
-            "/cont/";
-
-        }
-
-
-        watchFavorites(
-          user.uid
-        );
-
-      }
-
-
-      updateFavoriteButtons();
-
-
-      const settings =
-        await loadSiteSettings();
-
-
-      applySiteSettings(
-        settings
-      );
-
-
-      if (
-        settings.maintenance === true &&
-        (!user || user.uid !== ADMIN_UID)
-      ) {
-
-        showMaintenance(
-          settings
-        );
-
-        return;
-
-      }
-
-
-      maintenancePage.style.display =
-        "none";
-
-      siteContent.style.display =
-        "flex";
-
-      pageLoading.style.display =
-        "none";
-
-    }
-  );
-
-
-  /* =========================
-     SETĂRI GLOBALE
-  ========================= */
-
-  async function loadSiteSettings() {
-
-    const defaults = {
-      siteName: "VladLab",
-      maintenance: false,
-      maintenanceMessage:
-        "Site-ul este momentan în mentenanță. Revino în curând."
     };
 
 
-    try {
-
-      const snapshot =
-        await getDoc(
-          doc(
-            db,
-            "settings",
-            "site"
-          )
-        );
+    const ADMIN_UID =
+      "tSvMc97QFgc35RwSkK7VRRsEIBv2";
 
 
-      if (!snapshot.exists()) {
-        return defaults;
+    const app =
+      initializeApp(
+        firebaseConfig
+      );
+
+
+    const auth =
+      getAuth(
+        app
+      );
+
+
+    const db =
+      getFirestore(
+        app
+      );
+
+
+    const openMenu =
+      document.getElementById(
+        "openMenu"
+      );
+
+
+    const closeMenu =
+      document.getElementById(
+        "closeMenu"
+      );
+
+
+    const sideMenu =
+      document.getElementById(
+        "sideMenu"
+      );
+
+
+    const menuOverlay =
+      document.getElementById(
+        "menuOverlay"
+      );
+
+
+    const authLink =
+      document.getElementById(
+        "authLink"
+      );
+
+
+    const materials =
+      document.getElementById(
+        "materials"
+      );
+
+
+    const scheduleFavoriteButton =
+      document.getElementById(
+        "scheduleFavoriteButton"
+      );
+
+
+    const maintenanceScreen =
+      document.getElementById(
+        "maintenanceScreen"
+      );
+
+
+    const maintenanceMessage =
+      document.getElementById(
+        "maintenanceMessage"
+      );
+
+
+    const scheduleBody =
+      document.getElementById(
+        "scheduleBody"
+      );
+
+
+    let currentUser =
+      null;
+
+
+    /* =========================
+       MENIU
+    ========================= */
+
+    function showMenu() {
+
+      sideMenu.classList.add(
+        "show"
+      );
+
+      menuOverlay.classList.add(
+        "show"
+      );
+
+      document.body.classList.add(
+        "menu-open"
+      );
+
+    }
+
+
+    function hideMenu() {
+
+      sideMenu.classList.remove(
+        "show"
+      );
+
+      menuOverlay.classList.remove(
+        "show"
+      );
+
+      document.body.classList.remove(
+        "menu-open"
+      );
+
+    }
+
+
+    openMenu.addEventListener(
+      "click",
+      showMenu
+    );
+
+
+    closeMenu.addEventListener(
+      "click",
+      hideMenu
+    );
+
+
+    menuOverlay.addEventListener(
+      "click",
+      hideMenu
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          hideMenu();
+
+        }
+
       }
+    );
 
 
-      const data =
-        snapshot.data();
+    /* =========================
+       ORAR DEFAULT
+    ========================= */
+
+    const DEFAULT_SCHEDULE = {
+
+      monday: [
+        "Istorie",
+        "Limba engleză",
+        "Chimie",
+        "Matematică",
+        "Limba română",
+        "Consiliere și orientare",
+        ""
+      ],
+
+      tuesday: [
+        "Limba franceză",
+        "Geografie",
+        "Informatică și TIC",
+        "Educație tehnologică",
+        "Biologie",
+        "Educație fizică și sport",
+        "Educație muzicală"
+      ],
+
+      wednesday: [
+        "Limba română",
+        "Matematică",
+        "Educație pentru cetățenie democratică",
+        "Limba franceză",
+        "Educație fizică și sport",
+        "Fizică",
+        ""
+      ],
+
+      thursday: [
+        "",
+        "Matematică",
+        "CDS Ed. tehnologică",
+        "Limba română",
+        "Chimie",
+        "Limba engleză",
+        "Religie"
+      ],
+
+      friday: [
+        "Biologie",
+        "Matematică",
+        "Limba română",
+        "Fizică",
+        "Educație plastică",
+        "Limba latină",
+        ""
+      ]
+
+    };
 
 
-      return {
+    const SCHEDULE_DAYS = [
 
-        siteName:
-          typeof data.siteName === "string" &&
-          data.siteName.trim()
-            ? data.siteName.trim()
-            : defaults.siteName,
+      [
+        "monday",
+        "LUNI"
+      ],
 
-        maintenance:
-          data.maintenance === true,
+      [
+        "tuesday",
+        "MARȚI"
+      ],
 
-        maintenanceMessage:
-          typeof data.maintenanceMessage === "string" &&
-          data.maintenanceMessage.trim()
-            ? data.maintenanceMessage.trim()
-            : defaults.maintenanceMessage
+      [
+        "wednesday",
+        "MIERCURI"
+      ],
 
-      };
+      [
+        "thursday",
+        "JOI"
+      ],
 
-    }
+      [
+        "friday",
+        "VINERI"
+      ]
 
-    catch (error) {
-
-      console.error(
-        "Eroare setări site:",
-        error
-      );
-
-      return defaults;
-
-    }
-
-  }
+    ];
 
 
-  function applySiteSettings(
-    settings
-  ) {
+    function normalizePublicSchedule(
+      data
+    ) {
 
-    const siteName =
-      settings.siteName;
-
-
-    document.title =
-      "Școală | " +
-      siteName;
+      const result = {};
 
 
-    document.getElementById(
-      "sideBrandName"
-    ).textContent =
-      siteName;
+      SCHEDULE_DAYS.forEach(
+        ([key]) => {
+
+          const source =
+            Array.isArray(
+              data?.[key]
+            )
+              ? data[key]
+              : DEFAULT_SCHEDULE[key];
 
 
-    document.getElementById(
-      "sideLogo"
-    ).alt =
-      siteName;
+          result[key] =
+            Array.from(
+              {
+                length: 7
+              },
+              (_, index) => {
+
+                const value =
+                  source[index];
 
 
-    document.getElementById(
-      "menuLabel"
-    ).textContent =
-      siteName.toUpperCase();
+                return typeof value === "string"
+                  ? value.trim()
+                  : "";
 
+              }
+            );
 
-    document.getElementById(
-      "sideFooter"
-    ).textContent =
-      "© 2026 " +
-      siteName;
-
-
-    document.getElementById(
-      "backButton"
-    ).textContent =
-      "← Înapoi la " +
-      siteName;
-
-
-    document.getElementById(
-      "footerBrand"
-    ).textContent =
-      "© 2026 " +
-      siteName;
-
-
-    document.getElementById(
-      "maintenanceTitle"
-    ).textContent =
-      siteName;
-
-
-    document.getElementById(
-      "maintenanceText"
-    ).textContent =
-      settings.maintenanceMessage;
-
-
-    document.getElementById(
-      "maintenanceLogo"
-    ).alt =
-      siteName;
-
-  }
-
-
-  function showMaintenance(
-    settings
-  ) {
-
-    siteContent.style.display =
-      "none";
-
-
-    maintenancePage.style.display =
-      "flex";
-
-
-    pageLoading.style.display =
-      "none";
-
-  }
-
-
-  /* =========================
-     FAVORITE
-  ========================= */
-
-  function watchFavorites(uid) {
-
-    const favoritesRef =
-      collection(
-        db,
-        "users",
-        uid,
-        "favorites"
+        }
       );
 
 
-    unsubscribeFavorites =
-      onSnapshot(
-        favoritesRef,
+      return result;
 
-        snapshot => {
-
-          const ids =
-            new Set();
+    }
 
 
-          snapshot.forEach(
-            favoriteSnapshot => {
+    function renderPublicSchedule(
+      schedule
+    ) {
 
-              ids.add(
-                favoriteSnapshot.id
+      scheduleBody.innerHTML =
+        "";
+
+
+      SCHEDULE_DAYS.forEach(
+        ([key, dayName]) => {
+
+          const row =
+            document.createElement(
+              "tr"
+            );
+
+
+          const dayCell =
+            document.createElement(
+              "td"
+            );
+
+
+          dayCell.className =
+            "day";
+
+
+          dayCell.textContent =
+            dayName;
+
+
+          row.appendChild(
+            dayCell
+          );
+
+
+          schedule[key].forEach(
+            subject => {
+
+              const cell =
+                document.createElement(
+                  "td"
+                );
+
+
+              if (subject) {
+
+                cell.className =
+                  "subject";
+
+
+                const name =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                name.className =
+                  "subject-name";
+
+
+                name.textContent =
+                  subject;
+
+
+                cell.appendChild(
+                  name
+                );
+
+              }
+
+              else {
+
+                cell.className =
+                  "empty-cell";
+
+
+                cell.textContent =
+                  "—";
+
+              }
+
+
+              row.appendChild(
+                cell
               );
 
             }
           );
 
 
-          favoriteIds =
-            ids;
-
-
-          updateFavoriteButtons();
-
-        },
-
-        error => {
-
-          console.error(
-            "Eroare favorite:",
-            error
+          scheduleBody.appendChild(
+            row
           );
 
         }
       );
 
-  }
+    }
 
 
-  function updateFavoriteButtons() {
+    async function loadPublicSchedule() {
 
-    document
-      .querySelectorAll(
-        ".favorite-button"
-      )
-      .forEach(button => {
+      try {
 
-        const favoriteId =
-          button.dataset.favoriteId;
-
-
-        const active =
-          favoriteIds.has(
-            favoriteId
+        const snapshot =
+          await getDoc(
+            doc(
+              db,
+              "schoolSchedule",
+              "main"
+            )
           );
 
 
-        button.classList.toggle(
-          "active",
-          active
+        if (
+          snapshot.exists()
+        ) {
+
+          renderPublicSchedule(
+            normalizePublicSchedule(
+              snapshot.data()
+            )
+          );
+
+        }
+
+        else {
+
+          renderPublicSchedule(
+            DEFAULT_SCHEDULE
+          );
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Eroare la încărcarea orarului:",
+          error
         );
 
 
-        button.textContent =
-          active
-            ? "♥"
-            : "♡";
-
-
-        button.title =
-          active
-            ? "Elimină din Favorite"
-            : "Adaugă la Favorite";
-
-
-        button.setAttribute(
-          "aria-label",
-          button.title
+        renderPublicSchedule(
+          DEFAULT_SCHEDULE
         );
 
-      });
+      }
 
-  }
+    }    /* =========================
+       SETĂRI SITE + MENTENANȚĂ
+    ========================= */
+
+    async function loadSiteSettings() {
+
+      try {
+
+        const settingsSnapshot =
+          await getDoc(
+            doc(
+              db,
+              "settings",
+              "site"
+            )
+          );
 
 
-  /* =========================
-     FAVORIT ORAR
-  ========================= */
-
-  scheduleFavoriteButton
-    .addEventListener(
-      "click",
-      async () => {
-
-        if (!currentUser) {
-
-          window.location.href =
-            "/login/?next=/scoala/";
+        if (
+          !settingsSnapshot.exists()
+        ) {
 
           return;
 
         }
 
 
-        const favoriteId =
-          "school_schedule_7d";
+        const settings =
+          settingsSnapshot.data();
 
+
+        if (
+          settings.siteName
+        ) {
+
+          document.title =
+            `Școală | ${settings.siteName}`;
+
+        }
+
+
+        if (
+          settings.maintenance === true &&
+          currentUser?.uid !== ADMIN_UID
+        ) {
+
+          maintenanceMessage.textContent =
+            settings.maintenanceMessage ||
+            "Site-ul este momentan în mentenanță. Revenim în curând.";
+
+
+          maintenanceScreen.classList.add(
+            "show"
+          );
+
+        }
+
+        else {
+
+          maintenanceScreen.classList.remove(
+            "show"
+          );
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Nu am putut încărca setările site-ului:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =========================
+       AUTH
+    ========================= */
+
+    onAuthStateChanged(
+      auth,
+      async user => {
+
+        currentUser =
+          user;
+
+
+        if (!user) {
+
+          authLink.textContent =
+            "Login";
+
+
+          authLink.href =
+            "/login/?next=/scoala/";
+
+        }
+
+        else if (
+          user.uid === ADMIN_UID
+        ) {
+
+          authLink.textContent =
+            "Vlad";
+
+
+          authLink.href =
+            "/admin/";
+
+        }
+
+        else {
+
+          const displayName =
+            user.displayName?.trim();
+
+
+          const emailName =
+            user.email
+              ? user.email.split("@")[0]
+              : "Cont";
+
+
+          authLink.textContent =
+            displayName ||
+            emailName;
+
+
+          authLink.href =
+            "/cont/";
+
+        }
+
+
+        await loadSiteSettings();
+
+
+        await loadScheduleFavoriteState();
+
+
+        loadMaterials();
+
+      }
+    );
+
+
+    /* =========================
+       FAVORIT ORAR
+    ========================= */
+
+    const SCHEDULE_FAVORITE_ID =
+      "school_schedule_7d";
+
+
+    async function loadScheduleFavoriteState() {
+
+      if (!currentUser) {
+
+        scheduleFavoriteButton.classList.remove(
+          "active"
+        );
+
+
+        scheduleFavoriteButton.textContent =
+          "♡ Adaugă la favorite";
+
+
+        return;
+
+      }
+
+
+      try {
 
         const favoriteRef =
           doc(
@@ -1575,8 +1459,68 @@
             "users",
             currentUser.uid,
             "favorites",
-            favoriteId
+            SCHEDULE_FAVORITE_ID
           );
+
+
+        const favoriteSnapshot =
+          await getDoc(
+            favoriteRef
+          );
+
+
+        if (
+          favoriteSnapshot.exists()
+        ) {
+
+          scheduleFavoriteButton.classList.add(
+            "active"
+          );
+
+
+          scheduleFavoriteButton.textContent =
+            "♥ În favorite";
+
+        }
+
+        else {
+
+          scheduleFavoriteButton.classList.remove(
+            "active"
+          );
+
+
+          scheduleFavoriteButton.textContent =
+            "♡ Adaugă la favorite";
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Nu am putut verifica favoritul pentru orar:",
+          error
+        );
+
+      }
+
+    }
+
+
+    scheduleFavoriteButton.addEventListener(
+      "click",
+      async () => {
+
+        if (!currentUser) {
+
+          location.href =
+            "/login/?next=/scoala/";
+
+          return;
+
+        }
 
 
         scheduleFavoriteButton.disabled =
@@ -1585,17 +1529,42 @@
 
         try {
 
+          const favoriteRef =
+            doc(
+              db,
+              "users",
+              currentUser.uid,
+              "favorites",
+              SCHEDULE_FAVORITE_ID
+            );
+
+
+          const favoriteSnapshot =
+            await getDoc(
+              favoriteRef
+            );
+
+
           if (
-            favoriteIds.has(
-              favoriteId
-            )
+            favoriteSnapshot.exists()
           ) {
 
             await deleteDoc(
               favoriteRef
             );
 
-          } else {
+
+            scheduleFavoriteButton.classList.remove(
+              "active"
+            );
+
+
+            scheduleFavoriteButton.textContent =
+              "♡ Adaugă la favorite";
+
+          }
+
+          else {
 
             await setDoc(
               favoriteRef,
@@ -1620,6 +1589,15 @@
               }
             );
 
+
+            scheduleFavoriteButton.classList.add(
+              "active"
+            );
+
+
+            scheduleFavoriteButton.textContent =
+              "♥ În favorite";
+
           }
 
         }
@@ -1627,12 +1605,13 @@
         catch (error) {
 
           console.error(
+            "Nu am putut modifica favoritul:",
             error
           );
 
 
           alert(
-            "Nu am putut modifica Favoritele."
+            "Nu am putut modifica favoritele."
           );
 
         }
@@ -1648,582 +1627,429 @@
     );
 
 
-  /* =========================
-     FAVORIT MATERIAL
-  ========================= */
+    /* =========================
+       MATERIALE
+    ========================= */
 
-  async function toggleFavorite(
-    button,
-    materialId,
-    data
-  ) {
-
-    if (!currentUser) {
-
-      window.location.href =
-        "/login/?next=/scoala/";
-
-      return;
-
-    }
+    let unsubscribeMaterials =
+      null;
 
 
-    const favoriteId =
-      "school_" +
-      materialId;
-
-
-    const favoriteRef =
-      doc(
-        db,
-        "users",
-        currentUser.uid,
-        "favorites",
-        favoriteId
-      );
-
-
-    button.disabled =
-      true;
-
-
-    try {
+    function loadMaterials() {
 
       if (
-        favoriteIds.has(
-          favoriteId
-        )
+        unsubscribeMaterials
       ) {
 
-        await deleteDoc(
-          favoriteRef
+        unsubscribeMaterials();
+
+        unsubscribeMaterials =
+          null;
+
+      }
+
+
+      const materialsQuery =
+        query(
+          collection(
+            db,
+            "schoolMaterials"
+          ),
+          orderBy(
+            "createdAt",
+            "desc"
+          )
         );
 
-      } else {
 
-        await setDoc(
-          favoriteRef,
-          {
-            type:
-              "school",
+      unsubscribeMaterials =
+        onSnapshot(
+          materialsQuery,
 
-            sourceId:
-              materialId,
+          snapshot => {
 
-            title:
-              data.title ||
-              "Material",
+            materials.innerHTML =
+              "";
 
-            description:
-              data.description ||
-              "",
 
-            url:
-              getSafeUrl(
-                data.url
-              ) || "",
+            if (
+              snapshot.empty
+            ) {
 
-            fileName:
-              data.fileName ||
-              "",
+              materials.innerHTML =
+                `
+                  <div
+                    class="empty"
+                    style="grid-column:1/-1"
+                  >
+                    Momentan nu există materiale.
+                  </div>
+                `;
 
-            createdAt:
-              serverTimestamp()
+
+              return;
+
+            }
+
+
+            snapshot.forEach(
+              item => {
+
+                const data =
+                  item.data();
+
+
+                const card =
+                  document.createElement(
+                    "article"
+                  );
+
+
+                card.className =
+                  "material-card";
+
+
+                const title =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                title.className =
+                  "material-title";
+
+
+                title.textContent =
+                  data.title ||
+                  "Fără titlu";
+
+
+                const description =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                description.className =
+                  "material-description";
+
+
+                description.textContent =
+                  data.description ||
+                  "Material pentru școală.";
+
+
+                const actions =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                actions.className =
+                  "material-actions";
+
+
+                const open =
+                  document.createElement(
+                    "a"
+                  );
+
+
+                open.className =
+                  "material-open";
+
+
+                open.href =
+                  data.url ||
+                  "#";
+
+
+                open.target =
+                  "_blank";
+
+
+                open.rel =
+                  "noopener noreferrer";
+
+
+                open.textContent =
+                  "Deschide";
+
+
+                const favorite =
+                  document.createElement(
+                    "button"
+                  );
+
+
+                favorite.className =
+                  "material-favorite";
+
+
+                favorite.type =
+                  "button";
+
+
+                favorite.textContent =
+                  "♡ Favorite";
+
+
+                actions.appendChild(
+                  open
+                );
+
+
+                actions.appendChild(
+                  favorite
+                );
+
+
+                card.appendChild(
+                  title
+                );
+
+
+                card.appendChild(
+                  description
+                );
+
+
+                card.appendChild(
+                  actions
+                );
+
+
+                materials.appendChild(
+                  card
+                );
+
+
+                setupMaterialFavorite(
+                  favorite,
+                  item.id,
+                  data
+                );
+
+              }
+            );
+
+          },
+
+          error => {
+
+            console.error(
+              "Nu am putut încărca materialele:",
+              error
+            );
+
+
+            materials.innerHTML =
+              `
+                <div
+                  class="empty"
+                  style="grid-column:1/-1"
+                >
+                  Nu am putut încărca materialele.
+                </div>
+              `;
+
           }
         );
 
-      }
-
     }
 
-    catch (error) {
 
-      console.error(
-        error
-      );
+    /* =========================
+       FAVORITE MATERIALE
+    ========================= */
 
+    async function setupMaterialFavorite(
+      button,
+      materialId,
+      data
+    ) {
 
-      alert(
-        "Nu am putut modifica Favoritele."
-      );
-
-    }
-
-    finally {
-
-      button.disabled =
-        false;
-
-    }
-
-  }
+      const favoriteId =
+        `school_${materialId}`;
 
 
-  /* =========================
-     LOGOUT
-  ========================= */
+      if (!currentUser) {
 
-  logoutButton.addEventListener(
-    "click",
-    async () => {
-
-      try {
-
-        await signOut(
-          auth
+        button.classList.remove(
+          "active"
         );
 
 
-        window.location.href =
-          "/";
-
-      }
-
-      catch (error) {
-
-        console.error(
-          error
-        );
-
-      }
-
-    }
-  );
+        button.textContent =
+          "♡ Favorite";
 
 
-  /* =========================
-     URL SIGUR
-  ========================= */
+        button.onclick =
+          () => {
 
-  function getSafeUrl(value) {
+            location.href =
+              "/login/?next=/scoala/";
 
-    if (!value) {
-      return null;
-    }
+          };
 
-
-    try {
-
-      const materialUrl =
-        new URL(value);
-
-
-      if (
-        materialUrl.protocol === "https:" ||
-        materialUrl.protocol === "http:"
-      ) {
-
-        return materialUrl.href;
-
-      }
-
-    }
-
-    catch {}
-
-
-    return null;
-
-  }
-
-
-  /* =========================
-     MATERIALE FIRESTORE
-  ========================= */
-
-  const materialsQuery =
-    query(
-      collection(
-        db,
-        "schoolMaterials"
-      ),
-      orderBy(
-        "createdAt",
-        "desc"
-      )
-    );
-
-
-  onSnapshot(
-
-    materialsQuery,
-
-    snapshot => {
-
-      materialsList.innerHTML =
-        "";
-
-
-      if (snapshot.empty) {
-
-        materialsList.innerHTML = `
-          <div class="materials">
-
-            <div class="materials-icon">
-              📂
-            </div>
-
-            <h3>
-              Momentan nu există materiale.
-            </h3>
-
-            <p>
-              Proiectele și materialele pentru școală vor apărea aici.
-            </p>
-
-          </div>
-        `;
 
         return;
 
       }
 
 
-      snapshot.forEach(
-        documentSnapshot => {
-
-          const data =
-            documentSnapshot.data();
-
-
-          const materialId =
-            documentSnapshot.id;
-
-
-          const favoriteId =
-            "school_" +
-            materialId;
+      const favoriteRef =
+        doc(
+          db,
+          "users",
+          currentUser.uid,
+          "favorites",
+          favoriteId
+        );
 
 
-          const card =
-            document.createElement(
-              "div"
-            );
+      try {
 
-
-          card.className =
-            "material-card";
-
-
-          const info =
-            document.createElement(
-              "div"
-            );
-
-
-          info.className =
-            "material-info";
-
-
-          const title =
-            document.createElement(
-              "div"
-            );
-
-
-          title.className =
-            "material-title";
-
-
-          title.textContent =
-            data.title ||
-            "Material";
-
-
-          info.appendChild(
-            title
+        const favoriteSnapshot =
+          await getDoc(
+            favoriteRef
           );
 
 
-          if (data.description) {
+        if (
+          favoriteSnapshot.exists()
+        ) {
 
-            const description =
-              document.createElement(
-                "div"
-              );
-
-
-            description.className =
-              "material-description";
-
-
-            description.textContent =
-              data.description;
-
-
-            info.appendChild(
-              description
-            );
-
-          }
-
-
-          const actions =
-            document.createElement(
-              "div"
-            );
-
-
-          actions.className =
-            "material-actions";
-
-
-          const favoriteButton =
-            document.createElement(
-              "button"
-            );
-
-
-          favoriteButton.className =
-            "favorite-button";
-
-
-          favoriteButton.type =
-            "button";
-
-
-          favoriteButton.dataset.favoriteId =
-            favoriteId;
-
-
-          favoriteButton.addEventListener(
-            "click",
-            () => {
-
-              toggleFavorite(
-                favoriteButton,
-                materialId,
-                data
-              );
-
-            }
+          button.classList.add(
+            "active"
           );
-
-
-          actions.appendChild(
-            favoriteButton
-          );
-
-
-          const button =
-            document.createElement(
-              "a"
-            );
-
-
-          button.className =
-            "material-button";
 
 
           button.textContent =
-            "Deschide";
-
-
-          const safeUrl =
-            getSafeUrl(
-              data.url
-            );
-
-
-          if (safeUrl) {
-
-            button.href =
-              safeUrl;
-
-
-            button.target =
-              "_blank";
-
-
-            button.rel =
-              "noopener noreferrer";
-
-          } else {
-
-            button.removeAttribute(
-              "href"
-            );
-
-
-            button.textContent =
-              "Link indisponibil";
-
-          }
-
-
-          actions.appendChild(
-            button
-          );
-
-
-          card.appendChild(
-            info
-          );
-
-
-          card.appendChild(
-            actions
-          );
-
-
-          materialsList.appendChild(
-            card
-          );
+            "♥ În favorite";
 
         }
-      );
-
-
-      updateFavoriteButtons();
-
-    },
-
-
-    error => {
-
-      console.error(
-        error
-      );
-
-
-      materialsList.innerHTML = `
-        <div class="materials">
-
-          <div class="materials-icon">
-            ⚠️
-          </div>
-
-          <h3>
-            Nu am putut încărca materialele.
-          </h3>
-
-          <p>
-            Încearcă din nou mai târziu.
-          </p>
-
-        </div>
-      `;
-
-    }
-
-  );
-
-
-  /* =========================
-     MENIU
-  ========================= */
-
-  const openMenuButton =
-    document.getElementById(
-      "openMenu"
-    );
-
-
-  const closeMenuButton =
-    document.getElementById(
-      "closeMenu"
-    );
-
-
-  const sideMenu =
-    document.getElementById(
-      "sideMenu"
-    );
-
-
-  const menuOverlay =
-    document.getElementById(
-      "menuOverlay"
-    );
-
-
-  function openMenu() {
-
-    sideMenu.classList.add(
-      "active"
-    );
-
-
-    menuOverlay.classList.add(
-      "active"
-    );
-
-
-    document.body.classList.add(
-      "menu-open"
-    );
-
-  }
-
-
-  function closeMenu() {
-
-    sideMenu.classList.remove(
-      "active"
-    );
-
-
-    menuOverlay.classList.remove(
-      "active"
-    );
-
-
-    document.body.classList.remove(
-      "menu-open"
-    );
-
-  }
-
-
-  openMenuButton.addEventListener(
-    "click",
-    openMenu
-  );
-
-
-  closeMenuButton.addEventListener(
-    "click",
-    closeMenu
-  );
-
-
-  menuOverlay.addEventListener(
-    "click",
-    closeMenu
-  );
-
-
-  document
-    .querySelectorAll(
-      ".menu-link"
-    )
-    .forEach(link => {
-
-      link.addEventListener(
-        "click",
-        closeMenu
-      );
-
-    });
-
-
-  document.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key ===
-        "Escape"
-      ) {
-
-        closeMenu();
 
       }
 
-    }
-  );
+      catch (error) {
 
-</script>
+        console.error(
+          "Nu am putut verifica favoritul:",
+          error
+        );
+
+      }
+
+
+      button.onclick =
+        async () => {
+
+          button.disabled =
+            true;
+
+
+          try {
+
+            const favoriteSnapshot =
+              await getDoc(
+                favoriteRef
+              );
+
+
+            if (
+              favoriteSnapshot.exists()
+            ) {
+
+              await deleteDoc(
+                favoriteRef
+              );
+
+
+              button.classList.remove(
+                "active"
+              );
+
+
+              button.textContent =
+                "♡ Favorite";
+
+            }
+
+            else {
+
+              await setDoc(
+                favoriteRef,
+                {
+                  type:
+                    "school",
+
+                  sourceId:
+                    materialId,
+
+                  title:
+                    data.title ||
+                    "Material școală",
+
+                  description:
+                    data.description ||
+                    "",
+
+                  url:
+                    data.url ||
+                    "/scoala/",
+
+                  createdAt:
+                    serverTimestamp()
+                }
+              );
+
+
+              button.classList.add(
+                "active"
+              );
+
+
+              button.textContent =
+                "♥ În favorite";
+
+            }
+
+          }
+
+          catch (error) {
+
+            console.error(
+              "Nu am putut modifica favoritul:",
+              error
+            );
+
+
+            alert(
+              "Nu am putut modifica favoritele."
+            );
+
+          }
+
+          finally {
+
+            button.disabled =
+              false;
+
+          }
+
+        };
+
+    }
+
+
+    /* =========================
+       PORNIRE ORAR
+    ========================= */
+
+    loadPublicSchedule();
+
+  </script>
 
 </body>
 </html>
