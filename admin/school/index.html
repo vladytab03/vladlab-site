@@ -69,7 +69,7 @@
     }
 
     main {
-      width: min(1000px, 90%);
+      width: min(1200px, 92%);
       margin: auto;
       padding: 55px 0 80px;
     }
@@ -107,6 +107,14 @@
     .panel h2 {
       margin-bottom: 22px;
       font-size: 20px;
+    }
+
+    .panel-description {
+      color: #7f899a;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: -12px;
+      margin-bottom: 22px;
     }
 
     .field {
@@ -194,6 +202,129 @@
       margin: 45px 0 18px;
       font-size: 21px;
     }
+
+    /* =========================
+       EDITOR ORAR
+    ========================= */
+
+    .schedule-wrapper {
+      overflow-x: auto;
+      border: 1px solid #252e3d;
+      border-radius: 13px;
+      margin-bottom: 20px;
+    }
+
+    .schedule-table {
+      width: 100%;
+      min-width: 1100px;
+      border-collapse: collapse;
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+      border-right: 1px solid #252e3d;
+      border-bottom: 1px solid #252e3d;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .schedule-table th:last-child,
+    .schedule-table td:last-child {
+      border-right: 0;
+    }
+
+    .schedule-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .schedule-table thead th {
+      background: #111824;
+      color: #8d9aaf;
+      font-size: 12px;
+    }
+
+    .schedule-table .day-cell {
+      min-width: 105px;
+      background: #111824;
+      color: #8eb0ff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .schedule-input {
+      min-width: 125px;
+      padding: 10px 8px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .schedule-time {
+      display: block;
+      margin-top: 4px;
+      color: #657188;
+      font-size: 10px;
+      font-weight: normal;
+    }
+
+    .schedule-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .schedule-actions .primary {
+      width: auto;
+      min-width: 190px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .secondary {
+      padding: 12px 18px;
+      border: 1px solid #303a4e;
+      border-radius: 10px;
+      background: #151c29;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .secondary:hover {
+      background: #1c2535;
+      border-color: #5b8cff;
+    }
+
+    #scheduleStatus {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    #scheduleStatus.ok {
+      display: block;
+      color: #75e4a4;
+      background: rgba(67,211,126,.08);
+      border: 1px solid rgba(67,211,126,.2);
+    }
+
+    #scheduleStatus.error {
+      display: block;
+      color: #ff9292;
+      background: rgba(255,80,80,.08);
+      border: 1px solid rgba(255,80,80,.2);
+    }
+
+    .schedule-loading {
+      color: #7f899a;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    /* =========================
+       MATERIALE
+    ========================= */
 
     #materials {
       display: grid;
@@ -310,6 +441,15 @@
       h1 {
         font-size: 34px;
       }
+
+      .schedule-actions {
+        flex-direction: column;
+      }
+
+      .schedule-actions .primary,
+      .secondary {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -334,18 +474,118 @@
   <h1>🎓 Școală</h1>
 
   <p class="subtitle">
-    Încarcă și gestionează materialele afișate pe pagina Școală.
+    Modifică orarul și gestionează materialele afișate pe pagina Școală.
   </p>
 
 
+  <!-- =========================
+       EDITOR ORAR
+  ========================= -->
+
   <div class="panel">
 
-    <h2>Adaugă material</h2>
+    <h2>📅 Modifică orarul</h2>
+
+    <p class="panel-description">
+      Modifică materiile de mai jos și apasă „Salvează orarul”.
+      Pentru o oră liberă, lasă câmpul gol.
+    </p>
+
+    <div id="scheduleLoading" class="schedule-loading">
+      Se încarcă orarul...
+    </div>
+
+    <div class="schedule-wrapper">
+
+      <table class="schedule-table">
+
+        <thead>
+          <tr>
+            <th>ZI</th>
+
+            <th>
+              Ora 0
+              <span class="schedule-time">12:00 – 12:50</span>
+            </th>
+
+            <th>
+              Ora 1
+              <span class="schedule-time">13:00 – 13:50</span>
+            </th>
+
+            <th>
+              Ora 2
+              <span class="schedule-time">14:00 – 14:50</span>
+            </th>
+
+            <th>
+              Ora 3
+              <span class="schedule-time">15:00 – 15:50</span>
+            </th>
+
+            <th>
+              Ora 4
+              <span class="schedule-time">16:00 – 16:50</span>
+            </th>
+
+            <th>
+              Ora 5
+              <span class="schedule-time">17:00 – 17:50</span>
+            </th>
+
+            <th>
+              Ora 6
+              <span class="schedule-time">18:00 – 18:50</span>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody id="scheduleEditor"></tbody>
+
+      </table>
+
+    </div>
+
+    <div class="schedule-actions">
+
+      <button
+        id="saveScheduleButton"
+        class="primary"
+        type="button"
+      >
+        💾 Salvează orarul
+      </button>
+
+      <button
+        id="resetScheduleButton"
+        class="secondary"
+        type="button"
+      >
+        ↺ Orarul inițial
+      </button>
+
+    </div>
+
+    <div id="scheduleStatus"></div>
+
+  </div>
+
+
+  <!-- =========================
+       ADAUGĂ MATERIAL
+  ========================= -->
+
+  <div class="panel">
+
+    <h2>📚 Adaugă material</h2>
 
     <form id="form">
 
       <div class="field">
-        <label for="title">Titlu</label>
+
+        <label for="title">
+          Titlu
+        </label>
 
         <input
           id="title"
@@ -353,19 +593,27 @@
           placeholder="Ex: Fișă matematică"
           required
         >
+
       </div>
 
       <div class="field">
-        <label for="description">Descriere</label>
+
+        <label for="description">
+          Descriere
+        </label>
 
         <textarea
           id="description"
           placeholder="Descriere opțională..."
         ></textarea>
+
       </div>
 
       <div class="field">
-        <label for="file">Fișier</label>
+
+        <label for="file">
+          Fișier
+        </label>
 
         <input
           id="file"
@@ -376,6 +624,7 @@
         <div class="file-note">
           Alege materialul direct de pe calculator.
         </div>
+
       </div>
 
       <button
@@ -398,7 +647,9 @@
   </h2>
 
   <div id="materials">
-    <div class="empty">Se încarcă...</div>
+    <div class="empty">
+      Se încarcă...
+    </div>
   </div>
 
 </main>
@@ -415,10 +666,12 @@
     initializeApp
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
+
   import {
     getAuth,
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
 
   import {
     getFirestore,
@@ -426,6 +679,8 @@
     addDoc,
     deleteDoc,
     doc,
+    getDoc,
+    setDoc,
     onSnapshot,
     serverTimestamp,
     query,
@@ -434,13 +689,28 @@
 
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
-    authDomain: "vladlab-11887.firebaseapp.com",
-    projectId: "vladlab-11887",
-    storageBucket: "vladlab-11887.firebasestorage.app",
-    messagingSenderId: "741561223788",
-    appId: "1:741561223788:web:88ad3e62db87e32551a649",
-    measurementId: "G-9XN16BVYRN"
+
+    apiKey:
+      "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+
+    authDomain:
+      "vladlab-11887.firebaseapp.com",
+
+    projectId:
+      "vladlab-11887",
+
+    storageBucket:
+      "vladlab-11887.firebasestorage.app",
+
+    messagingSenderId:
+      "741561223788",
+
+    appId:
+      "1:741561223788:web:88ad3e62db87e32551a649",
+
+    measurementId:
+      "G-9XN16BVYRN"
+
   };
 
 
@@ -459,8 +729,10 @@
   const app =
     initializeApp(firebaseConfig);
 
+
   const auth =
     getAuth(app);
+
 
   const db =
     getFirestore(app);
@@ -469,42 +741,563 @@
   const form =
     document.getElementById("form");
 
+
   const addButton =
     document.getElementById("addButton");
+
 
   const materials =
     document.getElementById("materials");
 
+
   const status =
     document.getElementById("status");
 
+
   const fileInput =
     document.getElementById("file");
+
+
+  const scheduleEditor =
+    document.getElementById("scheduleEditor");
+
+
+  const scheduleLoading =
+    document.getElementById("scheduleLoading");
+
+
+  const scheduleStatus =
+    document.getElementById("scheduleStatus");
+
+
+  const saveScheduleButton =
+    document.getElementById("saveScheduleButton");
+
+
+  const resetScheduleButton =
+    document.getElementById("resetScheduleButton");
 
 
   let ready = false;
 
 
   /* =========================
+     ORAR IMPLICIT
+  ========================= */
+
+  const DEFAULT_SCHEDULE = {
+
+    monday: [
+      "Istorie",
+      "Limba engleză",
+      "Chimie",
+      "Matematică",
+      "Limba română",
+      "Consiliere și orientare",
+      ""
+    ],
+
+    tuesday: [
+      "Limba franceză",
+      "Geografie",
+      "Informatică și TIC",
+      "Educație tehnologică",
+      "Biologie",
+      "Educație fizică și sport",
+      "Educație muzicală"
+    ],
+
+    wednesday: [
+      "Limba română",
+      "Matematică",
+      "Educație pentru cetățenie democratică",
+      "Limba franceză",
+      "Educație fizică și sport",
+      "Fizică",
+      ""
+    ],
+
+    thursday: [
+      "",
+      "Matematică",
+      "CDS Ed. tehnologică",
+      "Limba română",
+      "Chimie",
+      "Limba engleză",
+      "Religie"
+    ],
+
+    friday: [
+      "Biologie",
+      "Matematică",
+      "Limba română",
+      "Fizică",
+      "Educație plastică",
+      "Limba latină",
+      ""
+    ]
+
+  };
+
+
+  const DAYS = [
+
+    {
+      key: "monday",
+      name: "LUNI"
+    },
+
+    {
+      key: "tuesday",
+      name: "MARȚI"
+    },
+
+    {
+      key: "wednesday",
+      name: "MIERCURI"
+    },
+
+    {
+      key: "thursday",
+      name: "JOI"
+    },
+
+    {
+      key: "friday",
+      name: "VINERI"
+    }
+
+  ];
+
+
+  /* =========================
      VERIFICARE ADMIN
   ========================= */
 
-  onAuthStateChanged(auth, user => {
+  onAuthStateChanged(
+    auth,
+    async user => {
 
-    if (!user) {
-      location.href = "/login/";
-      return;
+      if (!user) {
+
+        location.href =
+          "/login/?next=/admin/school/";
+
+        return;
+
+      }
+
+
+      if (user.uid !== ADMIN_UID) {
+
+        location.href =
+          "/cont/";
+
+        return;
+
+      }
+
+
+      ready = true;
+
+
+      await loadSchedule();
+
+
+      loadMaterials();
+
+    }
+  );
+
+
+  /* =========================
+     EDITOR ORAR
+  ========================= */
+
+  function normalizeSchedule(data) {
+
+    const result = {};
+
+
+    DAYS.forEach(day => {
+
+      const source =
+        Array.isArray(data?.[day.key])
+          ? data[day.key]
+          : DEFAULT_SCHEDULE[day.key];
+
+
+      result[day.key] =
+        Array.from(
+          { length: 7 },
+          (_, index) => {
+
+            const value =
+              source[index];
+
+            return typeof value === "string"
+              ? value
+              : "";
+
+          }
+        );
+
+    });
+
+
+    return result;
+
+  }
+
+
+  function renderSchedule(schedule) {
+
+    scheduleEditor.innerHTML =
+      "";
+
+
+    DAYS.forEach(day => {
+
+      const row =
+        document.createElement("tr");
+
+
+      const dayCell =
+        document.createElement("td");
+
+
+      dayCell.className =
+        "day-cell";
+
+
+      dayCell.textContent =
+        day.name;
+
+
+      row.appendChild(
+        dayCell
+      );
+
+
+      for (
+        let hour = 0;
+        hour < 7;
+        hour++
+      ) {
+
+        const cell =
+          document.createElement("td");
+
+
+        const input =
+          document.createElement("input");
+
+
+        input.type =
+          "text";
+
+
+        input.className =
+          "schedule-input";
+
+
+        input.dataset.day =
+          day.key;
+
+
+        input.dataset.hour =
+          String(hour);
+
+
+        input.value =
+          schedule[day.key][hour] || "";
+
+
+        input.placeholder =
+          "Oră liberă";
+
+
+        cell.appendChild(
+          input
+        );
+
+
+        row.appendChild(
+          cell
+        );
+
+      }
+
+
+      scheduleEditor.appendChild(
+        row
+      );
+
+    });
+
+  }
+
+
+  async function loadSchedule() {
+
+    scheduleLoading.style.display =
+      "block";
+
+
+    scheduleLoading.textContent =
+      "Se încarcă orarul...";
+
+
+    try {
+
+      const scheduleRef =
+        doc(
+          db,
+          "schoolSchedule",
+          "main"
+        );
+
+
+      const snapshot =
+        await getDoc(
+          scheduleRef
+        );
+
+
+      if (snapshot.exists()) {
+
+        const schedule =
+          normalizeSchedule(
+            snapshot.data()
+          );
+
+
+        renderSchedule(
+          schedule
+        );
+
+      } else {
+
+        renderSchedule(
+          DEFAULT_SCHEDULE
+        );
+
+
+        scheduleLoading.textContent =
+          "Nu exista încă un orar salvat în Firebase. Este afișat orarul actual.";
+
+        return;
+
+      }
+
+
+      scheduleLoading.style.display =
+        "none";
+
     }
 
-    if (user.uid !== ADMIN_UID) {
-      location.href = "/";
-      return;
+    catch (error) {
+
+      console.error(
+        "Eroare la încărcarea orarului:",
+        error
+      );
+
+
+      renderSchedule(
+        DEFAULT_SCHEDULE
+      );
+
+
+      scheduleLoading.textContent =
+        "Nu am putut încărca orarul din Firebase. Este afișat orarul inițial.";
+
     }
 
-    ready = true;
-    loadMaterials();
+  }
 
-  });
+
+  function getScheduleFromEditor() {
+
+    const schedule = {};
+
+
+    DAYS.forEach(day => {
+
+      schedule[day.key] =
+        [];
+
+
+      for (
+        let hour = 0;
+        hour < 7;
+        hour++
+      ) {
+
+        const input =
+          document.querySelector(
+            `.schedule-input[data-day="${day.key}"][data-hour="${hour}"]`
+          );
+
+
+        schedule[day.key].push(
+          input
+            ? input.value.trim()
+            : ""
+        );
+
+      }
+
+    });
+
+
+    return schedule;
+
+  }
+
+
+  saveScheduleButton.addEventListener(
+    "click",
+    async () => {
+
+      if (!ready) {
+        return;
+      }
+
+
+      saveScheduleButton.disabled =
+        true;
+
+
+      resetScheduleButton.disabled =
+        true;
+
+
+      saveScheduleButton.textContent =
+        "Se salvează...";
+
+
+      try {
+
+        const schedule =
+          getScheduleFromEditor();
+
+
+        await setDoc(
+          doc(
+            db,
+            "schoolSchedule",
+            "main"
+          ),
+          {
+            ...schedule,
+
+            className:
+              "7D",
+
+            updatedAt:
+              serverTimestamp()
+          }
+        );
+
+
+        showScheduleStatus(
+          "Orarul a fost salvat cu succes.",
+          "ok"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showScheduleStatus(
+          "Nu am putut salva orarul.",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        saveScheduleButton.disabled =
+          false;
+
+
+        resetScheduleButton.disabled =
+          false;
+
+
+        saveScheduleButton.textContent =
+          "💾 Salvează orarul";
+
+      }
+
+    }
+  );
+
+
+  resetScheduleButton.addEventListener(
+    "click",
+    () => {
+
+      if (
+        !confirm(
+          "Vrei să pui în editor orarul inițial? Va trebui să apeși apoi „Salvează orarul” pentru a-l salva."
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      renderSchedule(
+        DEFAULT_SCHEDULE
+      );
+
+
+      showScheduleStatus(
+        "Orarul inițial a fost pus în editor. Apasă „Salvează orarul” pentru confirmare.",
+        "ok"
+      );
+
+    }
+  );
+
+
+  function showScheduleStatus(
+    text,
+    type
+  ) {
+
+    scheduleStatus.className =
+      type;
+
+
+    scheduleStatus.textContent =
+      text;
+
+
+    setTimeout(
+      () => {
+
+        scheduleStatus.className =
+          "";
+
+
+        scheduleStatus.textContent =
+          "";
+
+      },
+      5000
+    );
+
+  }
 
 
   /* =========================
@@ -513,54 +1306,68 @@
 
   function fileToBase64(file) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(
+      (resolve, reject) => {
 
-      const reader =
-        new FileReader();
-
-
-      reader.onload = () => {
-
-        const result =
-          String(reader.result || "");
-
-        const commaIndex =
-          result.indexOf(",");
+        const reader =
+          new FileReader();
 
 
-        if (commaIndex === -1) {
+        reader.onload =
+          () => {
 
-          reject(
-            new Error(
-              "Fișierul nu a putut fi citit."
-            )
-          );
-
-          return;
-        }
+            const result =
+              String(
+                reader.result || ""
+              );
 
 
-        resolve(
-          result.substring(commaIndex + 1)
+            const commaIndex =
+              result.indexOf(",");
+
+
+            if (
+              commaIndex === -1
+            ) {
+
+              reject(
+                new Error(
+                  "Fișierul nu a putut fi citit."
+                )
+              );
+
+              return;
+
+            }
+
+
+            resolve(
+              result.substring(
+                commaIndex + 1
+              )
+            );
+
+          };
+
+
+        reader.onerror =
+          () => {
+
+            reject(
+              new Error(
+                "Fișierul nu a putut fi citit."
+              )
+            );
+
+          };
+
+
+        reader.readAsDataURL(
+          file
         );
 
-      };
-
-
-      reader.onerror = () => {
-
-        reject(
-          new Error(
-            "Fișierul nu a putut fi citit."
-          )
-        );
-
-      };
-
-
-      reader.readAsDataURL(file);
-
-    });
+      }
+    );
 
   }
 
@@ -569,15 +1376,20 @@
      UPLOAD DRIVE
   ========================= */
 
-  async function uploadToDrive(file) {
+  async function uploadToDrive(
+    file
+  ) {
 
     const fileData =
-      await fileToBase64(file);
+      await fileToBase64(
+        file
+      );
 
 
     const payload = {
 
-      name: "VladLab Admin",
+      name:
+        "VladLab Admin",
 
       message:
         "Fișier adăugat din Admin → Școală",
@@ -599,7 +1411,8 @@
       await fetch(
         SCRIPT_URL,
         {
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
             "Content-Type":
@@ -607,7 +1420,9 @@
           },
 
           body:
-            JSON.stringify(payload)
+            JSON.stringify(
+              payload
+            )
         }
       );
 
@@ -639,6 +1454,7 @@
 
 
     return {
+
       fileId:
         result.fileId,
 
@@ -649,6 +1465,7 @@
       url:
         result.downloadUrl ||
         result.fileUrl
+
     };
 
   }
@@ -664,7 +1481,10 @@
 
       event.preventDefault();
 
-      if (!ready) return;
+
+      if (!ready) {
+        return;
+      }
 
 
       const title =
@@ -685,7 +1505,10 @@
         fileInput.files[0];
 
 
-      if (!title || !file) {
+      if (
+        !title ||
+        !file
+      ) {
 
         showStatus(
           "Completează titlul și alege un fișier.",
@@ -693,10 +1516,14 @@
         );
 
         return;
+
       }
 
 
-      if (file.size > MAX_FILE_SIZE) {
+      if (
+        file.size >
+        MAX_FILE_SIZE
+      ) {
 
         showStatus(
           "Fișierul este prea mare. Maxim 10 MB.",
@@ -704,10 +1531,13 @@
         );
 
         return;
+
       }
 
 
-      addButton.disabled = true;
+      addButton.disabled =
+        true;
+
 
       addButton.textContent =
         "Se încarcă în Drive...";
@@ -716,7 +1546,9 @@
       try {
 
         const uploaded =
-          await uploadToDrive(file);
+          await uploadToDrive(
+            file
+          );
 
 
         addButton.textContent =
@@ -729,13 +1561,21 @@
             "schoolMaterials"
           ),
           {
-            title: title,
-            description: description,
-            url: uploaded.url,
+            title:
+              title,
+
+            description:
+              description,
+
+            url:
+              uploaded.url,
+
             driveFileId:
               uploaded.fileId,
+
             fileName:
               uploaded.fileName,
+
             createdAt:
               serverTimestamp()
           }
@@ -754,7 +1594,9 @@
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
 
         showStatus(
@@ -766,7 +1608,9 @@
 
       finally {
 
-        addButton.disabled = false;
+        addButton.disabled =
+          false;
+
 
         addButton.textContent =
           "⬆ Încarcă material";
@@ -778,7 +1622,7 @@
 
 
   /* =========================
-     ÎNCARCĂ LISTA
+     ÎNCARCĂ MATERIALELE
   ========================= */
 
   function loadMaterials() {
@@ -801,176 +1645,233 @@
 
       snapshot => {
 
-        materials.innerHTML = "";
+        materials.innerHTML =
+          "";
 
 
-        if (snapshot.empty) {
+        if (
+          snapshot.empty
+        ) {
 
           materials.innerHTML =
             '<div class="empty">Momentan nu există materiale adăugate din Admin.</div>';
 
           return;
+
         }
 
 
-        snapshot.forEach(item => {
+        snapshot.forEach(
+          item => {
 
-          const data =
-            item.data();
-
-
-          const card =
-            document.createElement("div");
-
-          card.className =
-            "material";
+            const data =
+              item.data();
 
 
-          const info =
-            document.createElement("div");
-
-          info.className =
-            "material-info";
-
-
-          const title =
-            document.createElement("div");
-
-          title.className =
-            "material-title";
-
-          title.textContent =
-            data.title ||
-            "Fără titlu";
+            const card =
+              document.createElement(
+                "div"
+              );
 
 
-          const description =
-            document.createElement("div");
-
-          description.className =
-            "material-description";
-
-          description.textContent =
-            data.description || "";
+            card.className =
+              "material";
 
 
-          const link =
-            document.createElement("a");
-
-          link.className =
-            "material-link";
-
-          link.href =
-            data.url || "#";
-
-          link.target =
-            "_blank";
-
-          link.rel =
-            "noopener noreferrer";
-
-          link.textContent =
-            data.fileName ||
-            data.url ||
-            "Deschide materialul";
+            const info =
+              document.createElement(
+                "div"
+              );
 
 
-          info.appendChild(title);
+            info.className =
+              "material-info";
 
 
-          if (data.description) {
+            const title =
+              document.createElement(
+                "div"
+              );
+
+
+            title.className =
+              "material-title";
+
+
+            title.textContent =
+              data.title ||
+              "Fără titlu";
+
+
+            const description =
+              document.createElement(
+                "div"
+              );
+
+
+            description.className =
+              "material-description";
+
+
+            description.textContent =
+              data.description ||
+              "";
+
+
+            const link =
+              document.createElement(
+                "a"
+              );
+
+
+            link.className =
+              "material-link";
+
+
+            link.href =
+              data.url ||
+              "#";
+
+
+            link.target =
+              "_blank";
+
+
+            link.rel =
+              "noopener noreferrer";
+
+
+            link.textContent =
+              data.fileName ||
+              data.url ||
+              "Deschide materialul";
+
 
             info.appendChild(
-              description
+              title
+            );
+
+
+            if (
+              data.description
+            ) {
+
+              info.appendChild(
+                description
+              );
+
+            }
+
+
+            info.appendChild(
+              link
+            );
+
+
+            const remove =
+              document.createElement(
+                "button"
+              );
+
+
+            remove.className =
+              "delete";
+
+
+            remove.type =
+              "button";
+
+
+            remove.textContent =
+              "Șterge";
+
+
+            remove.onclick =
+              async () => {
+
+                if (
+                  !confirm(
+                    `Ștergi „${
+                      data.title ||
+                      "materialul"
+                    }”?`
+                  )
+                ) {
+
+                  return;
+
+                }
+
+
+                remove.disabled =
+                  true;
+
+
+                remove.textContent =
+                  "Se șterge...";
+
+
+                try {
+
+                  await deleteDoc(
+                    doc(
+                      db,
+                      "schoolMaterials",
+                      item.id
+                    )
+                  );
+
+                }
+
+                catch (error) {
+
+                  console.error(
+                    error
+                  );
+
+
+                  alert(
+                    "Materialul nu a putut fi șters."
+                  );
+
+
+                  remove.disabled =
+                    false;
+
+
+                  remove.textContent =
+                    "Șterge";
+
+                }
+
+              };
+
+
+            card.appendChild(
+              info
+            );
+
+
+            card.appendChild(
+              remove
+            );
+
+
+            materials.appendChild(
+              card
             );
 
           }
-
-
-          info.appendChild(link);
-
-
-          const remove =
-            document.createElement(
-              "button"
-            );
-
-          remove.className =
-            "delete";
-
-          remove.type =
-            "button";
-
-          remove.textContent =
-            "Șterge";
-
-
-          remove.onclick =
-            async () => {
-
-              if (
-                !confirm(
-                  `Ștergi „${
-                    data.title ||
-                    "materialul"
-                  }”?`
-                )
-              ) {
-                return;
-              }
-
-
-              remove.disabled = true;
-
-              remove.textContent =
-                "Se șterge...";
-
-
-              try {
-
-                await deleteDoc(
-                  doc(
-                    db,
-                    "schoolMaterials",
-                    item.id
-                  )
-                );
-
-              }
-
-              catch (error) {
-
-                console.error(error);
-
-
-                alert(
-                  "Materialul nu a putut fi șters."
-                );
-
-
-                remove.disabled = false;
-
-                remove.textContent =
-                  "Șterge";
-
-              }
-
-            };
-
-
-          card.appendChild(info);
-
-          card.appendChild(remove);
-
-          materials.appendChild(card);
-
-        });
+        );
 
       },
 
       error => {
 
-        console.error(error);
+        console.error(
+          error
+        );
+
 
         materials.innerHTML =
           '<div class="empty">Nu am putut încărca materialele.</div>';
@@ -982,23 +1883,35 @@
 
 
   /* =========================
-     STATUS
+     STATUS MATERIALE
   ========================= */
 
-  function showStatus(text, type) {
+  function showStatus(
+    text,
+    type
+  ) {
 
-    status.className = type;
+    status.className =
+      type;
 
-    status.textContent = text;
+
+    status.textContent =
+      text;
 
 
-    setTimeout(() => {
+    setTimeout(
+      () => {
 
-      status.className = "";
+        status.className =
+          "";
 
-      status.textContent = "";
 
-    }, 5000);
+        status.textContent =
+          "";
+
+      },
+      5000
+    );
 
   }
 
