@@ -197,6 +197,23 @@
       padding: 55px 0 80px;
     }
 
+    /* BUTON ÎNAPOI LA SITE */
+    .back-to-site {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 24px;
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: .18s ease;
+    }
+
+    .back-to-site:hover {
+      color: #fff;
+    }
+
     .hero {
       margin-bottom: 35px;
     }
@@ -588,6 +605,11 @@
 
   <main>
 
+    <!-- ÎNAPOI LA SITE -->
+    <a class="back-to-site" href="/">
+      ← Înapoi la site
+    </a>
+
     <section class="hero">
 
       <h1>
@@ -599,7 +621,6 @@
       </p>
 
     </section>
-
 
     <section class="section">
 
@@ -629,57 +650,41 @@
 
               <tr>
 
-                <th>
-                  ZI
-                </th>
+                <th>ZI</th>
 
                 <th>
                   Ora 0
-                  <span class="time">
-                    12:00 – 12:50
-                  </span>
+                  <span class="time">12:00 – 12:50</span>
                 </th>
 
                 <th>
                   Ora 1
-                  <span class="time">
-                    13:00 – 13:50
-                  </span>
+                  <span class="time">13:00 – 13:50</span>
                 </th>
 
                 <th>
                   Ora 2
-                  <span class="time">
-                    14:00 – 14:50
-                  </span>
+                  <span class="time">14:00 – 14:50</span>
                 </th>
 
                 <th>
                   Ora 3
-                  <span class="time">
-                    15:00 – 15:50
-                  </span>
+                  <span class="time">15:00 – 15:50</span>
                 </th>
 
                 <th>
                   Ora 4
-                  <span class="time">
-                    16:00 – 16:50
-                  </span>
+                  <span class="time">16:00 – 16:50</span>
                 </th>
 
                 <th>
                   Ora 5
-                  <span class="time">
-                    17:00 – 17:50
-                  </span>
+                  <span class="time">17:00 – 17:50</span>
                 </th>
 
                 <th>
                   Ora 6
-                  <span class="time">
-                    18:00 – 18:50
-                  </span>
+                  <span class="time">18:00 – 18:50</span>
                 </th>
 
               </tr>
@@ -753,7 +758,6 @@
 
     </section>
 
-
     <section class="section">
 
       <div class="section-header">
@@ -805,7 +809,6 @@
       orderBy
     } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
-
     const firebaseConfig = {
 
       apiKey:
@@ -831,92 +834,76 @@
 
     };
 
-
     const ADMIN_UID =
       "tSvMc97QFgc35RwSkK7VRRsEIBv2";
-
 
     const app =
       initializeApp(
         firebaseConfig
       );
 
-
     const auth =
       getAuth(
         app
       );
-
 
     const db =
       getFirestore(
         app
       );
 
-
     const openMenu =
       document.getElementById(
         "openMenu"
       );
-
 
     const closeMenu =
       document.getElementById(
         "closeMenu"
       );
 
-
     const sideMenu =
       document.getElementById(
         "sideMenu"
       );
-
 
     const menuOverlay =
       document.getElementById(
         "menuOverlay"
       );
 
-
     const authLink =
       document.getElementById(
         "authLink"
       );
-
 
     const materials =
       document.getElementById(
         "materials"
       );
 
-
     const scheduleFavoriteButton =
       document.getElementById(
         "scheduleFavoriteButton"
       );
-
 
     const maintenanceScreen =
       document.getElementById(
         "maintenanceScreen"
       );
 
-
     const maintenanceMessage =
       document.getElementById(
         "maintenanceMessage"
       );
-
 
     const scheduleBody =
       document.getElementById(
         "scheduleBody"
       );
 
-
     let currentUser =
       null;
-
 
     /* =========================
        MENIU
@@ -938,7 +925,6 @@
 
     }
 
-
     function hideMenu() {
 
       sideMenu.classList.remove(
@@ -955,24 +941,20 @@
 
     }
 
-
     openMenu.addEventListener(
       "click",
       showMenu
     );
-
 
     closeMenu.addEventListener(
       "click",
       hideMenu
     );
 
-
     menuOverlay.addEventListener(
       "click",
       hideMenu
     );
-
 
     document.addEventListener(
       "keydown",
@@ -988,7 +970,6 @@
 
       }
     );
-
 
     /* =========================
        ORAR DEFAULT
@@ -1048,7 +1029,6 @@
 
     };
 
-
     const SCHEDULE_DAYS = [
 
       [
@@ -1078,13 +1058,11 @@
 
     ];
 
-
     function normalizePublicSchedule(
       data
     ) {
 
       const result = {};
-
 
       SCHEDULE_DAYS.forEach(
         ([key]) => {
@@ -1096,7 +1074,6 @@
               ? data[key]
               : DEFAULT_SCHEDULE[key];
 
-
           result[key] =
             Array.from(
               {
@@ -1106,7 +1083,6 @@
 
                 const value =
                   source[index];
-
 
                 return typeof value === "string"
                   ? value.trim()
@@ -1118,11 +1094,9 @@
         }
       );
 
-
       return result;
 
     }
-
 
     function renderPublicSchedule(
       schedule
@@ -1130,7 +1104,6 @@
 
       scheduleBody.innerHTML =
         "";
-
 
       SCHEDULE_DAYS.forEach(
         ([key, dayName]) => {
@@ -1140,25 +1113,20 @@
               "tr"
             );
 
-
           const dayCell =
             document.createElement(
               "td"
             );
 
-
           dayCell.className =
             "day";
-
 
           dayCell.textContent =
             dayName;
 
-
           row.appendChild(
             dayCell
           );
-
 
           schedule[key].forEach(
             subject => {
@@ -1168,26 +1136,21 @@
                   "td"
                 );
 
-
               if (subject) {
 
                 cell.className =
                   "subject";
-
 
                 const name =
                   document.createElement(
                     "div"
                   );
 
-
                 name.className =
                   "subject-name";
 
-
                 name.textContent =
                   subject;
-
 
                 cell.appendChild(
                   name
@@ -1200,12 +1163,10 @@
                 cell.className =
                   "empty-cell";
 
-
                 cell.textContent =
                   "—";
 
               }
-
 
               row.appendChild(
                 cell
@@ -1214,7 +1175,6 @@
             }
           );
 
-
           scheduleBody.appendChild(
             row
           );
@@ -1222,10 +1182,7 @@
         }
       );
 
-    }
-
-
-    async function loadPublicSchedule() {
+    }    async function loadPublicSchedule() {
 
       try {
 
@@ -1237,7 +1194,6 @@
               "main"
             )
           );
-
 
         if (
           snapshot.exists()
@@ -1268,14 +1224,15 @@
           error
         );
 
-
         renderPublicSchedule(
           DEFAULT_SCHEDULE
         );
 
       }
 
-    }    /* =========================
+    }
+
+    /* =========================
        SETĂRI SITE + MENTENANȚĂ
     ========================= */
 
@@ -1292,7 +1249,6 @@
             )
           );
 
-
         if (
           !settingsSnapshot.exists()
         ) {
@@ -1301,10 +1257,8 @@
 
         }
 
-
         const settings =
           settingsSnapshot.data();
-
 
         if (
           settings.siteName
@@ -1315,7 +1269,6 @@
 
         }
 
-
         if (
           settings.maintenance === true &&
           currentUser?.uid !== ADMIN_UID
@@ -1324,7 +1277,6 @@
           maintenanceMessage.textContent =
             settings.maintenanceMessage ||
             "Site-ul este momentan în mentenanță. Revenim în curând.";
-
 
           maintenanceScreen.classList.add(
             "show"
@@ -1353,7 +1305,6 @@
 
     }
 
-
     /* =========================
        AUTH
     ========================= */
@@ -1365,12 +1316,10 @@
         currentUser =
           user;
 
-
         if (!user) {
 
           authLink.textContent =
             "Login";
-
 
           authLink.href =
             "/login/?next=/scoala/";
@@ -1384,7 +1333,6 @@
           authLink.textContent =
             "Vlad";
 
-
           authLink.href =
             "/admin/";
 
@@ -1395,35 +1343,28 @@
           const displayName =
             user.displayName?.trim();
 
-
           const emailName =
             user.email
               ? user.email.split("@")[0]
               : "Cont";
 
-
           authLink.textContent =
             displayName ||
             emailName;
-
 
           authLink.href =
             "/cont/";
 
         }
 
-
         await loadSiteSettings();
 
-
         await loadScheduleFavoriteState();
-
 
         loadMaterials();
 
       }
     );
-
 
     /* =========================
        FAVORIT ORAR
@@ -1431,7 +1372,6 @@
 
     const SCHEDULE_FAVORITE_ID =
       "school_schedule_7d";
-
 
     async function loadScheduleFavoriteState() {
 
@@ -1441,15 +1381,12 @@
           "active"
         );
 
-
         scheduleFavoriteButton.textContent =
           "♡ Adaugă la favorite";
-
 
         return;
 
       }
-
 
       try {
 
@@ -1462,12 +1399,10 @@
             SCHEDULE_FAVORITE_ID
           );
 
-
         const favoriteSnapshot =
           await getDoc(
             favoriteRef
           );
-
 
         if (
           favoriteSnapshot.exists()
@@ -1476,7 +1411,6 @@
           scheduleFavoriteButton.classList.add(
             "active"
           );
-
 
           scheduleFavoriteButton.textContent =
             "♥ În favorite";
@@ -1488,7 +1422,6 @@
           scheduleFavoriteButton.classList.remove(
             "active"
           );
-
 
           scheduleFavoriteButton.textContent =
             "♡ Adaugă la favorite";
@@ -1508,7 +1441,6 @@
 
     }
 
-
     scheduleFavoriteButton.addEventListener(
       "click",
       async () => {
@@ -1522,10 +1454,8 @@
 
         }
 
-
         scheduleFavoriteButton.disabled =
           true;
-
 
         try {
 
@@ -1538,12 +1468,10 @@
               SCHEDULE_FAVORITE_ID
             );
 
-
           const favoriteSnapshot =
             await getDoc(
               favoriteRef
             );
-
 
           if (
             favoriteSnapshot.exists()
@@ -1553,11 +1481,9 @@
               favoriteRef
             );
 
-
             scheduleFavoriteButton.classList.remove(
               "active"
             );
-
 
             scheduleFavoriteButton.textContent =
               "♡ Adaugă la favorite";
@@ -1589,11 +1515,9 @@
               }
             );
 
-
             scheduleFavoriteButton.classList.add(
               "active"
             );
-
 
             scheduleFavoriteButton.textContent =
               "♥ În favorite";
@@ -1608,7 +1532,6 @@
             "Nu am putut modifica favoritul:",
             error
           );
-
 
           alert(
             "Nu am putut modifica favoritele."
@@ -1626,14 +1549,12 @@
       }
     );
 
-
     /* =========================
        MATERIALE
     ========================= */
 
     let unsubscribeMaterials =
       null;
-
 
     function loadMaterials() {
 
@@ -1648,7 +1569,6 @@
 
       }
 
-
       const materialsQuery =
         query(
           collection(
@@ -1661,7 +1581,6 @@
           )
         );
 
-
       unsubscribeMaterials =
         onSnapshot(
           materialsQuery,
@@ -1670,7 +1589,6 @@
 
             materials.innerHTML =
               "";
-
 
             if (
               snapshot.empty
@@ -1686,11 +1604,9 @@
                   </div>
                 `;
 
-
               return;
 
             }
-
 
             snapshot.forEach(
               item => {
@@ -1698,131 +1614,104 @@
                 const data =
                   item.data();
 
-
                 const card =
                   document.createElement(
                     "article"
                   );
 
-
                 card.className =
                   "material-card";
-
 
                 const title =
                   document.createElement(
                     "div"
                   );
 
-
                 title.className =
                   "material-title";
-
 
                 title.textContent =
                   data.title ||
                   "Fără titlu";
-
 
                 const description =
                   document.createElement(
                     "div"
                   );
 
-
                 description.className =
                   "material-description";
-
 
                 description.textContent =
                   data.description ||
                   "Material pentru școală.";
-
 
                 const actions =
                   document.createElement(
                     "div"
                   );
 
-
                 actions.className =
                   "material-actions";
-
 
                 const open =
                   document.createElement(
                     "a"
                   );
 
-
                 open.className =
                   "material-open";
-
 
                 open.href =
                   data.url ||
                   "#";
 
-
                 open.target =
                   "_blank";
-
 
                 open.rel =
                   "noopener noreferrer";
 
-
                 open.textContent =
                   "Deschide";
-
 
                 const favorite =
                   document.createElement(
                     "button"
                   );
 
-
                 favorite.className =
                   "material-favorite";
-
 
                 favorite.type =
                   "button";
 
-
                 favorite.textContent =
                   "♡ Favorite";
-
 
                 actions.appendChild(
                   open
                 );
 
-
                 actions.appendChild(
                   favorite
                 );
-
 
                 card.appendChild(
                   title
                 );
 
-
                 card.appendChild(
                   description
                 );
-
 
                 card.appendChild(
                   actions
                 );
 
-
                 materials.appendChild(
                   card
                 );
-
 
                 setupMaterialFavorite(
                   favorite,
@@ -1842,7 +1731,6 @@
               error
             );
 
-
             materials.innerHTML =
               `
                 <div
@@ -1858,7 +1746,6 @@
 
     }
 
-
     /* =========================
        FAVORITE MATERIALE
     ========================= */
@@ -1872,17 +1759,14 @@
       const favoriteId =
         `school_${materialId}`;
 
-
       if (!currentUser) {
 
         button.classList.remove(
           "active"
         );
 
-
         button.textContent =
           "♡ Favorite";
-
 
         button.onclick =
           () => {
@@ -1892,11 +1776,9 @@
 
           };
 
-
         return;
 
       }
-
 
       const favoriteRef =
         doc(
@@ -1907,14 +1789,12 @@
           favoriteId
         );
 
-
       try {
 
         const favoriteSnapshot =
           await getDoc(
             favoriteRef
           );
-
 
         if (
           favoriteSnapshot.exists()
@@ -1923,7 +1803,6 @@
           button.classList.add(
             "active"
           );
-
 
           button.textContent =
             "♥ În favorite";
@@ -1941,13 +1820,11 @@
 
       }
 
-
       button.onclick =
         async () => {
 
           button.disabled =
             true;
-
 
           try {
 
@@ -1955,7 +1832,6 @@
               await getDoc(
                 favoriteRef
               );
-
 
             if (
               favoriteSnapshot.exists()
@@ -1965,11 +1841,9 @@
                 favoriteRef
               );
 
-
               button.classList.remove(
                 "active"
               );
-
 
               button.textContent =
                 "♡ Favorite";
@@ -2004,11 +1878,9 @@
                 }
               );
 
-
               button.classList.add(
                 "active"
               );
-
 
               button.textContent =
                 "♥ În favorite";
@@ -2023,7 +1895,6 @@
               "Nu am putut modifica favoritul:",
               error
             );
-
 
             alert(
               "Nu am putut modifica favoritele."
@@ -2041,7 +1912,6 @@
         };
 
     }
-
 
     /* =========================
        PORNIRE ORAR
