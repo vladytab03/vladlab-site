@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Fișiere primite | VladLab Admin</title>
+
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080b12;
+      color: #fff;
+    }
+
+    nav {
+      height: 72px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, .95);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+    }
+
+    .brand span span {
+      color: #5b8cff;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-link {
+      padding: 9px 12px;
+      border: 1px solid #293142;
+      border-radius: 9px;
+      background: #0e131d;
+      color: #c7d0df;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      border-color: #5b8cff;
+    }
+
+    main {
+      width: min(1180px, 92%);
+      margin: auto;
+      padding: 50px 0 80px;
+    }
+
+    .back {
+      display: inline-flex;
+      margin-bottom: 25px;
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .back:hover {
+      color: #fff;
+    }
+
+    .hero {
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 58px);
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+
+    .hero h1 span {
+      color: #5b8cff;
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin-top: 14px;
+      color: #818c9e;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      padding: 20px;
+      border: 1px solid #202735;
+      border-radius: 15px;
+      background: #0e131d;
+    }
+
+    .stat-label {
+      color: #758196;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    .stat-value {
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .search {
+      width: 100%;
+      padding: 13px 15px;
+      border: 1px solid #293142;
+      border-radius: 11px;
+      outline: none;
+      background: #0e131d;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .search:focus {
+      border-color: #5b8cff;
+    }
+
+    .refresh {
+      flex-shrink: 0;
+      padding: 0 18px;
+      border: 1px solid #293142;
+      border-radius: 11px;
+      background: #111824;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .refresh:hover {
+      border-color: #5b8cff;
+    }
+
+    .refresh:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .uploads {
+      display: grid;
+      gap: 14px;
+    }
+
+    .upload-card {
+      padding: 20px;
+      border: 1px solid #202735;
+      border-radius: 16px;
+      background: #0e131d;
+    }
+
+    .upload-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .file-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .file-name {
+      font-size: 17px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .file-description {
+      margin-top: 7px;
+      color: #7f899a;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .file-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #293142;
+      border-radius: 12px;
+      background: #111824;
+      font-size: 22px;
+    }
+
+    .upload-info {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .info-box {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #202735;
+      border-radius: 10px;
+      background: #0a0f17;
+    }
+
+    .info-label {
+      margin-bottom: 6px;
+      color: #657188;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .info-value {
+      color: #cbd3df;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 15px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 12px;
+      border: 1px solid #30394b;
+      border-radius: 9px;
+      background: #111722;
+      color: #c7d0df;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .button:hover {
+      border-color: #5b8cff;
+      color: #fff;
+    }
+
+    .button.primary {
+      border-color: #5b8cff;
+      background: #5b8cff;
+      color: #fff;
+    }
+
+    .button.primary:hover {
+      background: #6c98ff;
+    }
+
+    .empty {
+      padding: 45px 20px;
+      border: 1px dashed #293243;
+      border-radius: 15px;
+      color: #657188;
+      text-align: center;
+    }
+
+    .error {
+      color: #ff8295;
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #080b12;
+      color: #8f9aae;
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 28px;
+      border-top: 1px solid #1d2330;
+      color: #626d7f;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 850px) {
+      nav {
+        padding: 0 4%;
+      }
+
+      .brand-text {
+        display: none;
+      }
+
+      .upload-info {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .upload-info {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        flex-direction: column;
+      }
+
+      .refresh {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="loadingScreen" class="loading-screen">
+    Se verifică accesul...
+  </div>
+
+  <nav>
+
+    <a class="brand" href="/admin/">
+      <img src="/logo.png" alt="VladLab">
+      <span class="brand-text">
+        Vlad<span>Lab</span> Admin
+      </span>
+    </a>
+
+    <div class="nav-actions">
+      <a class="nav-link" href="/admin/">Admin</a>
+      <a class="nav-link" href="/">Vezi site-ul</a>
+    </div>
+
+  </nav>
+
+  <main id="mainContent" style="display:none;">
+
+    <a class="back" href="/admin/">
+      ← Înapoi la Admin
+    </a>
+
+    <section class="hero">
+      <h1>📤 <span>Fișiere primite</span></h1>
+
+      <p>
+        Toate fișierele trimise de utilizatorii VladLab.
+      </p>
+    </section>
+
+    <section class="stats">
+
+      <div class="stat">
+        <div class="stat-label">
+          Fișiere primite
+        </div>
+
+        <div id="uploadsCount" class="stat-value">
+          0
+        </div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">
+          Utilizatori care au trimis
+        </div>
+
+        <div id="sendersCount" class="stat-value">
+          0
+        </div>
+      </div>
+
+    </section>
+
+    <div class="toolbar">
+
+      <input
+        id="searchInput"
+        class="search"
+        type="search"
+        placeholder="Caută după fișier, utilizator, email sau UID..."
+        autocomplete="off"
+      >
+
+      <button
+        id="refreshButton"
+        class="refresh"
+        type="button"
+      >
+        Reîncarcă
+      </button>
+
+    </div>
+
+    <section id="uploads" class="uploads">
+
+      <div class="empty">
+        Se încarcă fișierele...
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 VladLab Admin
+  </footer>
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+      authDomain: "vladlab-11887.firebaseapp.com",
+      projectId: "vladlab-11887",
+      storageBucket: "vladlab-11887.firebasestorage.app",
+      messagingSenderId: "741561223788",
+      appId: "1:741561223788:web:88ad3e62db87e32551a649",
+      measurementId: "G-9XN16BVYRN"
+    };
+
+
+    const ADMIN_UID =
+      "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+    const auth =
+      getAuth(app);
+
+    const db =
+      getFirestore(app);
+
+
+    const loadingScreen =
+      document.getElementById("loadingScreen");
+
+    const mainContent =
+      document.getElementById("mainContent");
+
+    const uploadsContainer =
+      document.getElementById("uploads");
+
+    const uploadsCount =
+      document.getElementById("uploadsCount");
+
+    const sendersCount =
+      document.getElementById("sendersCount");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const refreshButton =
+      document.getElementById("refreshButton");
+
+
+    let loadedUploads = [];
+
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "—";
+      }
+
+      try {
+
+        let date;
+
+        if (
+          typeof value.toDate === "function"
+        ) {
+
+          date =
+            value.toDate();
+
+        }
+
+        else if (
+          value.seconds
+        ) {
+
+          date =
+            new Date(
+              value.seconds * 1000
+            );
+
+        }
+
+        else {
+
+          date =
+            new Date(value);
+
+        }
+
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+
+          return "—";
+
+        }
+
+
+        return new Intl.DateTimeFormat(
+          "ro-RO",
+          {
+            dateStyle: "medium",
+            timeStyle: "short"
+          }
+        ).format(date);
+
+      }
+
+      catch {
+
+        return "—";
+
+      }
+
+    }
+
+
+    function getFileName(upload) {
+
+      return (
+        upload.fileName ||
+        upload.filename ||
+        upload.name ||
+        upload.originalName ||
+        upload.title ||
+        "Fișier fără nume"
+      );
+
+    }
+
+
+    function getFileUrl(upload) {
+
+      return (
+        upload.url ||
+        upload.fileUrl ||
+        upload.webViewLink ||
+        upload.driveUrl ||
+        upload.downloadUrl ||
+        ""
+      );
+
+    }
+
+
+    function getDescription(upload) {
+
+      return (
+        upload.description ||
+        upload.message ||
+        upload.note ||
+        ""
+      );
+
+    }
+
+
+    async function loadUploads() {
+
+      uploadsContainer.innerHTML =
+        `
+          <div class="empty">
+            Se încarcă fișierele...
+          </div>
+        `;
+
+      refreshButton.disabled =
+        true;
+
+
+      try {
+
+        const usersSnapshot =
+          await getDocs(
+            collection(
+              db,
+              "users"
+            )
+          );
+
+
+        const uploads =
+          [];
+
+
+        for (
+          const userDocument
+          of usersSnapshot.docs
+        ) {
+
+          const userData =
+            userDocument.data();
+
+
+          try {
+
+            const userUploads =
+              await getDocs(
+                collection(
+                  db,
+                  "users",
+                  userDocument.id,
+                  "uploads"
+                )
+              );
+
+
+            userUploads.forEach(
+              uploadDocument => {
+
+                uploads.push({
+                  id:
+                    uploadDocument.id,
+
+                  uid:
+                    userDocument.id,
+
+                  userName:
+                    userData.name ||
+                    "Fără nume",
+
+                  userEmail:
+                    userData.email ||
+                    "Fără email",
+
+                  ...uploadDocument.data()
+                });
+
+              }
+            );
+
+          }
+
+          catch (error) {
+
+            console.error(
+              "Nu am putut încărca fișierele pentru:",
+              userDocument.id,
+              error
+            );
+
+          }
+
+        }
+
+
+        uploads.sort(
+          (a, b) => {
+
+            const aSeconds =
+              a.createdAt?.seconds ||
+              a.uploadedAt?.seconds ||
+              0;
+
+            const bSeconds =
+              b.createdAt?.seconds ||
+              b.uploadedAt?.seconds ||
+              0;
+
+            return (
+              bSeconds -
+              aSeconds
+            );
+
+          }
+        );
+
+
+        loadedUploads =
+          uploads;
+
+
+        updateStats();
+
+        renderUploads(
+          loadedUploads
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Nu am putut încărca fișierele:",
+          error
+        );
+
+
+        uploadsContainer.innerHTML =
+          `
+            <div class="empty error">
+              Nu am putut încărca fișierele primite.
+            </div>
+          `;
+
+      }
+
+      finally {
+
+        refreshButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    function updateStats() {
+
+      uploadsCount.textContent =
+        loadedUploads.length;
+
+
+      const senders =
+        new Set(
+          loadedUploads.map(
+            upload =>
+              upload.uid
+          )
+        );
+
+
+      sendersCount.textContent =
+        senders.size;
+
+    }
+
+
+    function renderUploads(uploads) {
+
+      uploadsContainer.innerHTML =
+        "";
+
+
+      if (!uploads.length) {
+
+        uploadsContainer.innerHTML =
+          `
+            <div class="empty">
+              Momentan nu există fișiere primite.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      uploads.forEach(
+        upload => {
+
+          const fileName =
+            getFileName(upload);
+
+          const fileUrl =
+            getFileUrl(upload);
+
+          const description =
+            getDescription(upload);
+
+          const date =
+            upload.createdAt ||
+            upload.uploadedAt ||
+            upload.date ||
+            null;
+
+
+          const card =
+            document.createElement(
+              "article"
+            );
+
+
+          card.className =
+            "upload-card";
+
+
+          card.innerHTML =
+            `
+              <div class="upload-top">
+
+                <div class="file-info">
+
+                  <div class="file-name">
+                    ${escapeHtml(fileName)}
+                  </div>
+
+                  ${
+                    description
+                      ? `
+                          <div class="file-description">
+                            ${escapeHtml(description)}
+                          </div>
+                        `
+                      : ""
+                  }
+
+                </div>
+
+                <div class="file-icon">
+                  📄
+                </div>
+
+              </div>
+
+
+              <div class="upload-info">
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Trimis de
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(upload.userName)}
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Email
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(upload.userEmail)}
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Data
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(formatDate(date))}
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    UID
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(upload.uid)}
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="actions">
+
+                ${
+                  fileUrl
+                    ? `
+                        <a
+                          class="button primary"
+                          href="${escapeHtml(fileUrl)}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Deschide fișierul
+                        </a>
+                      `
+                    : `
+                        <span class="button">
+                          Fără link disponibil
+                        </span>
+                      `
+                }
+
+              </div>
+            `;
+
+
+          uploadsContainer.appendChild(
+            card
+          );
+
+        }
+      );
+
+    }
+
+
+    searchInput.addEventListener(
+      "input",
+      () => {
+
+        const search =
+          searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+        if (!search) {
+
+          renderUploads(
+            loadedUploads
+          );
+
+          return;
+
+        }
+
+
+        const filtered =
+          loadedUploads.filter(
+            upload => {
+
+              const text =
+                [
+                  getFileName(upload),
+                  upload.userName,
+                  upload.userEmail,
+                  upload.uid,
+                  getDescription(upload)
+                ]
+                  .filter(Boolean)
+                  .join(" ")
+                  .toLowerCase();
+
+
+              return text.includes(
+                search
+              );
+
+            }
+          );
+
+
+        renderUploads(
+          filtered
+        );
+
+      }
+    );
+
+
+    refreshButton.addEventListener(
+      "click",
+      loadUploads
+    );
+
+
+    onAuthStateChanged(
+      auth,
+      async user => {
+
+        if (!user) {
+
+          location.href =
+            "/login/?next=/admin/uploads/";
+
+          return;
+
+        }
+
+
+        if (
+          user.uid !== ADMIN_UID
+        ) {
+
+          location.href =
+            "/cont/";
+
+          return;
+
+        }
+
+
+        loadingScreen.style.display =
+          "none";
+
+        mainContent.style.display =
+          "block";
+
+
+        await loadUploads();
+
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
