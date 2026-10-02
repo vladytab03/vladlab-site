@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Utilizatori | VladLab Admin</title>
+
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080b12;
+      color: #fff;
+    }
+
+    nav {
+      height: 72px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid #1d2330;
+      background: rgba(8, 11, 18, .95);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+    }
+
+    .brand span span {
+      color: #5b8cff;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-link {
+      padding: 9px 12px;
+      border: 1px solid #293142;
+      border-radius: 9px;
+      background: #0e131d;
+      color: #c7d0df;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      border-color: #5b8cff;
+    }
+
+    main {
+      width: min(1180px, 92%);
+      margin: auto;
+      padding: 50px 0 80px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 25px;
+      color: #71809a;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .back:hover {
+      color: #fff;
+    }
+
+    .hero {
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 58px);
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+
+    .hero h1 span {
+      color: #5b8cff;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin-top: 14px;
+      color: #818c9e;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      padding: 20px;
+      border: 1px solid #202735;
+      border-radius: 15px;
+      background: #0e131d;
+    }
+
+    .stat-label {
+      color: #758196;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    .stat-value {
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .search {
+      width: 100%;
+      padding: 13px 15px;
+      border: 1px solid #293142;
+      border-radius: 11px;
+      outline: none;
+      background: #0e131d;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .search:focus {
+      border-color: #5b8cff;
+    }
+
+    .refresh {
+      flex-shrink: 0;
+      padding: 0 18px;
+      border: 1px solid #293142;
+      border-radius: 11px;
+      background: #111824;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .refresh:hover {
+      border-color: #5b8cff;
+    }
+
+    .users {
+      display: grid;
+      gap: 14px;
+    }
+
+    .user-card {
+      padding: 20px;
+      border: 1px solid #202735;
+      border-radius: 16px;
+      background: #0e131d;
+    }
+
+    .user-top {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .avatar {
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #293142;
+      background: #111824;
+    }
+
+    .avatar-placeholder {
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #18233a;
+      border: 1px solid #2b3d61;
+      color: #8fb0ff;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .user-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 17px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .user-email {
+      margin-top: 4px;
+      color: #7f899a;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .admin-badge {
+      display: inline-block;
+      margin-left: 7px;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: rgba(91, 140, 255, .12);
+      color: #8fb0ff;
+      font-size: 10px;
+      vertical-align: middle;
+    }
+
+    .user-info {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .info-box {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #202735;
+      border-radius: 10px;
+      background: #0a0f17;
+    }
+
+    .info-label {
+      margin-bottom: 6px;
+      color: #657188;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .info-value {
+      color: #cbd3df;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .user-actions {
+      display: flex;
+      gap: 9px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .details-button {
+      padding: 9px 12px;
+      border: 1px solid #30394b;
+      border-radius: 9px;
+      background: #111722;
+      color: #c7d0df;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .details-button:hover {
+      border-color: #5b8cff;
+      color: #fff;
+    }
+
+    .details {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #202735;
+    }
+
+    .details.show {
+      display: block;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .details-section {
+      padding: 15px;
+      border: 1px solid #202735;
+      border-radius: 12px;
+      background: #0a0f17;
+    }
+
+    .details-section h3 {
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .details-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .detail-item {
+      padding: 10px;
+      border: 1px solid #1e2634;
+      border-radius: 8px;
+      color: #aab4c5;
+      font-size: 12px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-title {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .empty-small {
+      color: #657188;
+      font-size: 12px;
+    }
+
+    .empty {
+      padding: 45px 20px;
+      border: 1px dashed #293243;
+      border-radius: 15px;
+      color: #657188;
+      text-align: center;
+    }
+
+    .error {
+      color: #ff8295;
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #080b12;
+      color: #8f9aae;
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 28px;
+      border-top: 1px solid #1d2330;
+      color: #626d7f;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+      nav {
+        padding: 0 4%;
+      }
+
+      .brand-text {
+        display: none;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .user-info {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .user-info {
+        grid-template-columns: 1fr;
+      }
+
+      .user-top {
+        align-items: flex-start;
+      }
+
+      .toolbar {
+        flex-direction: column;
+      }
+
+      .refresh {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="loadingScreen" class="loading-screen">
+    Se verifică accesul...
+  </div>
+
+  <nav>
+    <a class="brand" href="/admin/">
+      <img src="/logo.png" alt="VladLab">
+      <span class="brand-text">Vlad<span>Lab</span> Admin</span>
+    </a>
+
+    <div class="nav-actions">
+      <a class="nav-link" href="/admin/">Admin</a>
+      <a class="nav-link" href="/">Vezi site-ul</a>
+    </div>
+  </nav>
+
+  <main id="mainContent" style="display:none;">
+
+    <a class="back" href="/admin/">
+      ← Înapoi la Admin
+    </a>
+
+    <section class="hero">
+      <h1>👥 <span>Utilizatori</span></h1>
+      <p>
+        Conturile salvate în VladLab și informațiile asociate acestora.
+      </p>
+    </section>
+
+    <section class="stats">
+      <div class="stat">
+        <div class="stat-label">Utilizatori</div>
+        <div id="usersCount" class="stat-value">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Favorite</div>
+        <div id="favoritesCount" class="stat-value">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Fișiere trimise</div>
+        <div id="uploadsCount" class="stat-value">0</div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <input
+        id="searchInput"
+        class="search"
+        type="search"
+        placeholder="Caută după nume, email sau UID..."
+        autocomplete="off"
+      >
+
+      <button id="refreshButton" class="refresh" type="button">
+        Reîncarcă
+      </button>
+    </div>
+
+    <section id="users" class="users">
+      <div class="empty">
+        Se încarcă utilizatorii...
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 VladLab Admin
+  </footer>
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDwR7COPtyLwIrAtVuH_lpW7Xmb5TCZDKY",
+      authDomain: "vladlab-11887.firebaseapp.com",
+      projectId: "vladlab-11887",
+      storageBucket: "vladlab-11887.firebasestorage.app",
+      messagingSenderId: "741561223788",
+      appId: "1:741561223788:web:88ad3e62db87e32551a649",
+      measurementId: "G-9XN16BVYRN"
+    };
+
+
+    const ADMIN_UID =
+      "tSvMc97QFgc35RwSkK7VRRsEIBv2";
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+    const auth =
+      getAuth(app);
+
+    const db =
+      getFirestore(app);
+
+
+    const loadingScreen =
+      document.getElementById("loadingScreen");
+
+    const mainContent =
+      document.getElementById("mainContent");
+
+    const usersContainer =
+      document.getElementById("users");
+
+    const usersCount =
+      document.getElementById("usersCount");
+
+    const favoritesCount =
+      document.getElementById("favoritesCount");
+
+    const uploadsCount =
+      document.getElementById("uploadsCount");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const refreshButton =
+      document.getElementById("refreshButton");
+
+
+    let loadedUsers = [];
+
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "—";
+      }
+
+      try {
+
+        let date;
+
+        if (typeof value.toDate === "function") {
+          date = value.toDate();
+        }
+
+        else if (value.seconds) {
+          date = new Date(value.seconds * 1000);
+        }
+
+        else {
+          date = new Date(value);
+        }
+
+        if (Number.isNaN(date.getTime())) {
+          return "—";
+        }
+
+        return new Intl.DateTimeFormat(
+          "ro-RO",
+          {
+            dateStyle: "medium",
+            timeStyle: "short"
+          }
+        ).format(date);
+
+      }
+
+      catch {
+        return "—";
+      }
+
+    }
+
+
+    function getInitial(name, email) {
+
+      const source =
+        name ||
+        email ||
+        "?";
+
+      return source
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+    }
+
+
+    async function loadSubcollections(uid) {
+
+      const favoritesSnapshot =
+        await getDocs(
+          collection(
+            db,
+            "users",
+            uid,
+            "favorites"
+          )
+        );
+
+      const uploadsSnapshot =
+        await getDocs(
+          collection(
+            db,
+            "users",
+            uid,
+            "uploads"
+          )
+        );
+
+      const favorites = [];
+
+      favoritesSnapshot.forEach(item => {
+        favorites.push({
+          id: item.id,
+          ...item.data()
+        });
+      });
+
+      const uploads = [];
+
+      uploadsSnapshot.forEach(item => {
+        uploads.push({
+          id: item.id,
+          ...item.data()
+        });
+      });
+
+      return {
+        favorites,
+        uploads
+      };
+
+    }
+
+
+    async function loadUsers() {
+
+      usersContainer.innerHTML =
+        `<div class="empty">Se încarcă utilizatorii...</div>`;
+
+      refreshButton.disabled =
+        true;
+
+      try {
+
+        const snapshot =
+          await getDocs(
+            collection(
+              db,
+              "users"
+            )
+          );
+
+        const users = [];
+
+        for (const userDocument of snapshot.docs) {
+
+          const data =
+            userDocument.data();
+
+          let subcollections = {
+            favorites: [],
+            uploads: []
+          };
+
+          try {
+
+            subcollections =
+              await loadSubcollections(
+                userDocument.id
+              );
+
+          }
+
+          catch (error) {
+
+            console.error(
+              `Nu am putut încărca datele utilizatorului ${userDocument.id}:`,
+              error
+            );
+
+          }
+
+          users.push({
+            id: userDocument.id,
+            ...data,
+            favorites: subcollections.favorites,
+            uploads: subcollections.uploads
+          });
+
+        }
+
+
+        users.sort(
+          (a, b) => {
+
+            const aSeconds =
+              a.createdAt?.seconds || 0;
+
+            const bSeconds =
+              b.createdAt?.seconds || 0;
+
+            return bSeconds - aSeconds;
+
+          }
+        );
+
+
+        loadedUsers =
+          users;
+
+
+        updateStats();
+
+        renderUsers(
+          loadedUsers
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Eroare la încărcarea utilizatorilor:",
+          error
+        );
+
+        usersContainer.innerHTML =
+          `
+            <div class="empty error">
+              Nu am putut încărca utilizatorii.
+            </div>
+          `;
+
+      }
+
+      finally {
+
+        refreshButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    function updateStats() {
+
+      const totalFavorites =
+        loadedUsers.reduce(
+          (total, user) =>
+            total + user.favorites.length,
+          0
+        );
+
+      const totalUploads =
+        loadedUsers.reduce(
+          (total, user) =>
+            total + user.uploads.length,
+          0
+        );
+
+      usersCount.textContent =
+        loadedUsers.length;
+
+      favoritesCount.textContent =
+        totalFavorites;
+
+      uploadsCount.textContent =
+        totalUploads;
+
+    }
+
+
+    function renderUsers(users) {
+
+      usersContainer.innerHTML =
+        "";
+
+      if (!users.length) {
+
+        usersContainer.innerHTML =
+          `
+            <div class="empty">
+              Nu am găsit niciun utilizator.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      users.forEach(user => {
+
+        const name =
+          user.name ||
+          "Fără nume";
+
+        const email =
+          user.email ||
+          "Fără email";
+
+        const provider =
+          user.provider ||
+          "Necunoscut";
+
+        const photo =
+          user.photoURL ||
+          "";
+
+        const isAdmin =
+          user.id === ADMIN_UID;
+
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+        card.className =
+          "user-card";
+
+
+        const avatarHtml =
+          photo
+            ? `
+                <img
+                  class="avatar"
+                  src="${escapeHtml(photo)}"
+                  alt=""
+                  referrerpolicy="no-referrer"
+                >
+              `
+            : `
+                <div class="avatar-placeholder">
+                  ${escapeHtml(getInitial(name, email))}
+                </div>
+              `;
+
+
+        card.innerHTML =
+          `
+            <div class="user-top">
+
+              ${avatarHtml}
+
+              <div class="user-main">
+
+                <div class="user-name">
+                  ${escapeHtml(name)}
+                  ${
+                    isAdmin
+                      ? `<span class="admin-badge">ADMIN</span>`
+                      : ""
+                  }
+                </div>
+
+                <div class="user-email">
+                  ${escapeHtml(email)}
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="user-info">
+
+              <div class="info-box">
+                <div class="info-label">UID</div>
+                <div class="info-value">
+                  ${escapeHtml(user.id)}
+                </div>
+              </div>
+
+              <div class="info-box">
+                <div class="info-label">Provider</div>
+                <div class="info-value">
+                  ${escapeHtml(provider)}
+                </div>
+              </div>
+
+              <div class="info-box">
+                <div class="info-label">Creat</div>
+                <div class="info-value">
+                  ${escapeHtml(formatDate(user.createdAt))}
+                </div>
+              </div>
+
+              <div class="info-box">
+                <div class="info-label">Actualizat</div>
+                <div class="info-value">
+                  ${escapeHtml(formatDate(user.updatedAt))}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="user-actions">
+
+              <button
+                class="details-button"
+                type="button"
+              >
+                Vezi datele (${user.favorites.length} favorite · ${user.uploads.length} fișiere)
+              </button>
+
+            </div>
+
+            <div class="details">
+
+              <div class="details-grid">
+
+                <div class="details-section">
+
+                  <h3>
+                    ❤️ Favorite (${user.favorites.length})
+                  </h3>
+
+                  <div class="details-list favorites-list"></div>
+
+                </div>
+
+                <div class="details-section">
+
+                  <h3>
+                    📤 Fișiere trimise (${user.uploads.length})
+                  </h3>
+
+                  <div class="details-list uploads-list"></div>
+
+                </div>
+
+              </div>
+
+            </div>
+          `;
+
+
+        const details =
+          card.querySelector(
+            ".details"
+          );
+
+        const detailsButton =
+          card.querySelector(
+            ".details-button"
+          );
+
+        const favoritesList =
+          card.querySelector(
+            ".favorites-list"
+          );
+
+        const uploadsList =
+          card.querySelector(
+            ".uploads-list"
+          );
+
+
+        if (!user.favorites.length) {
+
+          favoritesList.innerHTML =
+            `
+              <div class="empty-small">
+                Nu are favorite.
+              </div>
+            `;
+
+        }
+
+        else {
+
+          user.favorites.forEach(favorite => {
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+            item.className =
+              "detail-item";
+
+            item.innerHTML =
+              `
+                <div class="detail-title">
+                  ${escapeHtml(favorite.title || favorite.id)}
+                </div>
+
+                ${
+                  favorite.type
+                    ? `<div>Tip: ${escapeHtml(favorite.type)}</div>`
+                    : ""
+                }
+              `;
+
+            favoritesList.appendChild(
+              item
+            );
+
+          });
+
+        }
+
+
+        if (!user.uploads.length) {
+
+          uploadsList.innerHTML =
+            `
+              <div class="empty-small">
+                Nu a trimis fișiere.
+              </div>
+            `;
+
+        }
+
+        else {
+
+          user.uploads.forEach(upload => {
+
+            const fileName =
+              upload.fileName ||
+              upload.name ||
+              upload.filename ||
+              upload.title ||
+              upload.id;
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+            item.className =
+              "detail-item";
+
+            item.innerHTML =
+              `
+                <div class="detail-title">
+                  ${escapeHtml(fileName)}
+                </div>
+
+                ${
+                  upload.createdAt
+                    ? `<div>${escapeHtml(formatDate(upload.createdAt))}</div>`
+                    : ""
+                }
+              `;
+
+            uploadsList.appendChild(
+              item
+            );
+
+          });
+
+        }
+
+
+        detailsButton.addEventListener(
+          "click",
+          () => {
+
+            details.classList.toggle(
+              "show"
+            );
+
+            detailsButton.textContent =
+              details.classList.contains("show")
+                ? "Ascunde datele"
+                : `Vezi datele (${user.favorites.length} favorite · ${user.uploads.length} fișiere)`;
+
+          }
+        );
+
+
+        usersContainer.appendChild(
+          card
+        );
+
+      });
+
+    }
+
+
+    searchInput.addEventListener(
+      "input",
+      () => {
+
+        const value =
+          searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+        if (!value) {
+
+          renderUsers(
+            loadedUsers
+          );
+
+          return;
+
+        }
+
+
+        const filtered =
+          loadedUsers.filter(user => {
+
+            const searchText =
+              [
+                user.name,
+                user.email,
+                user.id,
+                user.provider
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+
+            return searchText.includes(
+              value
+            );
+
+          });
+
+
+        renderUsers(
+          filtered
+        );
+
+      }
+    );
+
+
+    refreshButton.addEventListener(
+      "click",
+      loadUsers
+    );
+
+
+    onAuthStateChanged(
+      auth,
+      async user => {
+
+        if (!user) {
+
+          location.href =
+            "/login/?next=/admin/users/";
+
+          return;
+
+        }
+
+
+        if (
+          user.uid !== ADMIN_UID
+        ) {
+
+          location.href =
+            "/cont/";
+
+          return;
+
+        }
+
+
+        loadingScreen.style.display =
+          "none";
+
+        mainContent.style.display =
+          "block";
+
+
+        await loadUsers();
+
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
