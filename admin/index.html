@@ -330,8 +330,8 @@
         </h2>
 
         <p>
-          Gestionează materialele, proiectele
-          și conținutul secțiunii Școală.
+          Gestionează materialele și orarul
+          secțiunii Școală.
         </p>
 
       </div>
@@ -369,6 +369,68 @@
 
       <div class="card-arrow">
         Gestionează →
+      </div>
+
+    </a>
+
+
+    <!-- UTILIZATORI -->
+
+    <a
+      class="card"
+      href="/admin/users/"
+    >
+
+      <div>
+
+        <div class="icon">
+          👥
+        </div>
+
+        <h2>
+          Utilizatori
+        </h2>
+
+        <p>
+          Vezi utilizatorii VladLab, conturile,
+          favoritele și informațiile salvate.
+        </p>
+
+      </div>
+
+      <div class="card-arrow">
+        Vezi utilizatorii →
+      </div>
+
+    </a>
+
+
+    <!-- FIȘIERE PRIMITE -->
+
+    <a
+      class="card"
+      href="/admin/uploads/"
+    >
+
+      <div>
+
+        <div class="icon">
+          📤
+        </div>
+
+        <h2>
+          Fișiere primite
+        </h2>
+
+        <p>
+          Vezi fișierele trimise de utilizatori
+          și cine a trimis fiecare fișier.
+        </p>
+
+      </div>
+
+      <div class="card-arrow">
+        Vezi fișierele →
       </div>
 
     </a>
@@ -566,15 +628,6 @@
       }
 
 
-      /*
-        IMPORTANT:
-        dacă este un utilizator normal,
-        NU îl delogăm.
-
-        Îl trimitem pur și simplu
-        în contul lui.
-      */
-
       if (
         user.uid !==
         ADMIN_UID
@@ -649,11 +702,6 @@
         "Nu am putut încărca setările site-ului:",
         error
       );
-
-      /*
-        Admin Panel rămâne utilizabil
-        chiar dacă setările nu se încarcă.
-      */
 
     }
 
